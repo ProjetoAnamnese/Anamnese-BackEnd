@@ -8,8 +8,7 @@ namespace CatalogAPI.Context
         public MySQLContext(DbContextOptions<MySQLContext> options) : base(options)
         {
         }
-
-        public DbSet<Product> Product { get; set; }
+        
         public DbSet<DoctorModel> Doctor { get; set; }
         public DbSet<PacientModel> Pacient { get; set; }
 

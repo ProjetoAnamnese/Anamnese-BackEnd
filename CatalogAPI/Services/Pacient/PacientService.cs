@@ -43,7 +43,7 @@ namespace CatalogAPI.Services.Pacient
                 Phone = pacient.Phone,
                 Profession = pacient.Profession,
                 Uf = pacient.Uf,
-                //UserName = pacient.UserName,
+                UserName = pacient.Username,
                 Gender = pacient.Gender,
                 DoctorId = userId
             });
