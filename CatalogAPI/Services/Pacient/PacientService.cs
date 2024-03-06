@@ -59,15 +59,14 @@ namespace CatalogAPI.Services.Pacient
 
             if (existingPacient != null)
             {
-                
-                //existingPacient.UserName = updatedPacient.UserName;
+
+                existingPacient.UserName = updatedPacient.UserName;
                 existingPacient.Email = updatedPacient.Email;
                 existingPacient.Address = updatedPacient.Address;
                 existingPacient.Uf = updatedPacient.Uf;
                 existingPacient.Phone = updatedPacient.Phone;
                 existingPacient.Birth = updatedPacient.Birth;
-                existingPacient.Gender = updatedPacient.Gender;
-
+                existingPacient.Gender = updatedPacient.Gender;                
                 // Chame o repositório para atualizar o paciente
                 return _pacientRepository.Update(existingPacient);
             }

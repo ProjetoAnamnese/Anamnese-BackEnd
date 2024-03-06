@@ -84,7 +84,7 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpPut("update-pacient/{pacientId}")]
-        //[Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult UpdatePacient(int pacientId, [FromBody] PacientModel updatedPacientModel)
@@ -102,7 +102,7 @@ namespace CatalogAPI.Controllers
             }
 
             // Atualize as propriedades do paciente existente com os dados do modelo atualizado
-            //existingPacient.UserName = updatedPacientModel.UserName;
+            existingPacient.UserName = updatedPacientModel.UserName;
             existingPacient.Email = updatedPacientModel.Email;
             existingPacient.Address = updatedPacientModel.Address;
             existingPacient.Uf = updatedPacientModel.Uf;
