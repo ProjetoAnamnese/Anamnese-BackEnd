@@ -1,4 +1,6 @@
-﻿using AnamneseAPI.Services.Pacient.Models;
+﻿using AnamneseAPI.Models;
+using AnamneseAPI.Services.Pacient.Models;
+using AnamneseAPI.Services.Report.Models;
 using CatalogAPI.Context;
 using CatalogAPI.Models;
 using CatalogAPI.Repository;
@@ -12,14 +14,13 @@ namespace CatalogAPI.Services.Pacient
         private readonly MySQLContext _context;
         private readonly BaseRepository<PacientModel> _pacientRepository;        
         private ITokenService _tokenService { get; }
-        private readonly DbSet<PacientModel> dataset;
+        
 
         public PacientService(MySQLContext context, BaseRepository<PacientModel> pacientRepository, ITokenService tokenService)
         {
             _context = context;
             _pacientRepository = pacientRepository;
-            _tokenService = tokenService;
-            dataset = _context.Set<PacientModel>();
+            _tokenService = tokenService;        
         }
 
         public IEnumerable<PacientModel> GetAllPacients()
@@ -87,6 +88,34 @@ namespace CatalogAPI.Services.Pacient
             }
             return null;
 
+        }
+
+        public void PatchPacient(int pacientId, int newReportId)
+        {
+            
+            var pacient = _pacientRepository.GetById(pacientId);
+            if (pacient != null)
+            {
+                pacient.ReportId = 1;
+                _pacientRepository.Update(pacient);
+                _pacientRepository.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("Erro ao mudar ReportID");
+                
+            }
+        }
+
+        public bool PacientExists(int pacientId)
+        {
+            var pacient = _pacientRepository.GetById(pacientId);
+            return pacient != null;
+        }
+
+        public ReportModel CreateReport(int pacientId, CreateReportRequest report)
+        {
+            throw new NotImplementedException();
         }
     }
 }

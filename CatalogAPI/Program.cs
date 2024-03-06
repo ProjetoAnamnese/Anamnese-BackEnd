@@ -1,3 +1,5 @@
+using AnamneseAPI.Models;
+using AnamneseAPI.Services.Report;
 using CatalogAPI.AppServicesExtensions;
 using CatalogAPI.Models;
 using CatalogAPI.Repository;
@@ -16,12 +18,17 @@ builder.AddPersistence();
 builder.Services.AddCors();
 builder.AddAuthJWT();
 builder.Services.AddCors();
+
+#region dependecyInjection
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPacientService, PacientService>();
+builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<BaseRepository<ReportModel>>();
 builder.Services.AddScoped<BaseRepository<DoctorModel>>();
 builder.Services.AddScoped<BaseRepository<PacientModel>>();
+#endregion dependecyInjection
 
 // Adicione o serviço de controladores
 builder.Services.AddControllers();
