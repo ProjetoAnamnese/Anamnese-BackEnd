@@ -31,8 +31,8 @@ namespace CatalogAPI.Controllers
             if (pacientModel == null)
             {
                 return BadRequest("Dados do paciente inválidos");
-            }                        
-            var createdPacient = _pacientService.CreatePacient(pacientModel);            
+            }
+            var createdPacient = _pacientService.CreatePacient(pacientModel);
             if (createdPacient != null)
             {
                 return Ok(pacientModel);
@@ -87,40 +87,25 @@ namespace CatalogAPI.Controllers
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult UpdatePacient(int pacientId, [FromBody] PacientModel updatedPacientModel)
+        public PacientModel UpdatePacient(int pacientId, CreatePacientRequest updatedPacientModel)
         {
-            if (updatedPacientModel == null)
-            {
-                return BadRequest("Dados do paciente inválidos");
-            }
-
             var existingPacient = _pacientService.GetPacientById(pacientId);
 
-            if (existingPacient == null)
+            if (existingPacient != null)
             {
-                return BadRequest("Paciente não encontrado");
+                existingPacient.UserName = updatedPacientModel.Username;
+                existingPacient.Email = updatedPacientModel.Email;
+                existingPacient.Address = updatedPacientModel.Address;
+                existingPacient.Uf = updatedPacientModel.Uf;
+                existingPacient.Phone = updatedPacientModel.Phone;
+                existingPacient.Birth = updatedPacientModel.Birth;
+                existingPacient.Gender = updatedPacientModel.Gender; 
+
+                _pacientService.UpdatePacient(pacientId, existingPacient); 
+                return existingPacient;
             }
 
-            // Atualize as propriedades do paciente existente com os dados do modelo atualizado
-            existingPacient.UserName = updatedPacientModel.UserName;
-            existingPacient.Email = updatedPacientModel.Email;
-            existingPacient.Address = updatedPacientModel.Address;
-            existingPacient.Uf = updatedPacientModel.Uf;
-            existingPacient.Phone = updatedPacientModel.Phone;
-            existingPacient.Birth = updatedPacientModel.Birth;
-            existingPacient.Gender = updatedPacientModel.Gender;
-
-            // Chame o serviço para atualizar o paciente
-            var updatedPacient = _pacientService.UpdatePacient(pacientId, updatedPacientModel);
-
-            if (updatedPacient != null)
-            {
-                return Ok(updatedPacient);
-            }
-            else
-            {
-                return BadRequest("Falha ao atualizar paciente");
-            }
+            return null; 
         }
     }
 }

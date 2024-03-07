@@ -91,7 +91,10 @@ namespace AnamneseAPI.Services.Report
                 existingReport.Observations = updatedReport.Observations;
                 existingReport.MedicalHistory = updatedReport.MedicalHistory;
                 existingReport.CurrentMedications = updatedReport.CurrentMedications;
-                return _reportRepository.Update(existingReport);                
+
+                _reportRepository.SaveChanges();
+                _reportRepository.Update(existingReport);
+                return existingReport;
             }
             return null;
         }

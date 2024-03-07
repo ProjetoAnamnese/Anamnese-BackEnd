@@ -67,9 +67,13 @@ namespace CatalogAPI.Services.Pacient
                 existingPacient.Uf = updatedPacient.Uf;
                 existingPacient.Phone = updatedPacient.Phone;
                 existingPacient.Birth = updatedPacient.Birth;
-                existingPacient.Gender = updatedPacient.Gender;                
-                // Chame o repositório para atualizar o paciente
-                return _pacientRepository.Update(existingPacient);
+                existingPacient.Gender = updatedPacient.Gender;
+                
+                _pacientRepository.SaveChanges();
+
+                _pacientRepository.Update(existingPacient);
+
+                return existingPacient;
             }
             
             return null;

@@ -25,12 +25,12 @@ namespace AnamneseAPI.Controllers
         }
 
         [HttpPost("create-report/{pacientId}")]
-        //[Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult CreateReport([FromBody] CreateReportRequest reportModel, int pacientId)
         {
-       
+
             var createdPacient = _reportService.CreateReport(pacientId, reportModel);
             if (createdPacient != null)
             {
@@ -43,6 +43,7 @@ namespace AnamneseAPI.Controllers
         }
 
         [HttpGet("get-reports")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetAllReports()
@@ -53,6 +54,7 @@ namespace AnamneseAPI.Controllers
         }
 
         [HttpGet("get-report/{reportId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetReportById(int reportId)
@@ -70,6 +72,7 @@ namespace AnamneseAPI.Controllers
         }
 
         [HttpGet("get-pacient-report/{pacientId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetReportByPacientId(int reportId)
@@ -86,25 +89,49 @@ namespace AnamneseAPI.Controllers
             }
         }
 
-        [HttpDelete("remove-report/{reportId}")]
+        [HttpPut("update-report/{reportId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult RemoveReport(int reportId)
+        public IActionResult UpdateReport(int reportId, [FromBody] CreateReportRequest updatedReportModel)
         {
-            var removedReport = _reportService.DeleteReport(reportId);
+            if (updatedReportModel == null)
+            {
+                return BadRequest("Dados inválidos");
+            }
 
-            return Ok(removedReport);
+            var existingReport = _reportService.GetReportById(reportId);
+            if (existingReport == null)
+            {
+                return BadRequest("Ficha não encontrada");
+            }            
 
+            existingReport.MedicalHistory = updatedReportModel.MedicalHistory;
+            existingReport.CurrentMedications = updatedReportModel.CurrentMedications;
+            existingReport.CardiovascularIssues = updatedReportModel.CardiovascularIssues;
+            existingReport.Diabetes = updatedReportModel.Diabetes;
+            existingReport.FamilyHistoryCardiovascularIssues = updatedReportModel.FamilyHistoryCardiovascularIssues;
+            existingReport.FamilyHistoryDiabetes = updatedReportModel.FamilyHistoryDiabetes;
+            existingReport.PhysicalActivity = updatedReportModel.PhysicalActivity;
+            existingReport.Smoker = updatedReportModel.Smoker;
+            existingReport.ReportDateTime = DateTime.Now;
+            existingReport.AlcoholConsumption = updatedReportModel.AlcoholConsumption;
+            existingReport.EmergencyContactName = updatedReportModel.EmergencyContactName;
+            existingReport.EmergencyContactPhone = updatedReportModel.EmergencyContactPhone;
+            existingReport.Observations = updatedReportModel.Observations;
+            existingReport.MedicalHistory = updatedReportModel.MedicalHistory;
+            existingReport.CurrentMedications = updatedReportModel.CurrentMedications;
+
+            var updatedReport = _reportService.UpdateReport(reportId, existingReport);
+
+            if (updatedReport != null)
+            {
+                return Ok(updatedReport);
+            }
+            else
+            {
+                return BadRequest("Falha ao atualizar a ficha");
+            }
         }
-
-        //[HttpPut("update-report/{reportId}")]
-        //[Authorize]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //public IActionResult UpdateReport(int reportId, [FromBody] ReportModel updatedReportModel)
-        //{
-            
-        //}
     }
 }

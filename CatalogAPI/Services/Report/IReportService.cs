@@ -11,6 +11,7 @@ namespace AnamneseAPI.Services.Report
         ReportModel GetReportById(int id);
         ReportModel CreateReport(int pacientId,CreateReportRequest report);
         ReportModel UpdateReport(int id, ReportModel updatedReport);
+        //ReportModel UpdateReport(int id, CreateReportRequest updatedReport);
         ReportModel DeleteReport(int id);
     }
 }
