@@ -33,7 +33,7 @@ namespace CatalogAPI.Services.Token
             issuer: issuer,
             audience: audience,
             claims: claims,
-            expires: DateTime.Now.AddMinutes(10),
+            expires: DateTime.Now.AddHours(24),
             signingCredentials: credentials
         );
 

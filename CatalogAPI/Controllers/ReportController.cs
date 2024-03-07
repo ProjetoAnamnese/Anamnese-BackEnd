@@ -30,13 +30,7 @@ namespace AnamneseAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult CreateReport([FromBody] CreateReportRequest reportModel, int pacientId)
         {
-            //pacientModel.DoctorId = _tokenService.GetUserId();
-            var existsPacients = _pacientService.PacientExists(pacientId);
-            if (reportModel == null || pacientId == null || !existsPacients)
-            {
-                return BadRequest();
-            }
-
+       
             var createdPacient = _reportService.CreateReport(pacientId, reportModel);
             if (createdPacient != null)
             {

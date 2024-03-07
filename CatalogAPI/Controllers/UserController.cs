@@ -48,7 +48,7 @@ namespace CatalogAPI.Controllers
                     user
                 );
 
-                return Ok(new { token = tokenString });
+                return Ok(new { token = tokenString , username = user.UserName});
             }
             else
             {

@@ -38,8 +38,13 @@ namespace AnamneseAPI.Services.Report
 
 
         public ReportModel CreateReport(int pacientId, CreateReportRequest report)
-        {
-            if(report == null) throw new Exception("Erro ao criar ficha");
+        {                       
+            var existsPacients = _pacientService.PacientExists(pacientId);
+            if (report == null || pacientId == null || !existsPacients)
+            {
+                return null;
+            }
+
             var paciente = _pacientService.GetPacientById(pacientId);
             ReportModel newReport = new ReportModel
             {
@@ -79,6 +84,7 @@ namespace AnamneseAPI.Services.Report
                 existingReport.FamilyHistoryDiabetes = updatedReport.FamilyHistoryDiabetes;
                 existingReport.PhysicalActivity = updatedReport.PhysicalActivity;
                 existingReport.Smoker = updatedReport.Smoker;
+                existingReport.ReportDateTime = DateTime.Now;
                 existingReport.AlcoholConsumption = updatedReport.AlcoholConsumption;
                 existingReport.EmergencyContactName = updatedReport.EmergencyContactName;
                 existingReport.EmergencyContactPhone = updatedReport.EmergencyContactPhone;
