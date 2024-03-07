@@ -7,6 +7,7 @@ namespace AnamneseAPI.Models
 
         public int Id { get; set; }
         public int PacientId { get; set; }
+        public DateTime ReportDateTime { get; set; }
         public string MedicalHistory { get; set; }
         public string CurrentMedications { get; set; }
         public bool CardiovascularIssues { get; set; }

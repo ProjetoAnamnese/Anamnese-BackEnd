@@ -45,6 +45,7 @@ namespace AnamneseAPI.Services.Report
             {
                PacientId = pacientId,
                MedicalHistory = report.MedicalHistory,
+               ReportDateTime = DateTime.Now,
                CurrentMedications = report.CurrentMedications,
                CardiovascularIssues = report.CardiovascularIssues,
                Diabetes = report.Diabetes,
