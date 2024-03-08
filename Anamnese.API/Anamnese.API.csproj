@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <Folder Include="ORM\Model\Auth\" />
-    <Folder Include="ORM\Model\UserModel\" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿namespace Anamnese.API.ORM.Entity
 {
-    public class Profissional
+    public class ProfissionalModel
     {
         public int ProfissionalId { get; set; }
         public string? Username { get; set; }

@@ -8,7 +8,7 @@ namespace Anamnese.API.ORM.Context
             public AnamneseDbContext(DbContextOptions<AnamneseDbContext> options): base(options)
             {
             }          
-            public DbSet<Profissional> Profissional { get; set; }
+            public DbSet<ProfissionalModel> Profissional { get; set; }
             
     }
     }

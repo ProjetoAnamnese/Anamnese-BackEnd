@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 
 #region dependecyInjection
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped<BaseRepository<Profissional>>();
+builder.Services.AddScoped<BaseRepository<ProfissionalModel>>();
 #endregion dependecyInjection
 
 #region mysqlconfig
