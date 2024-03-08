@@ -8,7 +8,7 @@ namespace Anamnese.API.Application.Services.Profissional
     {
         private readonly BaseRepository<ProfissionalModel> _profisionalRepository;
         
-        public ProfissionalModel CreateUser(CreateProfissionalModel createUserModel)
+        public ProfissionalModel CreateProfissional(CreateProfissionalModel createUserModel)
         {
             //Verificar se email já existe
             if (_profisionalRepository.FindAll(e => e.Email == createUserModel.Email).Any()) 
