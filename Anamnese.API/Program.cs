@@ -2,6 +2,7 @@ using Anamnese.API.ORM.Context;
 using Microsoft.EntityFrameworkCore;
 using Anamnese.API.ORM.Repository;
 using Anamnese.API.ORM.Entity;
+using Anamnese.API.Application.Services.Profissional;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddSwaggerGen();
 #region dependecyInjection
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<BaseRepository<ProfissionalModel>>();
+builder.Services.AddScoped<IProfissionalService, ProfissionalService>();
 #endregion dependecyInjection
 
 #region mysqlconfig
