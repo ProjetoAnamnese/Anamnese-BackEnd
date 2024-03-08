@@ -1,9 +1,9 @@
 ﻿namespace Anamnese.API.ORM.Entity
 {
-    public class DoctorModel
+    public class Profissional
     {
-        public int Id { get; set; }
-        public string? UserName { get; set; }
+        public int ProfissionalId { get; set; }
+        public string? Username { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
     }

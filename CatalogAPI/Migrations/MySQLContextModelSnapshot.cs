@@ -77,7 +77,7 @@ namespace AnamneseAPI.Migrations
 
                     b.HasIndex("PacientId");
 
-                    b.ToTable("ReportModel");
+                    b.ToTable("ReportModel", (string)null);
                 });
 
             modelBuilder.Entity("CatalogAPI.Models.DoctorModel", b =>
@@ -97,7 +97,7 @@ namespace AnamneseAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Doctor");
+                    b.ToTable("Doctor", (string)null);
                 });
 
             modelBuilder.Entity("CatalogAPI.Models.PacientModel", b =>
@@ -148,7 +148,7 @@ namespace AnamneseAPI.Migrations
 
                     b.HasIndex("DoctorId");
 
-                    b.ToTable("Pacient");
+                    b.ToTable("Pacient", (string)null);
                 });
 
             modelBuilder.Entity("AnamneseAPI.Models.ReportModel", b =>
