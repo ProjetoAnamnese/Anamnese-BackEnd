@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ORM\Migrations\" />
     <Folder Include="ORM\Model\Auth\" />
   </ItemGroup>
 

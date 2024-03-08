@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Anamnese.API.Migrations
 {
     [DbContext(typeof(AnamneseDbContext))]
-    [Migration("20240308165515_Profissional")]
+    [Migration("20240308192451_Profissional")]
     partial class Profissional
     {
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace Anamnese.API.Migrations
                 .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Anamnese.API.ORM.Entity.Profissional", b =>
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.ProfissionalModel", b =>
                 {
                     b.Property<int>("ProfissionalId")
                         .ValueGeneratedOnAdd()

@@ -18,7 +18,7 @@ namespace Anamnese.API.Migrations
                 .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Anamnese.API.ORM.Entity.Profissional", b =>
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.ProfissionalModel", b =>
                 {
                     b.Property<int>("ProfissionalId")
                         .ValueGeneratedOnAdd()
