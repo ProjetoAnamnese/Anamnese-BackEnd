@@ -1,9 +1,7 @@
 using Anamnese.API.ORM.Context;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Anamnese.API.ORM.Repository;
+using Anamnese.API.ORM.Entity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,14 +10,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configure services.
+
+#region dependecyInjection
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<BaseRepository<Profissional>>();
+#endregion dependecyInjection
+
+#region mysqlconfig
 builder.Services.AddDbContext<AnamneseDbContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     var serverVersion = ServerVersion.AutoDetect(connectionString);
     options.UseMySql(connectionString, serverVersion);
 });
-
+#endregion mysqlconfig
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
