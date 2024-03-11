@@ -87,6 +87,46 @@ namespace Anamnese.API.Controllers
             }
         }
 
+        [HttpPut("update-report/{reportId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult UpdateReport(int reportId, [FromBody] CreateReportRequest updatedReportModel)
+        {
+            var existingReport = _reportService.GetReportById(reportId);
+
+            if (existingReport == null)
+            {
+                return BadRequest("Ficha não encontrada.");
+            }
+
+            // Atualiza apenas os campos fornecidos no modelo de atualização
+            existingReport.MedicalHistory = updatedReportModel.MedicalHistory;
+            existingReport.CurrentMedications = updatedReportModel.CurrentMedications;
+            existingReport.CardiovascularIssues = updatedReportModel.CardiovascularIssues;
+            existingReport.Diabetes = updatedReportModel.Diabetes;
+            existingReport.FamilyHistoryCardiovascularIssues = updatedReportModel.FamilyHistoryCardiovascularIssues;
+            existingReport.FamilyHistoryDiabetes = updatedReportModel.FamilyHistoryDiabetes;
+            existingReport.PhysicalActivity = updatedReportModel.PhysicalActivity;
+            existingReport.Smoker = updatedReportModel.Smoker;
+            existingReport.ReportDateTime = DateTime.Now;
+            existingReport.AlcoholConsumption = updatedReportModel.AlcoholConsumption;
+            existingReport.EmergencyContactName = updatedReportModel.EmergencyContactName;
+            existingReport.EmergencyContactPhone = updatedReportModel.EmergencyContactPhone;
+            existingReport.Observations = updatedReportModel.Observations;
+
+            var updatedReport = _reportService.UpdateReport(reportId, existingReport);
+
+            if (updatedReport != null)
+            {
+                return Ok(updatedReport);
+            }
+            else
+            {
+                return BadRequest("Falha ao atualizar a ficha.");
+            }
+        }
+
 
     }
 }

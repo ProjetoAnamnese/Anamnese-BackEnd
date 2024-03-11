@@ -75,8 +75,8 @@ namespace Anamnese.API.Application.Services.Report
                 existingReport.MedicalHistory = updatedReport.MedicalHistory;
                 existingReport.CurrentMedications = updatedReport.CurrentMedications;
 
-                _reportRepository.SaveChanges();
                 _reportRepository.Update(existingReport);
+                _reportRepository.SaveChanges();
                 return existingReport;
             }
             return null;
