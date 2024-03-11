@@ -6,6 +6,6 @@ public class DoctorModel
     public string? UserName { get; set; }
     public string? Email { get; set; }
     public string? Password { get; set; }
+    public ICollection<PacientModel> Pacients { get; set; }
 
-    public virtual List<PacientModel> Patients { get; set; } = new List<PacientModel>();
 }

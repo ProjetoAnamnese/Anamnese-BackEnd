@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen();
 #region dependecyInjection
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<BaseRepository<ProfissionalModel>>();
+builder.Services.AddScoped<BaseRepository<PacientModel>>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IProfissionalService, ProfissionalService>();
 #endregion dependecyInjection
