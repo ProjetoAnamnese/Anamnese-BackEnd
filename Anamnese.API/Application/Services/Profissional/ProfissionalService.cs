@@ -7,11 +7,16 @@ namespace Anamnese.API.Application.Services.Profissional
     public class ProfissionalService : IProfissionalService
     {
         private readonly BaseRepository<ProfissionalModel> _profisionalRepository;
-        
+
+        public ProfissionalService(BaseRepository<ProfissionalModel> profissionalRepository)
+        {
+            _profisionalRepository = profissionalRepository;
+        }
+
         public ProfissionalModel CreateProfissional(CreateProfissionalModel createUserModel)
         {
             //Verificar se email já existe
-            if (_profisionalRepository.FindAll(e => e.Email == createUserModel.Email).Any()) 
+            if (_profisionalRepository.FindAll(e => e.Email == createUserModel.Email).Any())
             {
                 throw new Exception("E-mail já está em uso.");
             }
@@ -51,7 +56,7 @@ namespace Anamnese.API.Application.Services.Profissional
         public async Task<bool> ValidateCredentials(string email, string password)
         {
             var user = await _profisionalRepository.FindAsync(u => u.Email == email);
-            if (user == null)
+            if (user != null)
             {
                 bool isPasswordCorrect = VerifyPassword(password, user.Password);
                 return isPasswordCorrect;

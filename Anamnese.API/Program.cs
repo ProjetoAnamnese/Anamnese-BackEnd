@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Anamnese.API.ORM.Repository;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.Application.Services.Profissional;
+using Anamnese.API.Application.Services.Token;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddSwaggerGen();
 #region dependecyInjection
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<BaseRepository<ProfissionalModel>>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IProfissionalService, ProfissionalService>();
 #endregion dependecyInjection
 

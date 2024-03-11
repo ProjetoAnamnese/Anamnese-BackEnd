@@ -64,17 +64,12 @@ namespace Anamnese.API.Controllers
             {
                 return BadRequest("Dados do usuário inválidos");
             }
-
-            if (_profissionalService.IsEmailTaken(profissionalModel.Email))
-            {
-                return BadRequest("E-mail já em uso. Escolha outro.");
-            }
-
+       
             ProfissionalModel createdProfissional = _profissionalService.CreateProfissional(profissionalModel);
 
             if (createdProfissional != null)
             {
-                return Ok(new { message = "Usuário criado com sucesso", userId = createdProfissional.ProfissionalId });
+                return Ok(new { message = "Usuário criado com sucesso"});
             }
             else
             {
