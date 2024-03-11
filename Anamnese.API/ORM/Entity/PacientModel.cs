@@ -1,8 +1,11 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace Anamnese.API.ORM.Entity
 {
     public class PacientModel
     {
+        [Key]
         public int PacientId { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
@@ -10,7 +13,7 @@ namespace Anamnese.API.ORM.Entity
         public string Address { get; set; }
         public string Profession { get; set; }
         public string Uf { get; set; }
-        public DateTime Birth { get; set; }
+        public DateOnly Birth { get; set; }
         public string Gender { get; set; }
         public int ProfissionalId { get; set; }
         public ProfissionalModel Profissional { get; set; }

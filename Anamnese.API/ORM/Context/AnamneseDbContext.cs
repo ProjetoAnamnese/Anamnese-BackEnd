@@ -9,6 +9,6 @@ namespace Anamnese.API.ORM.Context
             {
             }          
             public DbSet<ProfissionalModel> Profissional { get; set; }
-            
+            public DbSet<PacientModel> Pacient { get; set; }
     }
     }
