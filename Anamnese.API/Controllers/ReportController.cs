@@ -1,4 +1,5 @@
-﻿using Anamnese.API.Application.Services.Report;
+﻿using Anamnese.API.Application.Services.Pacient;
+using Anamnese.API.Application.Services.Report;
 using Anamnese.API.ORM.Model.Report;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,11 @@ namespace Anamnese.API.Controllers
     public class ReportController : ControllerBase
     {
         private readonly IReportService _reportService;
-        public ReportController(IReportService reportService)
+        private readonly IPacientService _pacientService;
+        public ReportController(IReportService reportService, IPacientService pacientService)
         {
             _reportService = reportService;            
+            _pacientService = pacientService;
         }
 
 
@@ -34,13 +37,13 @@ namespace Anamnese.API.Controllers
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetReportByPacientId(int reportId)
-        {
-            var report = _reportService.GetReportById(reportId);
+        public IActionResult GetReportByPacientId(int pacientId)
+        {            
+            var pacientReport = _pacientService.GetPacientById(pacientId);
 
-            if (report != null)
+            if (pacientReport != null)
             {
-                return Ok(report);
+                return Ok(pacientReport);
             }
             else
             {
