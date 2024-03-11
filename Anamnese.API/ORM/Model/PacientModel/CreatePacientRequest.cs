@@ -8,7 +8,7 @@
         public string Address { get; set; }
         public string Profession { get; set; }
         public string Uf { get; set; }
-        public string Birth { get; set; }
+        public DateTime Birth { get; set; }
         public string Gender { get; set; }
     }
 }
