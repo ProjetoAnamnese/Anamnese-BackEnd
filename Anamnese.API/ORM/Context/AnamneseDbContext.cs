@@ -10,5 +10,17 @@ namespace Anamnese.API.ORM.Context
             }          
             public DbSet<ProfissionalModel> Profissional { get; set; }
             public DbSet<PacientModel> Pacient { get; set; }
+            public DbSet<ReportModel> Report { get; set; }
+
+            protected override void OnModelCreating(ModelBuilder modelBuilder)
+            {
+                base.OnModelCreating(modelBuilder);
+
+                modelBuilder.Entity<PacientModel>()
+                    .HasOne(p => p.Report)
+                    .WithOne(r => r.Pacient)
+                    .HasForeignKey<ReportModel>(r => r.PacientId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            }
     }
     }

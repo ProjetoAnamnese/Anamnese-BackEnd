@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Anamnese.API.Migrations
 {
     [DbContext(typeof(AnamneseDbContext))]
-    [Migration("20240311173351_DateOnly")]
-    partial class DateOnly
+    [Migration("20240311185341_report")]
+    partial class report
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,6 +54,9 @@ namespace Anamnese.API.Migrations
                     b.Property<int>("ProfissionalId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ReportId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Uf")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -89,6 +92,68 @@ namespace Anamnese.API.Migrations
                     b.ToTable("Profissional");
                 });
 
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.ReportModel", b =>
+                {
+                    b.Property<int>("ReportId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("AlcoholConsumption")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("CardiovascularIssues")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("CurrentMedications")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Diabetes")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("EmergencyContactName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("EmergencyContactPhone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("FamilyHistoryCardiovascularIssues")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("FamilyHistoryDiabetes")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("MedicalHistory")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Observations")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("PacientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhysicalActivity")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("ReportDateTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("Smoker")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("ReportId");
+
+                    b.HasIndex("PacientId")
+                        .IsUnique();
+
+                    b.ToTable("Report");
+                });
+
             modelBuilder.Entity("Anamnese.API.ORM.Entity.PacientModel", b =>
                 {
                     b.HasOne("Anamnese.API.ORM.Entity.ProfissionalModel", "Profissional")
@@ -98,6 +163,23 @@ namespace Anamnese.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Profissional");
+                });
+
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.ReportModel", b =>
+                {
+                    b.HasOne("Anamnese.API.ORM.Entity.PacientModel", "Pacient")
+                        .WithOne("Report")
+                        .HasForeignKey("Anamnese.API.ORM.Entity.ReportModel", "PacientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pacient");
+                });
+
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.PacientModel", b =>
+                {
+                    b.Navigation("Report")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
