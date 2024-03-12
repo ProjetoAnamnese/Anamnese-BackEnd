@@ -24,6 +24,11 @@ namespace Anamnese.API.Application.Services.Pacient
         {
             return _pacientRepository.GetById(id);
         }
+        public IEnumerable<PacientModel> GetPacientsByProfissionalId(int pacientId)
+        {
+            int profissionalId = _tokenService.GetUserId();
+            return _pacientRepository.GetAll().Where(p => p.ProfissionalId == profissionalId);
+        }
         public PacientModel CreatePacient(CreatePacientRequest pacient)
         {
             int profissionalId = _tokenService.GetUserId();

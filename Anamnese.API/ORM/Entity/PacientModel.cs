@@ -13,7 +13,7 @@ namespace Anamnese.API.ORM.Entity
         public string Address { get; set; }
         public string Profession { get; set; }
         public string Uf { get; set; }
-        public DateOnly Birth { get; set; }
+        public string Birth { get; set; }
         public string Gender { get; set; }
 
         public int ProfissionalId { get; set; }

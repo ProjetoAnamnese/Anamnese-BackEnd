@@ -44,6 +44,15 @@ namespace Anamnese.API.Controllers
                 return BadRequest("Paciente não encontrado");
             }
         }
+        [HttpGet("profissional/{profissionalId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<IEnumerable<PacientModel>> GetPacientsByProfissionalId(int profissionalId)
+        {
+            var pacients = _pacientService.GetPacientsByProfissionalId(profissionalId);
+            return Ok(pacients);
+        }
 
         [HttpPost("create-pacient")]
         [Authorize]
