@@ -1,4 +1,5 @@
 ﻿using Anamnese.API.Application.Services.Pacient;
+using Anamnese.API.Application.Services.Token;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Model.PacientModel;
 using Microsoft.AspNetCore.Authorization;
@@ -12,9 +13,11 @@ namespace Anamnese.API.Controllers
     public class PacientController : ControllerBase
     {
         private readonly IPacientService _pacientService;
-        public PacientController(IPacientService pacientService)
+        private readonly ITokenService _tokenService;
+        public PacientController(IPacientService pacientService , ITokenService tokenService)
         {
             _pacientService = pacientService;         
+            _tokenService = tokenService;
         }
 
         [HttpGet("get-pacients")]
@@ -50,7 +53,8 @@ namespace Anamnese.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<IEnumerable<PacientModel>> GetPacientsByProfissionalId(int profissionalId)
         {
-            var pacients = _pacientService.GetPacientsByProfissionalId(profissionalId);
+            var userId = _tokenService.GetUserId();
+            var pacients = _pacientService.GetPacientsByProfissionalId(userId);
             return Ok(pacients);
         }
 
