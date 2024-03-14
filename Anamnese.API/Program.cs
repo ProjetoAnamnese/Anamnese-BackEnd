@@ -18,7 +18,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
-builder.Services.AddCors();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -82,10 +81,15 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = "swagger";
     });
 }
-
+app.UseCors(options =>
+{
+    options.AllowAnyOrigin();
+    options.AllowAnyMethod();
+    options.AllowAnyHeader();
+});
 app.UseHttpsRedirection();
-app.UseAuthentication(); 
-
+app.UseAuthentication();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
