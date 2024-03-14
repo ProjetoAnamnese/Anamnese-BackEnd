@@ -45,6 +45,23 @@ namespace Anamnese.API.Controllers
             }
         }
 
+        [HttpGet("get-profissional-pacient")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult GetProfissionalPacients()
+        {
+            var pacients = _pacientService.GetPacientsByProfissional();
+
+            if (pacients != null)
+            {
+                return Ok(pacients);
+            }
+            else
+            {
+                return BadRequest("Pacientes não encontrados para o profissional especificado");
+            }
+        }
+
         [HttpPost("create-pacient")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
