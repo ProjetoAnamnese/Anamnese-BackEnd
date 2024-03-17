@@ -19,6 +19,7 @@ namespace Anamnese.API.Application.Services.Report
         {
             return _reportRepository.GetAll();
         }
+
         public ReportModel GetReportById(int id)
         {
             return _reportRepository.GetById(id);
@@ -31,6 +32,7 @@ namespace Anamnese.API.Application.Services.Report
             {
                 return null;
             }
+            var pacient = _pacientService.GetPacientById(pacientId);
             ReportModel reportModel = new ReportModel
             {
                 PacientId = pacientId,
@@ -47,6 +49,7 @@ namespace Anamnese.API.Application.Services.Report
                 EmergencyContactName = report.EmergencyContactName,
                 EmergencyContactPhone = report.EmergencyContactPhone,
                 Observations = report.Observations,
+                Pacient = pacient
             };
             _reportRepository.Add(reportModel);
             _reportRepository.SaveChanges();
@@ -93,7 +96,9 @@ namespace Anamnese.API.Application.Services.Report
             return null;
         }
 
-
-
+        public int CountAllReports()
+        {
+            return _reportRepository.Count();
+        }
     }
 }

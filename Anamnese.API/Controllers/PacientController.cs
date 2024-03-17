@@ -120,6 +120,20 @@ namespace Anamnese.API.Controllers
             return Ok(removedPacient);
 
         }
-        
+
+        [HttpGet("count-pacients")]
+        public IActionResult CountAllPacients()
+        {
+            int totalPacients = _pacientService.CountAllPacients();
+            return Ok(totalPacients);
+        }
+
+        [HttpGet("count-profissional")]
+        public IActionResult CountProfissionalPacients()
+        {
+            int totalProfissionalPacients = _pacientService.CountAllProfissionalPacients();
+            return Ok(totalProfissionalPacients);
+        }
+
     }
 }

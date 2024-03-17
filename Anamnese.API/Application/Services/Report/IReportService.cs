@@ -11,5 +11,6 @@ namespace Anamnese.API.Application.Services.Report
         ReportModel UpdateReport(int id, ReportModel updatedReport);
         
         ReportModel DeleteReport(int id);
+        int CountAllReports();
     }
 }

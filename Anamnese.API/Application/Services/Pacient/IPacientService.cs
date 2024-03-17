@@ -13,5 +13,7 @@ namespace Anamnese.API.Application.Services.Pacient
         PacientModel DeletePacient(int id);
         bool PacientExists(int pacientId);
         void PatchPacient(int pacientId, int newReportId);
+        int CountAllPacients();
+        int CountAllProfissionalPacients();
     }
 }

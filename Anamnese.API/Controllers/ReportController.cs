@@ -126,6 +126,13 @@ namespace Anamnese.API.Controllers
                 return BadRequest("Falha ao atualizar a ficha.");
             }
         }
+        [HttpGet("count-report")]
+        public IActionResult CountAllReports()
+        {
+            var count = _reportService.CountAllReports();
+            return Ok(count);
+        }
+
 
 
     }
