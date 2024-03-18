@@ -2,6 +2,7 @@
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Model.Report;
 using Anamnese.API.ORM.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Anamnese.API.Application.Services.Report
 {
@@ -23,6 +24,8 @@ namespace Anamnese.API.Application.Services.Report
         public ReportModel GetReportById(int id)
         {
             return _reportRepository.GetById(id);
+            //return _pacientRepository._context.Pacient.Where(e => e.PacientId == id).Include(e => e.Report).FirstOrDefault();
+            //return _reportRepository._context.Report.Where(e => e.ReportId == id).Include(e =>  e.Pacient).FirstOrDefault();
 
 
         }

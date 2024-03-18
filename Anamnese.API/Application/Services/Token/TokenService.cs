@@ -33,7 +33,7 @@ namespace Anamnese.API.Application.Services.Token
             issuer: issuer,
             audience: audience,
             claims: claims,
-            expires: DateTime.Now.AddHours(24),
+            expires: DateTime.Now.AddDays(300),
             signingCredentials: credentials
         );
 

@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Anamnese.API.ORM.Entity
 {
@@ -16,7 +17,9 @@ namespace Anamnese.API.ORM.Entity
         public DateOnly Birth { get; set; }
         public string Gender { get; set; }
         public int ProfissionalId { get; set; }
-        public ProfissionalModel Profissional { get; set; }        
+        public ProfissionalModel Profissional { get; set; }
+
+        [JsonIgnore]
         public ReportModel Report { get; set; }
     }
 }
