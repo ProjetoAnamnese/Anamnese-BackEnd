@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Anamnese.API.ORM.Entity
 {
@@ -34,6 +35,7 @@ namespace Anamnese.API.ORM.Entity
         [ForeignKey("Pacient")]
         public int PacientId { get; set; }
 
+        [JsonIgnore]
         public PacientModel Pacient { get; set; }
     }
 }

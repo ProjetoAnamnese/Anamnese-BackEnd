@@ -7,7 +7,7 @@ namespace Anamnese.API.ORM.Repository
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        protected AnamneseDbContext _context;
+        public AnamneseDbContext _context;
 
         public BaseRepository(AnamneseDbContext context)
         {

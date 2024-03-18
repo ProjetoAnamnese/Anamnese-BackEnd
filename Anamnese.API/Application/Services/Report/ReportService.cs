@@ -24,6 +24,7 @@ namespace Anamnese.API.Application.Services.Report
         {
             return _reportRepository.GetById(id);
 
+
         }
         public ReportModel CreateReport(int pacientId, CreateReportRequest report)
         {

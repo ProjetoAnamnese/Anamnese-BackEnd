@@ -18,11 +18,12 @@ namespace Anamnese.API.Application.Services.Pacient
 
         public IEnumerable<PacientModel> GetAllPacients()
         {
-          return _pacientRepository.GetAll();
+            return _pacientRepository.GetAll();
         }
         public PacientModel GetPacientById(int id)
         {
-            return _pacientRepository.GetById(id);
+            //return _pacientRepository.GetById(id);
+            return _pacientRepository._context.Pacient.Where(e => e.PacientId == id).Include(e => e.Report).FirstOrDefault();
         }
 
    
