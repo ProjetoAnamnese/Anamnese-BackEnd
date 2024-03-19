@@ -18,20 +18,12 @@ namespace Anamnese.API.Application.Services.Report
         }
         public IEnumerable<ReportModel> GetAllReports()
         {
-            //return _reportRepository.GetAll();
-            return _reportRepository._context.Report
-                .Include(e => e.Pacient)
-                .ToList();
-            //return _pacientRepository._context.Pacient
-            // .Include(e => e.Report)
-            // .ToList();
+            return _reportRepository.GetAll();
         }
 
         public ReportModel GetReportById(int id)
         {
-            return _reportRepository.GetById(id);
-            //return _pacientRepository._context.Pacient.Where(e => e.PacientId == id).Include(e => e.Report).FirstOrDefault();
-            //return _reportRepository._context.Report.Where(e => e.ReportId == id).Include(e =>  e.Pacient).FirstOrDefault();
+            return _reportRepository.GetById(id);          
 
 
         }
@@ -59,6 +51,7 @@ namespace Anamnese.API.Application.Services.Report
                 EmergencyContactName = report.EmergencyContactName,
                 EmergencyContactPhone = report.EmergencyContactPhone,
                 Observations = report.Observations,
+                PacientName = pacient.Username,
                 Pacient = pacient
             };
             _reportRepository.Add(reportModel);

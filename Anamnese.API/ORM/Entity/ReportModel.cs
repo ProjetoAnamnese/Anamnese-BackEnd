@@ -34,6 +34,7 @@ namespace Anamnese.API.ORM.Entity
 
         [ForeignKey("Pacient")]
         public int PacientId { get; set; }
+        public string PacientName { get; set; }
 
         [JsonIgnore]
         public PacientModel Pacient { get; set; }

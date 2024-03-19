@@ -130,6 +130,10 @@ namespace Anamnese.API.Migrations
                     b.Property<int>("PacientId")
                         .HasColumnType("int");
 
+                    b.Property<string>("PacientName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("PhysicalActivity")
                         .IsRequired()
                         .HasColumnType("longtext");

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Anamnese.API.Migrations
 {
     [DbContext(typeof(AnamneseDbContext))]
-    [Migration("20240311185341_report")]
-    partial class report
+    [Migration("20240319014436_Migrations")]
+    partial class Migrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,9 +52,6 @@ namespace Anamnese.API.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<int>("ProfissionalId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ReportId")
                         .HasColumnType("int");
 
                     b.Property<string>("Uf")
@@ -135,6 +132,10 @@ namespace Anamnese.API.Migrations
 
                     b.Property<int>("PacientId")
                         .HasColumnType("int");
+
+                    b.Property<string>("PacientName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PhysicalActivity")
                         .IsRequired()
