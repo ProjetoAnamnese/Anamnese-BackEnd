@@ -18,7 +18,13 @@ namespace Anamnese.API.Application.Services.Report
         }
         public IEnumerable<ReportModel> GetAllReports()
         {
-            return _reportRepository.GetAll();
+            //return _reportRepository.GetAll();
+            return _reportRepository._context.Report
+                .Include(e => e.Pacient)
+                .ToList();
+            //return _pacientRepository._context.Pacient
+            // .Include(e => e.Report)
+            // .ToList();
         }
 
         public ReportModel GetReportById(int id)

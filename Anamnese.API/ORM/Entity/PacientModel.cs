@@ -19,7 +19,7 @@ namespace Anamnese.API.ORM.Entity
         public int ProfissionalId { get; set; }
         public ProfissionalModel Profissional { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public ReportModel Report { get; set; }
     }
 }
