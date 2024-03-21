@@ -98,9 +98,9 @@ namespace Anamnese.API.Application.Services.Pacient
         }
 
         public IEnumerable<PacientModel> GetPacientsByProfissional()
-        {
+        {            
             var profissionalId = _tokenService.GetUserId();
-            return _pacientRepository.GetAll().Where(p => p.ProfissionalId == profissionalId).ToList();
+            return _pacientRepository._context.Pacient.Include(e => e.Report).Where(p => p.ProfissionalId == profissionalId).ToList();            
         }
 
         public int CountAllPacients()
