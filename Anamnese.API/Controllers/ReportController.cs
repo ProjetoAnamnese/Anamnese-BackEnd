@@ -127,6 +127,17 @@ namespace Anamnese.API.Controllers
                 return BadRequest("Falha ao atualizar a ficha.");
             }
         }
+        [HttpDelete("delete-report/{reportId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult DeleteReport(int reportId)
+        {
+            var removeReport = _reportService.DeleteReport(reportId);
+
+            return Ok(removeReport); 
+            
+        }
         [HttpGet("count-report")]
         public IActionResult CountAllReports()
         {
