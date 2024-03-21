@@ -32,24 +32,25 @@ namespace Anamnese.API.Controllers
         }
 
 
-        //Pegar a ficha do paciente especifico
+        //Pegar a ficha do paciente especifico     
         [HttpGet("get-pacient-report/{pacientId}")]
-        [Authorize]
+        //[Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetReportByPacientId(int pacientId)
-        {            
-            var pacientReport = _pacientService.GetPacientById(pacientId);
+        {
+            var report = _reportService.GetReportByPacientId(pacientId);
 
-            if (pacientReport != null)
+            if (report != null)
             {
-                return Ok(pacientReport);
+                return Ok(report);
             }
             else
             {
-                return BadRequest("Ficha não encontrado");
+                return BadRequest("Relatório do paciente não encontrado");
             }
         }
+
 
         [HttpGet("get-report/{reportId}")]
         [Authorize]

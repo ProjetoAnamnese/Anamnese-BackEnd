@@ -25,8 +25,9 @@ namespace Anamnese.API.Application.Services.Report
         {
             return _reportRepository.GetById(id);          
 
-
         }
+
+
         public ReportModel CreateReport(int pacientId, CreateReportRequest report)
         {
             var existsPacients = _pacientService.PacientExists(pacientId);
@@ -86,6 +87,13 @@ namespace Anamnese.API.Application.Services.Report
                 return existingReport;
             }
             return null;
+        }
+        public ReportModel GetReportByPacientId(int pacientId)
+        {
+         
+            var report = _reportRepository.GetAll().FirstOrDefault(r => r.PacientId == pacientId);
+
+            return report;
         }
 
         public ReportModel DeleteReport(int id)

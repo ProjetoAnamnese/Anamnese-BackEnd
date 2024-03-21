@@ -7,6 +7,8 @@ namespace Anamnese.API.Application.Services.Report
     {
         IEnumerable<ReportModel> GetAllReports();
         ReportModel GetReportById(int id);
+        ReportModel GetReportByPacientId(int pacientId);
+
         ReportModel CreateReport(int pacientId, CreateReportRequest report);
         ReportModel UpdateReport(int id, ReportModel updatedReport);
         
