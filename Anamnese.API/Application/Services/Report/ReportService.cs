@@ -35,6 +35,11 @@ namespace Anamnese.API.Application.Services.Report
             {
                 return null;
             }
+            var existingReport = GetReportByPacientId(pacientId);
+            if (existingReport != null)
+            {
+                return null;
+            }
             var pacient = _pacientService.GetPacientById(pacientId);
             ReportModel reportModel = new ReportModel
             {

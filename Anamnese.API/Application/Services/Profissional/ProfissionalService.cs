@@ -19,6 +19,7 @@ namespace Anamnese.API.Application.Services.Profissional
             if (_profisionalRepository.FindAll(e => e.Email == createUserModel.Email).Any())
             {
                 throw new Exception("E-mail já está em uso.");
+
             }
             var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(createUserModel.Password, salt);
