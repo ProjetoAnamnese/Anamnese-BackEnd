@@ -47,8 +47,19 @@ namespace Anamnese.API.Application.Services.Pacient
             _pacientRepository.SaveChanges();
             return res;
         }
-
-           public PacientModel UpdatePacient(int id, PacientModel updatedPacient)
+        public PacientModel SendMedicalSpeciality(int pacientId, MedicalSpecialityRequest medicalSpeciality)
+        {
+            var existingPacient = _pacientRepository.GetById(pacientId);
+            if (existingPacient != null)
+            {
+                existingPacient.MedicalSpecialty = medicalSpeciality.MedicalSpeciality;
+                _pacientRepository.Update(existingPacient);
+                _pacientRepository.SaveChanges();
+                return existingPacient;
+            }
+            return null;
+        }
+        public PacientModel UpdatePacient(int id, PacientModel updatedPacient)
         {
             var existingPacient = _pacientRepository.GetById(id);
 
@@ -103,6 +114,8 @@ namespace Anamnese.API.Application.Services.Pacient
             return _pacientRepository._context.Pacient.Include(e => e.Report).Where(p => p.ProfissionalId == profissionalId).ToList();            
         }
 
+        
+
         public int CountAllPacients()
         {
             return _pacientRepository.Count();
@@ -113,5 +126,7 @@ namespace Anamnese.API.Application.Services.Pacient
             int profissionalId = _tokenService.GetUserId();
             return _pacientRepository.Count(p => p.ProfissionalId == profissionalId);
         }
+
+      
     }
 }
