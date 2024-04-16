@@ -25,11 +25,13 @@ namespace Anamnese.API.ORM.Context
                 .HasForeignKey<ReportModel>(r => r.PacientId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ReferralModel>()
-                .HasOne(r => r.Pacient)
-                .WithMany(p => p.Referrals)
-                .HasForeignKey(r => r.PacientId)
-                .OnDelete(DeleteBehavior.Cascade);
+
+            //   ----------------- Modelo cascada Referral para paciente, discutir se usar ou nao
+            //    modelBuilder.Entity<ReferralModel>()
+            //        .HasOne(r => r.Pacient)
+            //        .WithMany(p => p.Referrals)
+            //        .HasForeignKey(r => r.PacientId)
+            //        .OnDelete(DeleteBehavior.Cascade);
+            }
         }
     }
-}
