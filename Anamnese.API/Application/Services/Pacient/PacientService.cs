@@ -24,7 +24,7 @@ namespace Anamnese.API.Application.Services.Pacient
         {
             return _pacientRepository._context.Pacient
                 .Include(e => e.Report)
-                .Include(e => e.Referrals.OrderByDescending(r => r.ReferralDate))
+                .Include(e => e.Referrals.OrderByDescending(r => r.ReferralDate).Take(1))
                 .ToList();
         }
         public PacientModel GetPacientById(int id)
@@ -33,7 +33,8 @@ namespace Anamnese.API.Application.Services.Pacient
                 .Include(p => p.Report)
                 .Include(p => p.Referrals.Where(r => r.PacientId == id)
                 .OrderByDescending(r => r.ReferralDate)
-                //.Take(1))
+                //.Take(1)
+              )
                 .FirstOrDefault(p => p.PacientId == id);
         }
 
