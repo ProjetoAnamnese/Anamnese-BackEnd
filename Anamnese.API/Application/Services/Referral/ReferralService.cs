@@ -35,6 +35,15 @@ namespace Anamnese.API.Application.Services.Referral
             }    
             return null;
         }
+        public PacientModel GetReferralByPacientId(int pacientId)
+        {
+            var existPacient = _pacientRepository.GetPacientById(pacientId);
+            if(existPacient != null)
+            {
+                return existPacient;
+            }
+            return null;
+        }
         public Dictionary<string, int> CountReferralsBySpecialty()
         {
             var referralCounts = _referralRepository.GetAll()

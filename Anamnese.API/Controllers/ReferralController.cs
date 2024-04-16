@@ -1,6 +1,7 @@
 ﻿using Anamnese.API.Application.Services.Referral;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Model.PacientModel;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Anamnese.API.Controllers
@@ -22,6 +23,13 @@ namespace Anamnese.API.Controllers
         {
             var sendReferral = _referralService.SendPacientReferral(pacientId, referralRequest);
             return Ok(sendReferral);                 
+        }        
+        [HttpGet("get-referral-by-pacient/{pacientId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetReferralByPacient(int pacientId)
+        {
+            var pacient = _referralService.GetReferralByPacientId(pacientId);
+            return Ok(pacient);
         }
 
         [HttpGet("count-referrals-by-specialty")]
