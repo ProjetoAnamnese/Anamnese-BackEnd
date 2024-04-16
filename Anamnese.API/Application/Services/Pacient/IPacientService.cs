@@ -8,13 +8,14 @@ namespace Anamnese.API.Application.Services.Pacient
         IEnumerable<PacientModel> GetAllPacients();
         PacientModel GetPacientById(int id);
         IEnumerable<PacientModel> GetPacientsByProfissional();
-        PacientModel CreatePacient(CreatePacientRequest pacient);
+        PacientModel CreatePacient(CreatePacientRequest pacient);      
         PacientModel SendMedicalSpeciality(int pacientId, MedicalSpecialityRequest medicalSpeciality);
         PacientModel UpdatePacient(int id, PacientModel updatedPacient);
         PacientModel DeletePacient(int id);
         bool PacientExists(int pacientId);
         void PatchPacient(int pacientId, int newReportId);
         int CountAllPacients();
+        Dictionary<string, int> CountSpecialties();
         int CountAllProfissionalPacients();
     }
 }

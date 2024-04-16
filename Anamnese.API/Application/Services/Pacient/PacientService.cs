@@ -1,8 +1,10 @@
 ﻿using Anamnese.API.Application.Services.Token;
+using Anamnese.API.ORM.Context;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Model.PacientModel;
 using Anamnese.API.ORM.Repository;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Anamnese.API.Application.Services.Pacient
 {
@@ -10,6 +12,8 @@ namespace Anamnese.API.Application.Services.Pacient
     {
         private readonly BaseRepository<PacientModel> _pacientRepository;
         private ITokenService _tokenService { get; }
+        private readonly AnamneseDbContext _context;
+
         public PacientService(BaseRepository<PacientModel> pacientRepository, ITokenService tokenService)
         {            
             _pacientRepository = pacientRepository;
@@ -17,8 +21,7 @@ namespace Anamnese.API.Application.Services.Pacient
         }
 
         public IEnumerable<PacientModel> GetAllPacients()
-        {
-            //return _pacientRepository.GetAll();
+        {           
             return _pacientRepository._context.Pacient
                 .Include(e => e.Report)
                 .ToList();
@@ -58,6 +61,13 @@ namespace Anamnese.API.Application.Services.Pacient
                 return existingPacient;
             }
             return null;
+        }
+        public Dictionary<string, int> CountSpecialties()
+        {
+            var specialtyCounts = _context.MedicalRecords
+             .GroupBy(record => record.Specialty)
+             .ToDictionary(group => group.Key, group => group.Count());
+            return specialtyCounts;
         }
         public PacientModel UpdatePacient(int id, PacientModel updatedPacient)
         {

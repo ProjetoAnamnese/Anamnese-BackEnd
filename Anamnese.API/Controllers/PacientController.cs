@@ -110,6 +110,13 @@ namespace Anamnese.API.Controllers
             }
         }
 
+        [HttpGet("specialties/count")]
+        public IActionResult CountSpecialties()
+        {
+            var specialtyCounts = _pacientService.CountSpecialties();
+            return Ok(specialtyCounts);
+        }
+
         [HttpPut("update-pacient/{pacientId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
