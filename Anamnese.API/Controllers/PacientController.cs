@@ -62,32 +62,7 @@ namespace Anamnese.API.Controllers
                 return BadRequest("Pacientes não encontrados para o profissional especificado");
             }
         }
-
-        [HttpPost("pacient-medical-speciality/{pacientId}")]
-        //[Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult SendMedicalSpeciality(int pacientId, [FromBody] MedicalSpecialityRequest medicalSpeciality)
-        {
-            var existingPacient = _pacientService.GetPacientById(pacientId);
-            if (existingPacient != null)
-            {
-                if (medicalSpeciality == null)
-                {
-                    return BadRequest("Dados inválidos");
-                }
-                var specialityToSend = _pacientService.SendMedicalSpeciality(pacientId, medicalSpeciality);
-                if (specialityToSend != null)
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return BadRequest();
-                }
-            }
-            return null;
-        }
+      
         [HttpPost("create-pacient")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]

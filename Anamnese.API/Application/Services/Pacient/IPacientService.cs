@@ -8,8 +8,7 @@ namespace Anamnese.API.Application.Services.Pacient
         IEnumerable<PacientModel> GetAllPacients();
         PacientModel GetPacientById(int id);
         IEnumerable<PacientModel> GetPacientsByProfissional();
-        PacientModel CreatePacient(CreatePacientRequest pacient);      
-        PacientModel SendMedicalSpeciality(int pacientId, MedicalSpecialityRequest medicalSpeciality);
+        PacientModel CreatePacient(CreatePacientRequest pacient);              
         PacientModel UpdatePacient(int id, PacientModel updatedPacient);
         PacientModel DeletePacient(int id);
         bool PacientExists(int pacientId);
