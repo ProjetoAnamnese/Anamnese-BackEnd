@@ -35,5 +35,13 @@ namespace Anamnese.API.Application.Services.Referral
             }    
             return null;
         }
+        public Dictionary<string, int> CountReferralsBySpecialty()
+        {
+            var referralCounts = _referralRepository.GetAll()
+                .GroupBy(r => r.MedicalSpeciality.ToLower())
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            return referralCounts;
+        }
     }
 }

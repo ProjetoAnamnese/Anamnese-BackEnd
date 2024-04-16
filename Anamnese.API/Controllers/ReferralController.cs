@@ -15,31 +15,21 @@ namespace Anamnese.API.Controllers
             _referralService = referralService;
         }
 
-        [HttpPost("send-referral/{pacientId}")]
-        //[Authorize]
+        [HttpPost("send-referral/{pacientId}")]        
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult SendMedicalSpeciality(int pacientId, [FromBody] ReferralRequestModel referralRequest)
         {
             var sendReferral = _referralService.SendPacientReferral(pacientId, referralRequest);
-            return Ok(sendReferral);
-            //var existingPacient = _pacientService.GetPacientById(pacientId);
-            //if (existingPacient != null)
-            //{
-            //    if (medicalSpeciality == null)
-            //    {
-            //        return BadRequest("Dados inválidos");
-            //    }
-            //    var specialityToSend = _pacientService.SendMedicalSpeciality(pacientId, medicalSpeciality);
-            //    if (specialityToSend != null)
-            //    {
-            //        return Ok();
-            //    }
-            //    else
-            //    {
-            //        return BadRequest();
-            //    }
-            //}            
+            return Ok(sendReferral);                 
+        }
+
+        [HttpGet("count-referrals-by-specialty")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult CountReferralsBySpecialty()
+        {
+            var referralCounts = _referralService.CountReferralsBySpecialty();
+            return Ok(referralCounts);
         }
     }
 }
