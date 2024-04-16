@@ -109,7 +109,7 @@ namespace Anamnese.API.Application.Services.Pacient
         public IEnumerable<PacientModel> GetPacientsByProfissional()
         {            
             var profissionalId = _tokenService.GetUserId();
-            return _pacientRepository._context.Pacient.Include(e => e.Report).Where(p => p.ProfissionalId == profissionalId).ToList();            
+            return _pacientRepository._context.Pacient.Include(e => e.Report).Where(p => p.ProfissionalId == profissionalId).Include(e => e.Referrals.OrderByDescending(r => r.ReferralDate)).ToList();           
         }
 
         
