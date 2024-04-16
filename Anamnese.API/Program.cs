@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Anamnese.API.Application.Services.Report;
+using System.ComponentModel.Design;
+using Anamnese.API.Application.Services.Referral;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,11 +46,13 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<BaseRepository<ProfissionalModel>>();
 builder.Services.AddScoped<BaseRepository<PacientModel>>();
 builder.Services.AddScoped<BaseRepository<ReportModel>>();
+builder.Services.AddScoped<BaseRepository<ReferralModel>>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IProfissionalService, ProfissionalService>();
 builder.Services.AddScoped<IPacientService, PacientService>();
+builder.Services.AddScoped<IReferralService, ReferralService>();
 #endregion dependecyInjection
 
 #region mysqlconfig

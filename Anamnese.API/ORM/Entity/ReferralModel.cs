@@ -10,7 +10,7 @@ namespace Anamnese.API.ORM.Entity
         public string MedicalSpeciality { get; set; }
         public DateTime ReferralDate { get; set; }
 
-        //[JsonIgnore]
+        [JsonIgnore]
         public PacientModel Pacient { get; set; }
 
         
