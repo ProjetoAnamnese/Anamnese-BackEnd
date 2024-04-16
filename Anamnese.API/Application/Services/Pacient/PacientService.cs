@@ -61,14 +61,7 @@ namespace Anamnese.API.Application.Services.Pacient
                 return existingPacient;
             }
             return null;
-        }
-        public Dictionary<string, int> CountSpecialties()
-        {
-            var specialtyCounts = _context.MedicalRecords
-             .GroupBy(record => record.Specialty)
-             .ToDictionary(group => group.Key, group => group.Count());
-            return specialtyCounts;
-        }
+        }   
         public PacientModel UpdatePacient(int id, PacientModel updatedPacient)
         {
             var existingPacient = _pacientRepository.GetById(id);

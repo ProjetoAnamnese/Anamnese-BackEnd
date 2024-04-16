@@ -109,13 +109,7 @@ namespace Anamnese.API.Controllers
                 return BadRequest();
             }
         }
-
-        [HttpGet("specialties/count")]
-        public IActionResult CountSpecialties()
-        {
-            var specialtyCounts = _pacientService.CountSpecialties();
-            return Ok(specialtyCounts);
-        }
+ 
 
         [HttpPut("update-pacient/{pacientId}")]
         [Authorize]
