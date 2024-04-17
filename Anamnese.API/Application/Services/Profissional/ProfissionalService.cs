@@ -29,6 +29,7 @@ namespace Anamnese.API.Application.Services.Profissional
             {
                 Username = createUserModel.Username,
                 Email = createUserModel.Email,
+                Specialty = createUserModel.Specialty,
                 Password = hashedPassword,
             };
 
