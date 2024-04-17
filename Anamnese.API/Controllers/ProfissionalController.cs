@@ -54,12 +54,13 @@ namespace Anamnese.API.Controllers
             }
         }
 
-        [HttpGet("get-profissional/{profissionalId}")]
+        [HttpGet("get-profissional-by-token")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetProfissionaltsById(int profissionalId)
+        public IActionResult GetProfissionaltsById()
         {
-            var profissional = _profissionalService.GetProfissionalById(profissionalId);
+            var profissional = _profissionalService.GetProfissionalById();
 
             if (profissional != null)
             {

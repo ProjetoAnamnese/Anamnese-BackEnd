@@ -27,15 +27,15 @@ namespace Anamnese.API.Application.Services.Pacient
                 .Include(e => e.Referrals.OrderByDescending(r => r.ReferralDate).Take(1))
                 .ToList();
         }
-        public PacientModel GetPacientById(int id)
+        public PacientModel? GetPacientById(int id)
         {
-            return _pacientRepository._context.Pacient
+            var pacient = _pacientRepository._context.Pacient
                 .Include(p => p.Report)
-                .Include(p => p.Referrals.Where(r => r.PacientId == id)
-                .OrderByDescending(r => r.ReferralDate)
-                //.Take(1)
-              )
+                .Include(p => p.Referrals.Where(r => r.PacientId == id && r != null)
+                    .OrderByDescending(r => r.ReferralDate))
                 .FirstOrDefault(p => p.PacientId == id);
+
+            return pacient;
         }
 
 

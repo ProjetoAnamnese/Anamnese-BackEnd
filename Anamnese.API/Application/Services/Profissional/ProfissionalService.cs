@@ -1,4 +1,5 @@
-﻿using Anamnese.API.ORM.Entity;
+﻿using Anamnese.API.Application.Services.Token;
+using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Model.ProfissionalModel;
 using Anamnese.API.ORM.Repository;
 
@@ -7,10 +8,11 @@ namespace Anamnese.API.Application.Services.Profissional
     public class ProfissionalService : IProfissionalService
     {
         private readonly BaseRepository<ProfissionalModel> _profisionalRepository;
-
-        public ProfissionalService(BaseRepository<ProfissionalModel> profissionalRepository)
+        private ITokenService _tokenService { get; }
+        public ProfissionalService(BaseRepository<ProfissionalModel> profissionalRepository, ITokenService tokenService)
         {
             _profisionalRepository = profissionalRepository;
+            _tokenService = tokenService;
         }
 
         public ProfissionalModel CreateProfissional(CreateProfissionalModel createUserModel)
@@ -45,9 +47,10 @@ namespace Anamnese.API.Application.Services.Profissional
 
         }
 
-        public ProfissionalModel GetProfissionalById(int id)
+        public ProfissionalModel GetProfissionalById()
         {
-            return _profisionalRepository.GetById(id);
+            int profissionalId = _tokenService.GetUserId();
+            return _profisionalRepository.GetById(profissionalId);
         }
 
         public async Task<ProfissionalModel> GetUserByEmailAsync(string email)
