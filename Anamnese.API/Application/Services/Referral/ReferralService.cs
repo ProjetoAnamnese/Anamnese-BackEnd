@@ -4,6 +4,7 @@ using Anamnese.API.ORM.Model.PacientModel;
 using Anamnese.API.ORM.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Metrics;
+using System.Globalization;
 
 namespace Anamnese.API.Application.Services.Referral
 {
@@ -46,8 +47,9 @@ namespace Anamnese.API.Application.Services.Referral
         }
         public Dictionary<string, int> CountReferralsBySpecialty()
         {
+            // Agrupa as referências por especialidade médica, deixando maiuscula a primeira letra de cada palavra
             var referralCounts = _referralRepository.GetAll()
-                .GroupBy(r => r.MedicalSpeciality.ToLower())
+                .GroupBy(r => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(r.MedicalSpeciality.ToLower()))
                 .ToDictionary(g => g.Key, g => g.Count());
 
             return referralCounts;

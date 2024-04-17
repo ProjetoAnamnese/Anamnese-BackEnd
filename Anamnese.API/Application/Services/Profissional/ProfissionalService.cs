@@ -44,6 +44,11 @@ namespace Anamnese.API.Application.Services.Profissional
 
         }
 
+        public ProfissionalModel GetProfissionalById(int id)
+        {
+            return _profisionalRepository.GetById(id);
+        }
+
         public async Task<ProfissionalModel> GetUserByEmailAsync(string email)
         {
             return await _profisionalRepository.FindAsync(u => u.Email == email);

@@ -54,6 +54,23 @@ namespace Anamnese.API.Controllers
             }
         }
 
+        [HttpGet("get-profissional/{profissionalId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult GetProfissionaltsById(int profissionalId)
+        {
+            var profissional = _profissionalService.GetProfissionalById(profissionalId);
+
+            if (profissional != null)
+            {
+                return Ok(profissional);
+            }
+            else
+            {
+                return BadRequest("Profissional não encontrado");
+            }
+        }
+
         [HttpPost("create-profissional")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -7,6 +7,7 @@ namespace Anamnese.API.Application.Services.Profissional
     {
         bool IsEmailTaken(string email);
         List<ProfissionalModel> GetDoctorsWithPatients();
+        ProfissionalModel GetProfissionalById(int id);
         ProfissionalModel CreateProfissional(CreateProfissionalModel createUserModel);
         Task<bool> ValidateCredentials(string email, string password);
         Task<ProfissionalModel> GetUserByEmailAsync(string email);
