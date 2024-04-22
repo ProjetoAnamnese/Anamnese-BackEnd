@@ -72,7 +72,7 @@ namespace Anamnese.API.Controllers
             }
         }
 
-        [HttpPost("update-profissional/{userId}")]
+        [HttpPut("update-profissional/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult UpdateUser([FromBody] UpdateProfissionalRequest profissionalModel, int userId)

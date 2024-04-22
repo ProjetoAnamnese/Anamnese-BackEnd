@@ -41,6 +41,11 @@ namespace Anamnese.API.Application.Services.Profissional
         }
         public ProfissionalModel UpdateProfissional(int id, UpdateProfissionalRequest updatedUser)
         {
+            if (_profisionalRepository.FindAll(e => e.Email == updatedUser.Email).Any())
+            {
+                throw new Exception("E-mail já está em uso.");
+
+            }
             var existUser = _profisionalRepository.GetById(id);
             if(existUser != null) 
             { 
