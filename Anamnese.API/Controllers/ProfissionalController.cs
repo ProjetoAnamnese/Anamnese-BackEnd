@@ -72,6 +72,24 @@ namespace Anamnese.API.Controllers
             }
         }
 
+        [HttpPost("update-profissional/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult UpdateUser([FromBody] UpdateProfissionalRequest profissionalModel, int userId)
+        {
+            if(profissionalModel == null)
+            {
+                return BadRequest("Dados do usuário inválidos");
+            }
+            ProfissionalModel updatedUser = _profissionalService.UpdateProfissional(userId, profissionalModel);
+            if (updatedUser != null)
+            {
+                return Ok(updatedUser);
+            }
+            return BadRequest("Falha ao atualizar usuário");
+
+        }
+
         [HttpPost("create-profissional")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -39,6 +39,19 @@ namespace Anamnese.API.Application.Services.Profissional
             _profisionalRepository.SaveChanges();
             return createdUser;
         }
+        public ProfissionalModel UpdateProfissional(int id, UpdateProfissionalRequest updatedUser)
+        {
+            var existUser = _profisionalRepository.GetById(id);
+            if(existUser != null) 
+            { 
+                existUser.Email = updatedUser.Email;
+                existUser.Specialty = updatedUser.Speciality;
+                _profisionalRepository.Update(existUser);
+                _profisionalRepository.SaveChanges();
+                return existUser;
+            }
+            return null;
+        }
 
         public List<ProfissionalModel> GetDoctorsWithPatients()
         {
@@ -79,5 +92,7 @@ namespace Anamnese.API.Application.Services.Profissional
         {
             return BCrypt.Net.BCrypt.Verify(enteredPassword, storedPassword);
         }
+
+      
     }
 }

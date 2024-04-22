@@ -9,6 +9,7 @@ namespace Anamnese.API.Application.Services.Profissional
         List<ProfissionalModel> GetDoctorsWithPatients();
         ProfissionalModel GetProfissionalById();
         ProfissionalModel CreateProfissional(CreateProfissionalModel createUserModel);
+        ProfissionalModel UpdateProfissional(int id ,UpdateProfissionalRequest updatedUser);
         Task<bool> ValidateCredentials(string email, string password);
         Task<ProfissionalModel> GetUserByEmailAsync(string email);
     }
