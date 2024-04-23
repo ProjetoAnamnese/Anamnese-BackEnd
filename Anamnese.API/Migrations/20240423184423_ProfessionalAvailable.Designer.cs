@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Anamnese.API.Migrations
 {
     [DbContext(typeof(AnamneseDbContext))]
-    [Migration("20240419184358_SoftDeleteProfissional")]
-    partial class SoftDeleteProfissional
+    [Migration("20240423184423_ProfessionalAvailable")]
+    partial class ProfessionalAvailable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,26 @@ namespace Anamnese.API.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.DayOfWeekAvailable", b =>
+                {
+                    b.Property<int>("DayOfWeekAvailableId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("DayOfWeek")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("ProfessionalAvailableId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DayOfWeekAvailableId");
+
+                    b.HasIndex("ProfessionalAvailableId");
+
+                    b.ToTable("DayOfWeekAvailable");
+                });
 
             modelBuilder.Entity("Anamnese.API.ORM.Entity.PacientModel", b =>
                 {
@@ -69,14 +89,36 @@ namespace Anamnese.API.Migrations
                     b.ToTable("Pacient");
                 });
 
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.ProfessionalAvailable", b =>
+                {
+                    b.Property<int>("ProfessionalAvailableId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time(6)");
+
+                    b.Property<int>("ProfessionalId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProfessionalModelProfissionalId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time(6)");
+
+                    b.HasKey("ProfessionalAvailableId");
+
+                    b.HasIndex("ProfessionalModelProfissionalId");
+
+                    b.ToTable("ProfessionalAvailable");
+                });
+
             modelBuilder.Entity("Anamnese.API.ORM.Entity.ProfissionalModel", b =>
                 {
                     b.Property<int>("ProfissionalId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
@@ -101,23 +143,16 @@ namespace Anamnese.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("MedicalSpeciality")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("PacientId")
+                    b.Property<int>("ProfissionalId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PacientName")
+                    b.Property<string>("Speciality")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<DateTime>("ReferralDate")
-                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PacientId");
+                    b.HasIndex("ProfissionalId");
 
                     b.ToTable("Referral");
                 });
@@ -188,6 +223,13 @@ namespace Anamnese.API.Migrations
                     b.ToTable("Report");
                 });
 
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.DayOfWeekAvailable", b =>
+                {
+                    b.HasOne("Anamnese.API.ORM.Entity.ProfessionalAvailable", null)
+                        .WithMany("DaysOfWeek")
+                        .HasForeignKey("ProfessionalAvailableId");
+                });
+
             modelBuilder.Entity("Anamnese.API.ORM.Entity.PacientModel", b =>
                 {
                     b.HasOne("Anamnese.API.ORM.Entity.ProfissionalModel", "Profissional")
@@ -199,15 +241,26 @@ namespace Anamnese.API.Migrations
                     b.Navigation("Profissional");
                 });
 
-            modelBuilder.Entity("Anamnese.API.ORM.Entity.ReferralModel", b =>
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.ProfessionalAvailable", b =>
                 {
-                    b.HasOne("Anamnese.API.ORM.Entity.PacientModel", "Pacient")
-                        .WithMany("Referrals")
-                        .HasForeignKey("PacientId")
+                    b.HasOne("Anamnese.API.ORM.Entity.ProfissionalModel", "ProfessionalModel")
+                        .WithMany("ProfessionalAvailable")
+                        .HasForeignKey("ProfessionalModelProfissionalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Pacient");
+                    b.Navigation("ProfessionalModel");
+                });
+
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.ReferralModel", b =>
+                {
+                    b.HasOne("Anamnese.API.ORM.Entity.ProfissionalModel", "Profissional")
+                        .WithMany("Referrals")
+                        .HasForeignKey("ProfissionalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profissional");
                 });
 
             modelBuilder.Entity("Anamnese.API.ORM.Entity.ReportModel", b =>
@@ -223,10 +276,20 @@ namespace Anamnese.API.Migrations
 
             modelBuilder.Entity("Anamnese.API.ORM.Entity.PacientModel", b =>
                 {
-                    b.Navigation("Referrals");
-
                     b.Navigation("Report")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.ProfessionalAvailable", b =>
+                {
+                    b.Navigation("DaysOfWeek");
+                });
+
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.ProfissionalModel", b =>
+                {
+                    b.Navigation("ProfessionalAvailable");
+
+                    b.Navigation("Referrals");
                 });
 #pragma warning restore 612, 618
         }

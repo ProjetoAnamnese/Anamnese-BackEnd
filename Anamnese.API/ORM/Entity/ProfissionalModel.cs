@@ -10,5 +10,9 @@ namespace Anamnese.API.ORM.Entity
         public string? Email { get; set; }
         public string? Password { get; set; }
         public string? Specialty { get; set; }
+
+        public List<SpecialityModel> Speciality { get; set; }
+        public List<ProfessionalAvailable> ProfessionalAvailable { get; set; }
+        public List<ScheduledAppointment> Appointments { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Anamnese.API.Application.Services.Pacient;
-using Anamnese.API.Migrations;
+
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Model.PacientModel;
 using Microsoft.AspNetCore.Authorization;

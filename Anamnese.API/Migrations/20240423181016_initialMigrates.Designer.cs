@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Anamnese.API.Migrations
 {
     [DbContext(typeof(AnamneseDbContext))]
-    [Migration("20240416202747_NewPacientModel")]
-    partial class NewPacientModel
+    [Migration("20240423181016_initialMigrates")]
+    partial class initialMigrates
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,6 +79,9 @@ namespace Anamnese.API.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Password")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Specialty")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Username")

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Anamnese.API.Migrations
 {
     [DbContext(typeof(AnamneseDbContext))]
-    [Migration("20240419201037_FinalMigration")]
-    partial class FinalMigration
+    [Migration("20240423181912_AjustReferral")]
+    partial class AjustReferral
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -98,23 +98,16 @@ namespace Anamnese.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("MedicalSpeciality")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("PacientId")
+                    b.Property<int>("ProfissionalId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PacientName")
+                    b.Property<string>("Speciality")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<DateTime>("ReferralDate")
-                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PacientId");
+                    b.HasIndex("ProfissionalId");
 
                     b.ToTable("Referral");
                 });
@@ -198,13 +191,13 @@ namespace Anamnese.API.Migrations
 
             modelBuilder.Entity("Anamnese.API.ORM.Entity.ReferralModel", b =>
                 {
-                    b.HasOne("Anamnese.API.ORM.Entity.PacientModel", "Pacient")
+                    b.HasOne("Anamnese.API.ORM.Entity.ProfissionalModel", "Profissional")
                         .WithMany("Referrals")
-                        .HasForeignKey("PacientId")
+                        .HasForeignKey("ProfissionalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Pacient");
+                    b.Navigation("Profissional");
                 });
 
             modelBuilder.Entity("Anamnese.API.ORM.Entity.ReportModel", b =>
@@ -220,10 +213,13 @@ namespace Anamnese.API.Migrations
 
             modelBuilder.Entity("Anamnese.API.ORM.Entity.PacientModel", b =>
                 {
-                    b.Navigation("Referrals");
-
                     b.Navigation("Report")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.ProfissionalModel", b =>
+                {
+                    b.Navigation("Referrals");
                 });
 #pragma warning restore 612, 618
         }

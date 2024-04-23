@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Anamnese.API.Migrations
 {
     /// <inheritdoc />
-    public partial class Migrations : Migration
+    public partial class initialMigrates : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,6 +26,8 @@ namespace Anamnese.API.Migrations
                     Email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Specialty = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -65,6 +67,31 @@ namespace Anamnese.API.Migrations
                         column: x => x.ProfissionalId,
                         principalTable: "Profissional",
                         principalColumn: "ProfissionalId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Referral",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    PacientId = table.Column<int>(type: "int", nullable: false),
+                    PacientName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    MedicalSpeciality = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ReferralDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Referral", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Referral_Pacient_PacientId",
+                        column: x => x.PacientId,
+                        principalTable: "Pacient",
+                        principalColumn: "PacientId",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -116,6 +143,11 @@ namespace Anamnese.API.Migrations
                 column: "ProfissionalId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Referral_PacientId",
+                table: "Referral",
+                column: "PacientId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Report_PacientId",
                 table: "Report",
                 column: "PacientId",
@@ -125,6 +157,9 @@ namespace Anamnese.API.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Referral");
+
             migrationBuilder.DropTable(
                 name: "Report");
 

@@ -10,30 +10,30 @@ namespace Anamnese.API.Application.Services.Referral
 {
     public class ReferralService : IReferralService
     {
-        private readonly BaseRepository<ReferralModel> _referralRepository;
+        private readonly BaseRepository<SpecialityModel> _referralRepository;
         private readonly IPacientService _pacientRepository;
-        public ReferralService(BaseRepository<ReferralModel> referralRepository, IPacientService pacientRepository)
+        public ReferralService(BaseRepository<SpecialityModel> referralRepository, IPacientService pacientRepository)
         {
             _referralRepository = referralRepository;
             _pacientRepository = pacientRepository;
         }
 
 
-        public ReferralModel SendPacientReferral(int pacientId, ReferralRequestModel referralRequest)
+        public SpecialityModel SendPacientReferral(int pacientId, ReferralRequestModel referralRequest)
         {
-            var existsPacient = _pacientRepository.GetPacientById(pacientId);
-            if(existsPacient != null)
-            {
-                var res = _referralRepository.Add(new ReferralModel
-                {
-                    PacientId = pacientId,
-                    PacientName = existsPacient.Username,
-                    MedicalSpeciality = referralRequest.MedicalSpeciality,
-                    ReferralDate = DateTime.Now,
-                });
-                _referralRepository.SaveChanges();
-                return res;
-            }    
+            //var existsPacient = _pacientRepository.GetPacientById(pacientId);
+            //if(existsPacient != null)
+            //{
+            //    var res = _referralRepository.Add(new ReferralModel
+            //    {
+            //        PacientId = pacientId,
+            //        PacientName = existsPacient.Username,
+            //        MedicalSpeciality = referralRequest.MedicalSpeciality,
+            //        ReferralDate = DateTime.Now,
+            //    });
+            //    _referralRepository.SaveChanges();
+            //    return res;
+            //}    
             return null;
         }
         public PacientModel GetReferralByPacientId(int pacientId)
@@ -48,11 +48,12 @@ namespace Anamnese.API.Application.Services.Referral
         public Dictionary<string, int> CountReferralsBySpecialty()
         {
             // Agrupa as referências por especialidade médica, deixando maiuscula a primeira letra de cada palavra
-            var referralCounts = _referralRepository.GetAll()
-                .GroupBy(r => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(r.MedicalSpeciality.ToLower()))
-                .ToDictionary(g => g.Key, g => g.Count());
+            //var referralCounts = _referralRepository.GetAll()
+            //    .GroupBy(r => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(r.MedicalSpeciality.ToLower()))
+            //    .ToDictionary(g => g.Key, g => g.Count());
 
-            return referralCounts;
+            //return referralCounts;
+            return null;
         }
     }
 }

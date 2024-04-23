@@ -46,7 +46,9 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<BaseRepository<ProfissionalModel>>();
 builder.Services.AddScoped<BaseRepository<PacientModel>>();
 builder.Services.AddScoped<BaseRepository<ReportModel>>();
-builder.Services.AddScoped<BaseRepository<ReferralModel>>();
+builder.Services.AddScoped<BaseRepository<SpecialityModel>>();
+builder.Services.AddScoped<BaseRepository<ScheduledAppointment>>();
+builder.Services.AddScoped<BaseRepository<ProfissionalModel>>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IReportService, ReportService>();
