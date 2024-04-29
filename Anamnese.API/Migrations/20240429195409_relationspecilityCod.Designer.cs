@@ -3,6 +3,7 @@ using System;
 using Anamnese.API.ORM.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Anamnese.API.Migrations
 {
     [DbContext(typeof(AnamneseDbContext))]
-    partial class AnamneseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240429195409_relationspecilityCod")]
+    partial class relationspecilityCod
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

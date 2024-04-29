@@ -3,6 +3,7 @@ using System;
 using Anamnese.API.ORM.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Anamnese.API.Migrations
 {
     [DbContext(typeof(AnamneseDbContext))]
-    partial class AnamneseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240429195248_relationspecialty")]
+    partial class relationspecialty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,7 +125,7 @@ namespace Anamnese.API.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("SpecialityCode")
+                    b.Property<string>("SpecialityId")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Username")
@@ -130,7 +133,7 @@ namespace Anamnese.API.Migrations
 
                     b.HasKey("ProfissionalId");
 
-                    b.HasIndex("SpecialityCode");
+                    b.HasIndex("SpecialityId");
 
                     b.ToTable("Profissional");
                 });
@@ -249,7 +252,7 @@ namespace Anamnese.API.Migrations
                 {
                     b.HasOne("Anamnese.API.ORM.Entity.SpecialityModel", "Speciality")
                         .WithMany()
-                        .HasForeignKey("SpecialityCode");
+                        .HasForeignKey("SpecialityId");
 
                     b.Navigation("Speciality");
                 });

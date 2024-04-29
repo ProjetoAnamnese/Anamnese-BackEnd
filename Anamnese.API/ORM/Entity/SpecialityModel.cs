@@ -7,12 +7,11 @@ namespace Anamnese.API.ORM.Entity
     public class SpecialityModel
     {
         [Key]
-        public int SpecialityId { get; set; }
+        public string SpecialityCode { get; set; }
         public string SpecialityName { get; set; }
 
-        [ForeignKey("ProfissionalId")]
-        public int ProfissionalId { get; set; }
-        public ProfissionalModel Profissional { get; set; }
+        //[ForeignKey("ProfissionalId")]        
+        List< ProfissionalModel> Profissional { get; set; }
 
     }
 }

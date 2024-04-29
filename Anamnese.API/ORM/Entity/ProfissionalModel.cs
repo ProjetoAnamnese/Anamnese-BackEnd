@@ -15,7 +15,7 @@ namespace Anamnese.API.ORM.Entity
         public List<AppointmentModel> Appointments { get; set; }
 
         [ForeignKey("Speciality")]
-        public int? SpecialityId { get; set; }
+        public string? SpecialityCode { get; set; }
         public SpecialityModel Speciality { get; set; }
     }
 }
