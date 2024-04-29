@@ -46,13 +46,17 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<BaseRepository<ProfissionalModel>>();
 builder.Services.AddScoped<BaseRepository<PacientModel>>();
 builder.Services.AddScoped<BaseRepository<ReportModel>>();
-builder.Services.AddScoped<BaseRepository<ReferralModel>>();
+//builder.Services.AddScoped<BaseRepository<ReferralModel>>();
+builder.Services.AddScoped<BaseRepository<ProfissionalAvailableModel>>();
+builder.Services.AddScoped<BaseRepository<SpecialityModel>>();
+builder.Services.AddScoped<BaseRepository<AppointmentModel>>();
+
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IProfissionalService, ProfissionalService>();
 builder.Services.AddScoped<IPacientService, PacientService>();
-builder.Services.AddScoped<IReferralService, ReferralService>();
+//builder.Services.AddScoped<IReferralService, ReferralService>();
 #endregion dependecyInjection
 
 #region mysqlconfig

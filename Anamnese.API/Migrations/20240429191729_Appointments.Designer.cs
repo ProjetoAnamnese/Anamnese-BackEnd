@@ -3,6 +3,7 @@ using System;
 using Anamnese.API.ORM.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Anamnese.API.Migrations
 {
     [DbContext(typeof(AnamneseDbContext))]
-    partial class AnamneseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240429191729_Appointments")]
+    partial class Appointments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,6 +75,9 @@ namespace Anamnese.API.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("ProfissionalId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Uf")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -81,6 +87,8 @@ namespace Anamnese.API.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("PacientId");
+
+                    b.HasIndex("ProfissionalId");
 
                     b.ToTable("Pacient");
                 });
@@ -232,6 +240,17 @@ namespace Anamnese.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Pacient");
+
+                    b.Navigation("Profissional");
+                });
+
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.PacientModel", b =>
+                {
+                    b.HasOne("Anamnese.API.ORM.Entity.ProfissionalModel", "Profissional")
+                        .WithMany()
+                        .HasForeignKey("ProfissionalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Profissional");
                 });

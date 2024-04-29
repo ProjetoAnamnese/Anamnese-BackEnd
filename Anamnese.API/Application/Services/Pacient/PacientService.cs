@@ -23,16 +23,13 @@ namespace Anamnese.API.Application.Services.Pacient
         public IEnumerable<PacientModel> GetAllPacients()
         {
             return _pacientRepository._context.Pacient
-                .Include(e => e.Report)
-                .Include(e => e.Referrals.OrderByDescending(r => r.ReferralDate).Take(1))
+                .Include(e => e.Report)                
                 .ToList();
         }
         public PacientModel? GetPacientById(int id)
         {
             var pacient = _pacientRepository._context.Pacient
-                .Include(p => p.Report)
-                .Include(p => p.Referrals.Where(r => r.PacientId == id && r != null)
-                    .OrderByDescending(r => r.ReferralDate))
+                .Include(p => p.Report)                
                 .FirstOrDefault(p => p.PacientId == id);
 
             return pacient;
@@ -51,8 +48,7 @@ namespace Anamnese.API.Application.Services.Pacient
                 Profession = pacient.Profession,
                 Uf = pacient.Uf,
                 Username = pacient.Username,
-                Gender = pacient.Gender,
-                ProfissionalId= profissionalId,
+                Gender = pacient.Gender,                
             });
             _pacientRepository.SaveChanges();
             return res;
@@ -107,9 +103,11 @@ namespace Anamnese.API.Application.Services.Pacient
         }
 
         public IEnumerable<PacientModel> GetPacientsByProfissional()
-        {            
-            var profissionalId = _tokenService.GetUserId();
-            return _pacientRepository._context.Pacient.Include(e => e.Report).Where(p => p.ProfissionalId == profissionalId).Include(e => e.Referrals.OrderByDescending(r => r.ReferralDate)).ToList();           
+        {
+            //var profissionalId = _tokenService.GetUserId();
+            //return _pacientRepository._context.Pacient.
+            //    Include(e => e.Report).Where(p => p.ProfissionalId == profissionalId);                
+            return null;
         }
 
         
@@ -121,8 +119,9 @@ namespace Anamnese.API.Application.Services.Pacient
 
         public int CountAllProfissionalPacients()
         {
-            int profissionalId = _tokenService.GetUserId();
-            return _pacientRepository.Count(p => p.ProfissionalId == profissionalId);
+            //int profissionalId = _tokenService.GetUserId();
+            //return _pacientRepository.Count(p => p.ProfissionalId == profissionalId);
+            return 1;
         }
 
       
