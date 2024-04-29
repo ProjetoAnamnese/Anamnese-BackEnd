@@ -10,8 +10,9 @@ namespace Anamnese.API.ORM.Entity
         public int SpecialityId { get; set; }
         public string SpecialityName { get; set; }
 
-        [ForeignKey("Profissional")]
+        [ForeignKey("ProfissionalId")]
         public int ProfissionalId { get; set; }
         public ProfissionalModel Profissional { get; set; }
+
     }
 }
