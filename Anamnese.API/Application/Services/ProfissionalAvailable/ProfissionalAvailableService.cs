@@ -7,10 +7,21 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
     public class ProfissionalAvailableService : IProfissionalAvailableService
     {
         private readonly BaseRepository<ProfissionalModel> _profissionalRepository;
-        public ProfissionalAvailableService(BaseRepository<ProfissionalModel> profissionalRepository)
+        private readonly BaseRepository<ProfissionalAvailableModel> _profissionalAvailableRepository;
+        public ProfissionalAvailableService(BaseRepository<ProfissionalModel> profissionalRepository, BaseRepository<ProfissionalAvailableModel> profissionalAvailableRepository)
         {
-            _profissionalRepository = profissionalRepository;            
+            _profissionalRepository = profissionalRepository;
+            _profissionalAvailableRepository = profissionalAvailableRepository;
         }
+
+        public List<ProfissionalAvailableModel> GetProfissionalAvailabilities(int profissionalId)
+        {
+            var profissionalAvalabities = _profissionalAvailableRepository.GetAll()
+                .Where(avail => avail.ProfissionalId == profissionalId)                
+                .ToList();
+            return profissionalAvalabities;
+        }
+
         public bool SetProfissionalAvailability(int profissionalId, ProfissionalAvailableRequest availability)
         {
 

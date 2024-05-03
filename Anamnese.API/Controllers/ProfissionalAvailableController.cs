@@ -23,7 +23,25 @@ namespace Anamnese.API.Controllers
             _tokenService = tokenService;
             _configuration = configuration;
         }
-        [HttpPost("available/{profissionalId}")]
+
+        [HttpGet("profissional-available/{profissionalId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetProfissionalAvailabilities(int profissionalId)
+        {
+            if (profissionalId <= 0)
+                return BadRequest();
+
+            var availabilities = _profissionalAvailableService.GetProfissionalAvailabilities(profissionalId);
+
+            if (availabilities == null || !availabilities.Any())
+                return NotFound();
+
+            return Ok(availabilities);
+        }
+
+
+        [HttpPost("create-profissional-available/{profissionalId}")]
         //[AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
