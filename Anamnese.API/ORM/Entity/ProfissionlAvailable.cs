@@ -10,6 +10,7 @@ namespace Anamnese.API.ORM.Entity
 
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
+        public string DayOfWeek { get; set; }
 
         [ForeignKey("ProfissionalId")]
         public int ProfissionalId { get; set; }

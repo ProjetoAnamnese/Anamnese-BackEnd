@@ -12,6 +12,7 @@ using System.Text;
 using Anamnese.API.Application.Services.Report;
 using System.ComponentModel.Design;
 using Anamnese.API.Application.Services.Referral;
+using Anamnese.API.Application.Services.ProfissionalAvailable;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,6 +54,7 @@ builder.Services.AddScoped<BaseRepository<AppointmentModel>>();
 
 
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IProfissionalAvailableService, ProfissionalAvailableService>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IProfissionalService, ProfissionalService>();
 builder.Services.AddScoped<IPacientService, PacientService>();
