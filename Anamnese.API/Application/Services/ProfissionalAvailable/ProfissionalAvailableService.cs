@@ -58,9 +58,19 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
             existsProfissional.ProfissionalAvailable.Add(newAvailability);
             _profissionalRepository.SaveChanges();
             //_profissionalRepository.Update(existsProfissional);
-            return true;
-            
-
+            return true;            
         }
+        public bool EditProfissionalAvailability(int availabilityId, ProfissionalAvailableUpdate updatedAvailability)
+        {
+            var availability = _profissionalAvailableRepository.GetById(availabilityId);
+            if (availability == null) return false;
+
+            availability.StartTime = updatedAvailability.StartTime;
+            availability.EndTime = updatedAvailability.EndTime;
+            _profissionalAvailableRepository.Update(availability);
+            _profissionalAvailableRepository.SaveChanges();
+            return true;
+        }
+
     }
 }

@@ -39,6 +39,19 @@ namespace Anamnese.API.Controllers
 
             return Ok(availabilities);
         }
+        [HttpPut("edit-available/{availableId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult EditAvailabilities(int availableId, [FromBody] ProfissionalAvailableUpdate updatedAvailability)
+        {
+            if (updatedAvailability == null)
+                return BadRequest();
+            var success = _profissionalAvailableService.EditProfissionalAvailability(availableId, updatedAvailability);
+            if (success)
+                return Ok();
+
+            return NotFound();
+        }
 
 
         [HttpPost("create-profissional-available/{profissionalId}")]
