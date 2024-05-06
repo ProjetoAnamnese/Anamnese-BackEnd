@@ -1,4 +1,5 @@
-﻿using Anamnese.API.ORM.Entity;
+﻿using Anamnese.API.Migrations;
+using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Model.ProfissionalModel;
 using Anamnese.API.ORM.Repository;
 
@@ -24,11 +25,9 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
 
         public bool SetProfissionalAvailability(int profissionalId, ProfissionalAvailableRequest availability)
         {
-
             // Verifica se o ID do profissional é válido
-
-            if (profissionalId < 0 || profissionalId == null) 
-            { 
+            if (profissionalId <= 0)
+            {
                 return false;
             }
 
@@ -39,16 +38,27 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
             }
 
             var existsProfissional = _profissionalRepository.GetById(profissionalId);
-            // Verifica se o profissional exist
-            if (existsProfissional == null) return false;
+
+            // Verifica se o profissional existe
+            if (existsProfissional == null)
+            {
+                return false;
+            }
 
             // Verifica se já existe uma disponibilidade para o mesmo dia da semana
-            if (existsProfissional.ProfissionalAvailable != null && existsProfissional.ProfissionalAvailable.Any(avail => avail.DayOfWeek == availability.DayOfWeek))
+            if (existsProfissional.ProfissionalAvailable != null &&
+                existsProfissional.ProfissionalAvailable.Any(avail => avail.DayOfWeek == availability.DayOfWeek))
+            {
                 return false;
+            }
 
+            // Se a lista de disponibilidades do profissional for nula, cria uma nova lista
             if (existsProfissional.ProfissionalAvailable == null)
-            
-            existsProfissional.ProfissionalAvailable = new List<ProfissionalAvailableModel>();
+            {
+                existsProfissional.ProfissionalAvailable = new List<ProfissionalAvailableModel>();
+            }
+
+            // Adiciona a nova disponibilidade à lista
             var newAvailability = new ProfissionalAvailableModel
             {
                 DayOfWeek = availability.DayOfWeek,
@@ -56,9 +66,11 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
                 EndTime = availability.EndTime,
             };
             existsProfissional.ProfissionalAvailable.Add(newAvailability);
+
+            // Salva as alterações no repositório
             _profissionalRepository.SaveChanges();
-            //_profissionalRepository.Update(existsProfissional);
-            return true;            
+
+            return true; // Disponibilidade configurada com sucesso
         }
         public bool EditProfissionalAvailability(int availabilityId, ProfissionalAvailableUpdate updatedAvailability)
         {

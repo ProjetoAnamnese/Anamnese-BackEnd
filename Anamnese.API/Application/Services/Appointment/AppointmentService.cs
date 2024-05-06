@@ -15,35 +15,54 @@ namespace Anamnese.API.Application.Services.Appointment
             _profissionalAvailableService = profissionalAvailableService;
             _appointmentRepository = appointmentRepository;
         }
-        
+
 
         public bool ScheduleAppointment(int profissionalId, int pacientId, DateOnly appointmentDate, TimeOnly appointmentTime)
         {
-            if (profissionalId == null || pacientId == null) return false;
-            
-            string dayOfWeek = appointmentDate.DayOfWeek.ToString();
-
-            DateTime appointmentDateTime = new DateTime(appointmentDate.Year,
-                appointmentDate.Month,
-                appointmentDate.Day,
-                appointmentTime.Hour,
-                appointmentTime.Minute,
-                appointmentTime.Second);
-
-            bool isAvailable = _profissionalAvailableService.IsProfissionalAvailable(profissionalId, appointmentTime, appointmentDate);
-            if(isAvailable)
+            // Verifica se os IDs do profissional e do paciente são válidos
+            if (profissionalId <= 0 || pacientId <= 0)
             {
+                return false;
+            }
+
+            // Verifica se o profissional já tem uma consulta marcada para o mesmo horário
+
+            // Cria um objeto DateTime com a data e hora da consulta
+            DateTime appointmentDateTime = new DateTime(appointmentDate.Year,
+                                                        appointmentDate.Month,
+                                                        appointmentDate.Day,
+                                                        appointmentTime.Hour,
+                                                        appointmentTime.Minute,
+                                                        appointmentTime.Second);
+            bool hasConflict = _appointmentRepository.GetAll()
+                .Any(appointment => appointment.ProfissionalId == profissionalId && appointment.AppointmentDateTime == appointmentDateTime);
+
+            if (hasConflict)
+            {
+                return false; 
+            }
+
+            // Verifica se o profissional está disponível no horário desejado
+            bool isAvailable = _profissionalAvailableService.IsProfissionalAvailable(profissionalId, appointmentTime, appointmentDate);
+
+            if (isAvailable)
+            {
+                // Agenda a consulta
                 var appointment = new AppointmentModel
                 {
                     PacientId = pacientId,
                     ProfissionalId = profissionalId,
                     AppointmentDateTime = appointmentDateTime
                 };
+
                 _appointmentRepository.Add(appointment);
                 _appointmentRepository.SaveChanges();
-                return true;
+                return true; // Consulta agendada com sucesso
             }
-            else { return false; }
+            else
+            {
+                return false; // O profissional não está disponível para o horário da consulta
+            }
         }
         //private VerifyDayOfMonth()
         //{
