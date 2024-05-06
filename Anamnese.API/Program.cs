@@ -13,6 +13,7 @@ using Anamnese.API.Application.Services.Report;
 using System.ComponentModel.Design;
 using Anamnese.API.Application.Services.Referral;
 using Anamnese.API.Application.Services.ProfissionalAvailable;
+using Anamnese.API.Application.Services.Appointment;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +59,7 @@ builder.Services.AddScoped<IProfissionalAvailableService, ProfissionalAvailableS
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IProfissionalService, ProfissionalService>();
 builder.Services.AddScoped<IPacientService, PacientService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 //builder.Services.AddScoped<IReferralService, ReferralService>();
 #endregion dependecyInjection
 

@@ -72,5 +72,66 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
             return true;
         }
 
+        public bool IsProfissionalAvailable(int profissionalId, TimeOnly appointmentTime, DateOnly appointmentDate)
+        {
+
+            //var availDayOfWeek = _profissionalAvailableRepository.GetAll().Where(avail =>
+            //    avail.ProfissionalId == profissionalId && avail.DayOfWeek == appointmentDate.DayOfWeek.ToString() && avail.StartTime).ToList();
+            var availabilities = _profissionalAvailableRepository.GetAll()
+               .Where(avail =>
+                   avail.ProfissionalId == profissionalId &&
+                   avail.DayOfWeek == appointmentDate.DayOfWeek.ToString() &&
+                   avail.StartTime <= appointmentTime && avail.EndTime >= appointmentTime)
+               .ToList();
+
+            // Verifica se a data da consulta corresponde a algum dia da semana das disponibilidades
+            var appointmentDayOfWeek = appointmentDate.DayOfWeek.ToString();
+            foreach (var availability in availabilities)
+            {
+                // Verifica se o dia da semana da disponibilidade corresponde ao dia da semana da consulta
+                if (availability.DayOfWeek.Contains(appointmentDayOfWeek))
+                {
+                    // Verifica se o horário da consulta está dentro do intervalo de disponibilidade
+                    if (availability.StartTime <= appointmentTime && availability.EndTime >= appointmentTime)
+                    {
+                        return true; 
+                    }
+                }
+            }
+            return false;
+        }
+
+        //public bool IsProfissionalAvailable(int profissionalId, DateTime appointmentDateTime)
+        //{
+        //    var profissional = _profissionalRepository.GetById(profissionalId);
+        //    if (profissional == null || profissional.ProfissionalAvailable == null)
+        //    {
+        //        return false;
+        //    }
+
+        //    // Pega o dia da semana do compromisso
+        //    string appointmentDayOfWeek = appointmentDateTime.DayOfWeek.ToString();
+
+        //    // Verifica se há disponibilidade 
+        //    var availabilityForDay = profissional.ProfissionalAvailable.FirstOrDefault(avail => avail.DayOfWeek == appointmentDayOfWeek);
+
+        //    if (availabilityForDay == null)
+        //    {
+        //        return false;
+        //    }
+
+        //    // Converte StartTime e EndTime para TimeSpan
+        //    TimeSpan startTime = TimeSpan.Parse(availabilityForDay.StartTime.ToString());
+        //    TimeSpan endTime = TimeSpan.Parse(availabilityForDay.EndTime.ToString());
+        //    TimeSpan appointmentTime = appointmentDateTime.TimeOfDay;
+
+        //    if (appointmentTime < startTime || appointmentTime >= endTime)
+        //    {
+        //        return false;
+        //    }
+
+        //    // O médico está disponível 
+        //    return true;
+        //}
     }
 }

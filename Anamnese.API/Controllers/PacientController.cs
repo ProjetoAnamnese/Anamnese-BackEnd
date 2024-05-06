@@ -64,7 +64,7 @@ namespace Anamnese.API.Controllers
         }
       
         [HttpPost("create-pacient")]
-        [Authorize]
+        //[Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult CreatePacient([FromBody] CreatePacientRequest pacientModel)

@@ -9,6 +9,8 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
         bool EditProfissionalAvailability(int availabilityId, ProfissionalAvailableUpdate updatedAvailability);
 
         bool SetProfissionalAvailability(int profissionalId, ProfissionalAvailableRequest availability);
+        bool IsProfissionalAvailable(int profissionalId, TimeOnly appointmentDateTime, DateOnly appointmentDate);
+
 
     }
 }
