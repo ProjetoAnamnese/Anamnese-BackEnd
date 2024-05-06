@@ -6,12 +6,12 @@ namespace Anamnese.API.ORM.Entity
 {
     public class SpecialityModel
     {
-        [Key]
-        public string SpecialityCode { get; set; }
-        public string SpecialityName { get; set; }
+        //[Key]
+        //public string SpecialityCode { get; set; }
+        //public string SpecialityName { get; set; }
 
-        //[ForeignKey("ProfissionalId")]        
-        List< ProfissionalModel> Profissional { get; set; }
+        ////[ForeignKey("ProfissionalId")]        
+        //List< ProfissionalModel> Profissional { get; set; }
 
     }
 }

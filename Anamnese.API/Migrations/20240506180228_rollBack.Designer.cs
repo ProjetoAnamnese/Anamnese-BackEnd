@@ -3,6 +3,7 @@ using System;
 using Anamnese.API.ORM.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Anamnese.API.Migrations
 {
     [DbContext(typeof(AnamneseDbContext))]
-    partial class AnamneseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240506180228_rollBack")]
+    partial class rollBack
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,6 +59,9 @@ namespace Anamnese.API.Migrations
                     b.Property<DateOnly>("Birth")
                         .HasColumnType("date");
 
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -71,9 +77,6 @@ namespace Anamnese.API.Migrations
                     b.Property<string>("Profession")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int>("ProfissionalId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Uf")
                         .IsRequired()
@@ -126,14 +129,15 @@ namespace Anamnese.API.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Speciality")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<string>("SpecialityCode")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Username")
                         .HasColumnType("longtext");
 
                     b.HasKey("ProfissionalId");
+
+                    b.HasIndex("SpecialityCode");
 
                     b.ToTable("Profissional");
                 });
@@ -204,6 +208,20 @@ namespace Anamnese.API.Migrations
                     b.ToTable("Report");
                 });
 
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.SpecialityModel", b =>
+                {
+                    b.Property<string>("SpecialityCode")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("SpecialityName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("SpecialityCode");
+
+                    b.ToTable("Speciality");
+                });
+
             modelBuilder.Entity("Anamnese.API.ORM.Entity.AppointmentModel", b =>
                 {
                     b.HasOne("Anamnese.API.ORM.Entity.PacientModel", "Pacient")
@@ -232,6 +250,15 @@ namespace Anamnese.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Profissional");
+                });
+
+            modelBuilder.Entity("Anamnese.API.ORM.Entity.ProfissionalModel", b =>
+                {
+                    b.HasOne("Anamnese.API.ORM.Entity.SpecialityModel", "Speciality")
+                        .WithMany()
+                        .HasForeignKey("SpecialityCode");
+
+                    b.Navigation("Speciality");
                 });
 
             modelBuilder.Entity("Anamnese.API.ORM.Entity.ReportModel", b =>

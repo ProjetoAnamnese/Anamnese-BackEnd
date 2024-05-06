@@ -32,6 +32,7 @@ namespace Anamnese.API.Application.Services.Profissional
                 Username = createUserModel.Username,
                 Email = createUserModel.Email,                
                 Password = hashedPassword,
+                Speciality = createUserModel.Speciality
             };
 
             var createdUser = _profisionalRepository.Add(newUser);

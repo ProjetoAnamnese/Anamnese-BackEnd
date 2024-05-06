@@ -49,7 +49,7 @@ namespace Anamnese.API.Application.Services.Pacient
                 Uf = pacient.Uf,
                 Username = pacient.Username,
                 Gender = pacient.Gender,
-                CreatedBy = profissionalId
+                ProfissionalId = profissionalId
             }) ;
             _pacientRepository.SaveChanges();
             return res;
@@ -107,7 +107,7 @@ namespace Anamnese.API.Application.Services.Pacient
         {
             var profissionalId = _tokenService.GetUserId();
             return _pacientRepository._context.Pacient.
-                Include(e => e.Report).Where(p => p.CreatedBy == profissionalId);            
+                Include(e => e.Report).Where(p => p.ProfissionalId == profissionalId);            
         }
 
         
@@ -120,7 +120,7 @@ namespace Anamnese.API.Application.Services.Pacient
         public int CountAllProfissionalPacients()
         {
             int profissionalId = _tokenService.GetUserId();
-            return _pacientRepository.Count(p => p.CreatedBy == profissionalId);            
+            return _pacientRepository.Count(p => p.ProfissionalId == profissionalId);            
         }
 
       

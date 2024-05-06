@@ -50,7 +50,7 @@ builder.Services.AddScoped<BaseRepository<PacientModel>>();
 builder.Services.AddScoped<BaseRepository<ReportModel>>();
 //builder.Services.AddScoped<BaseRepository<ReferralModel>>();
 builder.Services.AddScoped<BaseRepository<ProfissionalAvailableModel>>();
-builder.Services.AddScoped<BaseRepository<SpecialityModel>>();
+//builder.Services.AddScoped<BaseRepository<SpecialityModel>>();
 builder.Services.AddScoped<BaseRepository<AppointmentModel>>();
 
 
