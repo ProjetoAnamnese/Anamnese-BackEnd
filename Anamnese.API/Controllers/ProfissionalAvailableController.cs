@@ -34,8 +34,11 @@ namespace Anamnese.API.Controllers
 
             var availabilities = _profissionalAvailableService.GetProfissionalAvailabilities(profissionalId);
 
-            if (availabilities == null || !availabilities.Any())
-                return NotFound();
+            //if (availabilities == null || !availabilities.Any())
+            //{
+
+            //    return NotFound();
+            //}
 
             return Ok(availabilities);
         }
