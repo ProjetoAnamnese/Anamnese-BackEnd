@@ -1,4 +1,5 @@
-﻿using Anamnese.API.Migrations;
+﻿using Anamnese.API.Application.Utilities;
+using Anamnese.API.Migrations;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Model.ProfissionalModel;
 using Anamnese.API.ORM.Repository;
@@ -17,10 +18,17 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
 
         public List<ProfissionalAvailableModel> GetProfissionalAvailabilities(int profissionalId)
         {
-            var profissionalAvalabities = _profissionalAvailableRepository.GetAll()
-                .Where(avail => avail.ProfissionalId == profissionalId)                
+            var profissionalAvailabilities = _profissionalAvailableRepository.GetAll()
+                .Where(avail => avail.ProfissionalId == profissionalId)
                 .ToList();
-            return profissionalAvalabities;
+
+            // Traduz os dias da semana para português
+            foreach (var availability in profissionalAvailabilities)
+            {
+                availability.DayOfWeek = DayOfWeekTranslator.Translate(availability.DayOfWeek);
+            }
+
+            return profissionalAvailabilities;
         }
 
         public bool SetProfissionalAvailability(int profissionalId, ProfissionalAvailableRequest availability)
@@ -30,7 +38,6 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
             {
                 return false;
             }
-
             // Verifica se a disponibilidade é válida 
             if (availability.StartTime >= availability.EndTime)
             {
