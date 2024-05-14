@@ -84,6 +84,13 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
             return true;
         }
 
+        public List<ProfissionalModel> GetProfissionalBySpeciality(string speciality)
+        {
+            var profissionais = _profissionalRepository.GetAll()
+                .Where(p => p.Speciality == speciality)
+                .ToList();
+            return profissionais;
+        }
         public bool IsProfissionalAvailable(int profissionalId, TimeOnly appointmentTime, DateOnly appointmentDate)
         {
 
@@ -111,39 +118,6 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
                 }
             }
             return false;
-        }
-
-        //public bool IsProfissionalAvailable(int profissionalId, DateTime appointmentDateTime)
-        //{
-        //    var profissional = _profissionalRepository.GetById(profissionalId);
-        //    if (profissional == null || profissional.ProfissionalAvailable == null)
-        //    {
-        //        return false;
-        //    }
-
-        //    // Pega o dia da semana do compromisso
-        //    string appointmentDayOfWeek = appointmentDateTime.DayOfWeek.ToString();
-
-        //    // Verifica se há disponibilidade 
-        //    var availabilityForDay = profissional.ProfissionalAvailable.FirstOrDefault(avail => avail.DayOfWeek == appointmentDayOfWeek);
-
-        //    if (availabilityForDay == null)
-        //    {
-        //        return false;
-        //    }
-
-        //    // Converte StartTime e EndTime para TimeSpan
-        //    TimeSpan startTime = TimeSpan.Parse(availabilityForDay.StartTime.ToString());
-        //    TimeSpan endTime = TimeSpan.Parse(availabilityForDay.EndTime.ToString());
-        //    TimeSpan appointmentTime = appointmentDateTime.TimeOfDay;
-
-        //    if (appointmentTime < startTime || appointmentTime >= endTime)
-        //    {
-        //        return false;
-        //    }
-
-        //    // O médico está disponível 
-        //    return true;
-        //}
+        } 
     }
 }

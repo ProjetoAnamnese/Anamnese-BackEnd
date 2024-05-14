@@ -13,5 +13,7 @@ namespace Anamnese.API.ORM.Entity
 
         public int ProfissionalId { get; set; }
         public ProfissionalModel Profissional { get; set; }
+
+        public string? Speciality { get; set; }
     }
 }

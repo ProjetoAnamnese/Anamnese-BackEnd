@@ -8,18 +8,21 @@ namespace Anamnese.API.Application.Services.Appointment
     public class AppointmentService : IAppointmentService
     {
         private readonly IProfissionalAvailableService _profissionalAvailableService;
+        private readonly BaseRepository<ProfissionalModel> _profissionalRepository;
         private readonly BaseRepository<AppointmentModel> _appointmentRepository;
 
-        public AppointmentService(IProfissionalAvailableService profissionalAvailableService, BaseRepository<AppointmentModel> appointmentRepository)
+        public AppointmentService(IProfissionalAvailableService profissionalAvailableService, BaseRepository<AppointmentModel> appointmentRepository, BaseRepository<ProfissionalModel> profissionalRepository)
         {
             _profissionalAvailableService = profissionalAvailableService;
             _appointmentRepository = appointmentRepository;
+            _profissionalRepository = profissionalRepository;
         }
 
 
         public bool ScheduleAppointment(int profissionalId, int pacientId, DateOnly appointmentDate, TimeOnly appointmentTime)
         {
             // Verifica se os IDs do profissional e do paciente são válidos
+            var profissioal = _profissionalRepository.GetById(profissionalId);
             if (profissionalId <= 0 || pacientId <= 0)
             {
                 return false;
@@ -34,8 +37,8 @@ namespace Anamnese.API.Application.Services.Appointment
                                                         appointmentTime.Hour,
                                                         appointmentTime.Minute,
                                                         appointmentTime.Second);
-            bool hasConflict = _appointmentRepository.GetAll()
-                .Any(appointment => appointment.ProfissionalId == profissionalId && appointment.AppointmentDateTime == appointmentDateTime);
+
+            bool hasConflict = _appointmentRepository.GetAll().Any(appointment => appointment.ProfissionalId == profissionalId && appointment.AppointmentDateTime == appointmentDateTime);
 
             if (hasConflict)
             {
@@ -52,7 +55,8 @@ namespace Anamnese.API.Application.Services.Appointment
                 {
                     PacientId = pacientId,
                     ProfissionalId = profissionalId,
-                    AppointmentDateTime = appointmentDateTime
+                    AppointmentDateTime = appointmentDateTime,
+                    Speciality = profissioal.Speciality,
                 };
 
                 _appointmentRepository.Add(appointment);

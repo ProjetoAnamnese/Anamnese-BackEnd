@@ -53,6 +53,17 @@ namespace Anamnese.API.Controllers
             return NotFound();
         }
 
+        [HttpGet("profissional-by-speciality")]
+        public IActionResult GetProfissionaisByEspecialidade(string speciality)
+        {
+            var profissionais = _profissionalAvailableService.GetProfissionalBySpeciality(speciality);
+            if (profissionais == null || profissionais.Count == 0)
+            {
+                return NotFound("Nenhum profissional encontrado com a especialidade especificada.");
+            }
+            return Ok(profissionais);
+        }
+
 
         [HttpPost("create-profissional-available/{profissionalId}")]
         //[AllowAnonymous]
@@ -68,5 +79,7 @@ namespace Anamnese.API.Controllers
             if (sucess) return Ok();
             return BadRequest();
         }
+
+
     }
 }

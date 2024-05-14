@@ -1,4 +1,5 @@
 ﻿using Anamnese.API.Application.Services.Pacient;
+using Anamnese.API.Application.Services.Profissional;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Model.PacientModel;
 using Anamnese.API.ORM.Repository;
@@ -11,11 +12,14 @@ namespace Anamnese.API.Application.Services.Referral
     public class ReferralService : IReferralService
     {
         private readonly BaseRepository<ReferralModel> _referralRepository;
+        private readonly BaseRepository<ProfissionalModel> _profissionalRepository;
         private readonly IPacientService _pacientRepository;
-        public ReferralService(BaseRepository<ReferralModel> referralRepository, IPacientService pacientRepository)
+        //private readonly IProfissionalService _profissionalRepository;
+        public ReferralService(BaseRepository<ReferralModel> referralRepository, IPacientService pacientRepository, BaseRepository<ProfissionalModel> profissionalRepository)
         {
             _referralRepository = referralRepository;
             _pacientRepository = pacientRepository;
+            _profissionalRepository = profissionalRepository;
         }
 
 
@@ -47,7 +51,7 @@ namespace Anamnese.API.Application.Services.Referral
         }
         public Dictionary<string, int> CountReferralsBySpecialty()
         {
-            // Agrupa as referências por especialidade médica, deixando maiuscula a primeira letra de cada palavra
+            //Agrupa as referências por especialidade médica, deixando maiuscula a primeira letra de cada palavra
             var referralCounts = _referralRepository.GetAll()
                 .GroupBy(r => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(r.MedicalSpeciality.ToLower()))
                 .ToDictionary(g => g.Key, g => g.Count());
