@@ -9,10 +9,13 @@ namespace Anamnese.API.Application.Services.Appointment
     {
         private readonly IProfissionalAvailableService _profissionalAvailableService;
         private readonly BaseRepository<ProfissionalModel> _profissionalRepository;
+        private readonly BaseRepository<PacientModel> _pacientRepository;
         private readonly BaseRepository<AppointmentModel> _appointmentRepository;
 
-        public AppointmentService(IProfissionalAvailableService profissionalAvailableService, BaseRepository<AppointmentModel> appointmentRepository, BaseRepository<ProfissionalModel> profissionalRepository)
+        public AppointmentService(IProfissionalAvailableService profissionalAvailableService, BaseRepository<AppointmentModel> appointmentRepository, BaseRepository<ProfissionalModel> profissionalRepository, BaseRepository<PacientModel> pacientRepository)
+
         {
+            _pacientRepository = pacientRepository;
             _profissionalAvailableService = profissionalAvailableService;
             _appointmentRepository = appointmentRepository;
             _profissionalRepository = profissionalRepository;
@@ -30,27 +33,29 @@ namespace Anamnese.API.Application.Services.Appointment
         public bool ScheduleAppointment(int profissionalId, int pacientId, DateOnly appointmentDate, TimeOnly appointmentTime)
         {
             // Verifica se os IDs do profissional e do paciente são válidos
-            var profissioal = _profissionalRepository.GetById(profissionalId);
             if (profissionalId <= 0 || pacientId <= 0)
             {
                 return false;
             }
 
-            // Verifica se o profissional já tem uma consulta marcada para o mesmo horário
+            // Obtém o profissional e o cliente correspondentes aos IDs fornecidos
+            var profissional = _profissionalRepository.GetById(profissionalId);
+            var pacient = _pacientRepository.GetById(pacientId);
 
-            // Cria um objeto DateTime com a data e hora da consulta
-            DateTime appointmentDateTime = new DateTime(appointmentDate.Year,
-                                                        appointmentDate.Month,
-                                                        appointmentDate.Day,
-                                                        appointmentTime.Hour,
-                                                        appointmentTime.Minute,
-                                                        appointmentTime.Second);
+            if (profissional == null || pacient == null)
+            {
+                return false; // Profissional ou paciente não encontrados
+            }
+
+            // Verifica se o profissional já tem uma consulta marcada para o mesmo horário
+            DateTime appointmentDateTime = new DateTime(appointmentDate.Year, appointmentDate.Month, appointmentDate.Day,
+                                                        appointmentTime.Hour, appointmentTime.Minute, appointmentTime.Second);
 
             bool hasConflict = _appointmentRepository.GetAll().Any(appointment => appointment.ProfissionalId == profissionalId && appointment.AppointmentDateTime == appointmentDateTime);
 
             if (hasConflict)
             {
-                return false; 
+                return false; // Conflito de horário
             }
 
             // Verifica se o profissional está disponível no horário desejado
@@ -64,21 +69,23 @@ namespace Anamnese.API.Application.Services.Appointment
                     PacientId = pacientId,
                     ProfissionalId = profissionalId,
                     AppointmentDateTime = appointmentDateTime,
-                    Speciality = profissioal.Speciality,
+                    Speciality = profissional.Speciality, // Define a especialidade como a especialidade do profissional
                 };
 
                 _appointmentRepository.Add(appointment);
                 _appointmentRepository.SaveChanges();
+
+                // Define a especialidade do cliente como a especialidade do profissional
+                pacient.MedicalSpeciality = profissional.Speciality;
+                _pacientRepository.Update(pacient);
+                _pacientRepository.SaveChanges();
+
                 return true; // Consulta agendada com sucesso
             }
             else
             {
-                return false; // O profissional não está disponível para o horário da consulta
+                return false; // Profissional não está disponível no horário desejado
             }
         }
-        //private VerifyDayOfMonth()
-        //{
-
-        //}
     }
 }
