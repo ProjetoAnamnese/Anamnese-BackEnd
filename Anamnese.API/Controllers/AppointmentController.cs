@@ -1,5 +1,6 @@
 ﻿using Anamnese.API.Application.Services.Appointment;
 using Anamnese.API.ORM.Model.Appointment;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Anamnese.API.Controllers
@@ -13,6 +14,24 @@ namespace Anamnese.API.Controllers
         public AppointmentController(IAppointmentService appointmentService)
         {
             _appointmentService = appointmentService;
+        }
+
+        [HttpGet("get-appointment-by-pacient/{pacientId}")]
+        //[Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult GetProfissionaltsById(int pacientId)
+        {
+            var appointment = _appointmentService.GetSpecialityByPacient(pacientId);
+
+            if (appointment != null)
+            {
+                return Ok(appointment);
+            }
+            else
+            {
+                return BadRequest("appointment não encontrado");
+            }
         }
 
         [HttpPost("schedule-appointment")]

@@ -18,6 +18,14 @@ namespace Anamnese.API.Application.Services.Appointment
             _profissionalRepository = profissionalRepository;
         }
 
+        public AppointmentModel GetSpecialityByPacient(int pacientId)
+        {
+            var appointments = _appointmentRepository.GetAll().Where(appointment => appointment.PacientId == pacientId).FirstOrDefault();
+            return appointments;
+            
+
+
+        }
 
         public bool ScheduleAppointment(int profissionalId, int pacientId, DateOnly appointmentDate, TimeOnly appointmentTime)
         {
