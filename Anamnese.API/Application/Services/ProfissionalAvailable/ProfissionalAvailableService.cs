@@ -1,5 +1,4 @@
 ﻿using Anamnese.API.Application.Utilities;
-using Anamnese.API.Migrations;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Model.ProfissionalModel;
 using Anamnese.API.ORM.Repository;

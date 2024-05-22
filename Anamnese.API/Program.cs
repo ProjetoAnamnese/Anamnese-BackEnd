@@ -86,6 +86,22 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+
+// Database migration logic
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AnamneseDbContext>();
+    try
+    {
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("An error occurred while migrating the database:");
+        Console.WriteLine(ex.Message);
+    }
+}
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
