@@ -17,6 +17,7 @@ using Anamnese.API.Application.Services.Appointment;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Anamnese.API.Application.Services.Anotation;
 using Anamnese.API.ORM.Seeders.PacientSeeder;
+using Anamnese.API.ORM.Seeders.ProfissionalSeeder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -100,6 +101,7 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine("Migrations aplicadas com sucesso.");
 
         PacientSeeder.SeedPacients(context);
+        ProfissionalSeeder.SeedProfissionais(context);
         Console.WriteLine("Seeder aplicado com sucesso.");
     }
     catch (Exception ex)
