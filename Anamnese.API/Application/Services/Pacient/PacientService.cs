@@ -129,7 +129,7 @@ namespace Anamnese.API.Application.Services.Pacient
         public Dictionary<string, int> CountPacientBySpecialty()
         {
             var pacientsCount = _pacientRepository.GetAll()
-                .GroupBy(r => CultureInfo.CurrentCulture.TextInfo.ToTitleCase((r.MedicalSpeciality ?? "Especialidade não informada").ToLower()))
+                .GroupBy(r => CultureInfo.CurrentCulture.TextInfo.ToTitleCase((r.MedicalSpeciality ?? "Pacientes não encaminhados").ToLower()))
                 .ToDictionary(g => g.Key, g => g.Count());
 
             return pacientsCount;

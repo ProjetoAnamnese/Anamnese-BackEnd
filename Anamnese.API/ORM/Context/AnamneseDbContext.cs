@@ -15,8 +15,10 @@ namespace Anamnese.API.ORM.Context
         public DbSet<ReportModel> Report { get; set; }
         public DbSet<ProfissionalAvailableModel> ProfissionalAvailable { get; set; }
         public DbSet<AppointmentModel> Appointment { get; set; }
+
+        public DbSet<AnotationModel> Anotation { get; set; }
         //public DbSet<SpecialityModel> Speciality{ get; set; }
-        
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

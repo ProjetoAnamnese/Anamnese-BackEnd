@@ -14,6 +14,8 @@ using System.ComponentModel.Design;
 using Anamnese.API.Application.Services.Referral;
 using Anamnese.API.Application.Services.ProfissionalAvailable;
 using Anamnese.API.Application.Services.Appointment;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Anamnese.API.Application.Services.Anotation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,9 +50,8 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<BaseRepository<ProfissionalModel>>();
 builder.Services.AddScoped<BaseRepository<PacientModel>>();
 builder.Services.AddScoped<BaseRepository<ReportModel>>();
-//builder.Services.AddScoped<BaseRepository<ReferralModel>>();
+builder.Services.AddScoped<BaseRepository<AnotationModel>>();
 builder.Services.AddScoped<BaseRepository<ProfissionalAvailableModel>>();
-//builder.Services.AddScoped<BaseRepository<SpecialityModel>>();
 builder.Services.AddScoped<BaseRepository<AppointmentModel>>();
 
 
@@ -60,6 +61,7 @@ builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IProfissionalService, ProfissionalService>();
 builder.Services.AddScoped<IPacientService, PacientService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IAnotationService, AnotationService>();
 //builder.Services.AddScoped<IReferralService, ReferralService>();
 #endregion dependecyInjection
 

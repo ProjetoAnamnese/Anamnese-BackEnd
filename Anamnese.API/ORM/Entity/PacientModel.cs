@@ -21,7 +21,8 @@ namespace Anamnese.API.ORM.Entity
 
         //[JsonIgnore]
         public ReportModel Report { get; set; }
-        List<AppointmentModel> Appointments { get; set; }        
-        
+        List<AppointmentModel> Appointments { get; set; }
+        List<AnotationModel> Anotations { get; set; }
+
     }
 }

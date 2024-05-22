@@ -14,6 +14,7 @@ namespace Anamnese.API.ORM.Entity
 
         public List<ProfissionalAvailableModel> ProfissionalAvailable { get; set; }
         public List<AppointmentModel> Appointments { get; set; }
+        public List<AnotationModel> Anotations { get; set; }
 
         //[ForeignKey("Speciality")]
         //public string? SpecialityCode { get; set; }
