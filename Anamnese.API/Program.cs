@@ -1,107 +1,51 @@
 using Anamnese.API.ORM.Context;
-using Microsoft.EntityFrameworkCore;
-using Anamnese.API.ORM.Repository;
 using Anamnese.API.ORM.Entity;
-using Anamnese.API.Application.Services.Profissional;
-using Anamnese.API.Application.Services.Token;
-using Anamnese.API.Application.Services.Pacient;
+using Anamnese.API.ORM.Seeders.PacientSeeder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Anamnese.API.Application.Services.Report;
-using System.ComponentModel.Design;
-using Anamnese.API.Application.Services.Referral;
-using Anamnese.API.Application.Services.ProfissionalAvailable;
-using Anamnese.API.Application.Services.Appointment;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Anamnese.API.Application.Services.Anotation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddEndpointsApiExplorer();
+// Adicionar serviços ao contêiner.
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "AnamneseAPI", Version = "v1" });
+});
 
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-        };
-    });
-builder.Services.AddAuthorization();
-
-
-
-
-#region dependecyInjection
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-builder.Services.AddScoped<BaseRepository<ProfissionalModel>>();
-builder.Services.AddScoped<BaseRepository<PacientModel>>();
-builder.Services.AddScoped<BaseRepository<ReportModel>>();
-builder.Services.AddScoped<BaseRepository<AnotationModel>>();
-builder.Services.AddScoped<BaseRepository<ProfissionalAvailableModel>>();
-builder.Services.AddScoped<BaseRepository<AppointmentModel>>();
-
-
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IProfissionalAvailableService, ProfissionalAvailableService>();
-builder.Services.AddScoped<IReportService, ReportService>();
-builder.Services.AddScoped<IProfissionalService, ProfissionalService>();
-builder.Services.AddScoped<IPacientService, PacientService>();
-builder.Services.AddScoped<IAppointmentService, AppointmentService>();
-builder.Services.AddScoped<IAnotationService, AnotationService>();
-//builder.Services.AddScoped<IReferralService, ReferralService>();
-#endregion dependecyInjection
-
-#region mysqlconfig
 builder.Services.AddDbContext<AnamneseDbContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    var serverVersion = ServerVersion.AutoDetect(connectionString);
-    options.UseMySql(connectionString, serverVersion);
-});
-#endregion mysqlconfig
-
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
 var app = builder.Build();
 
-
-// Database migration logic
+// Criar e aplicar migrações
+#region migrations and seeder
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AnamneseDbContext>();
+
     try
     {
         context.Database.Migrate();
+        Console.WriteLine("Migrations aplicadas com sucesso.");
+        
+        PacientSeeder.SeedPacients(context);
+        Console.WriteLine("Seeder aplicado com sucesso.");
     }
     catch (Exception ex)
     {
-        Console.WriteLine("An error occurred while migrating the database:");
+        Console.WriteLine("Erro ao aplicar migrações e/ou seeder:");
         Console.WriteLine(ex.Message);
     }
 }
+
+#endregion migrations and seeder
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -111,17 +55,17 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = "swagger";
     });
 }
+
+
 app.UseCors(options =>
 {
     options.AllowAnyOrigin();
     options.AllowAnyMethod();
     options.AllowAnyHeader();
 });
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthentication();
-app.UseAuthorization();
 
+app.UseHttpsRedirection();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

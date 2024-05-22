@@ -1,5 +1,6 @@
 ﻿using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Model.PacientModel;
+using Anamnese.API.ORM.Seeders.PacientSeeder;
 using Microsoft.EntityFrameworkCore;
 
 namespace Anamnese.API.ORM.Context
@@ -7,7 +8,7 @@ namespace Anamnese.API.ORM.Context
     public class AnamneseDbContext : DbContext
     {
         public AnamneseDbContext(DbContextOptions<AnamneseDbContext> options) : base(options)
-        {
+        {            
         }
 
         public DbSet<ProfissionalModel> Profissional { get; set; }
@@ -15,9 +16,8 @@ namespace Anamnese.API.ORM.Context
         public DbSet<ReportModel> Report { get; set; }
         public DbSet<ProfissionalAvailableModel> ProfissionalAvailable { get; set; }
         public DbSet<AppointmentModel> Appointment { get; set; }
-
         public DbSet<AnotationModel> Anotation { get; set; }
-        //public DbSet<SpecialityModel> Speciality{ get; set; }
+        
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,16 +29,8 @@ namespace Anamnese.API.ORM.Context
                 .WithOne(r => r.Pacient)
                 .HasForeignKey<ReportModel>(r => r.PacientId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-
-   
-
-            //   ----------------- Modelo cascada Referral para paciente, discutir se usar ou nao
-            //    modelBuilder.Entity<ReferralModel>()
-            //        .HasOne(r => r.Pacient)
-            //        .WithMany(p => p.Referrals)
-            //        .HasForeignKey(r => r.PacientId)
-            //        .OnDelete(DeleteBehavior.Cascade);
+            
             }
+
         }
     }
