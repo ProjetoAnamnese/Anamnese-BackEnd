@@ -5,6 +5,7 @@ using Anamnese.API.ORM.Model.PacientModel;
 using Anamnese.API.ORM.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Globalization;
 
 namespace Anamnese.API.Application.Services.Pacient
 {
@@ -23,16 +24,13 @@ namespace Anamnese.API.Application.Services.Pacient
         public IEnumerable<PacientModel> GetAllPacients()
         {
             return _pacientRepository._context.Pacient
-                .Include(e => e.Report)
-                .Include(e => e.Referrals.OrderByDescending(r => r.ReferralDate).Take(1))
+                .Include(e => e.Report)                
                 .ToList();
         }
         public PacientModel? GetPacientById(int id)
         {
             var pacient = _pacientRepository._context.Pacient
-                .Include(p => p.Report)
-                .Include(p => p.Referrals.Where(r => r.PacientId == id && r != null)
-                    .OrderByDescending(r => r.ReferralDate))
+                .Include(p => p.Report)                
                 .FirstOrDefault(p => p.PacientId == id);
 
             return pacient;
@@ -52,8 +50,10 @@ namespace Anamnese.API.Application.Services.Pacient
                 Uf = pacient.Uf,
                 Username = pacient.Username,
                 Gender = pacient.Gender,
-                ProfissionalId= profissionalId,
-            });
+                ProfissionalId = profissionalId,
+                MedicalSpeciality = null,
+
+            }) ;
             _pacientRepository.SaveChanges();
             return res;
         }        
@@ -107,9 +107,10 @@ namespace Anamnese.API.Application.Services.Pacient
         }
 
         public IEnumerable<PacientModel> GetPacientsByProfissional()
-        {            
+        {
             var profissionalId = _tokenService.GetUserId();
-            return _pacientRepository._context.Pacient.Include(e => e.Report).Where(p => p.ProfissionalId == profissionalId).Include(e => e.Referrals.OrderByDescending(r => r.ReferralDate)).ToList();           
+            return _pacientRepository._context.Pacient.
+                Include(e => e.Report).Where(p => p.ProfissionalId == profissionalId);            
         }
 
         
@@ -122,9 +123,16 @@ namespace Anamnese.API.Application.Services.Pacient
         public int CountAllProfissionalPacients()
         {
             int profissionalId = _tokenService.GetUserId();
-            return _pacientRepository.Count(p => p.ProfissionalId == profissionalId);
+            return _pacientRepository.Count(p => p.ProfissionalId == profissionalId);            
         }
 
-      
+        public Dictionary<string, int> CountPacientBySpecialty()
+        {
+            var pacientsCount = _pacientRepository.GetAll()
+                .GroupBy(r => CultureInfo.CurrentCulture.TextInfo.ToTitleCase((r.MedicalSpeciality ?? "Especialidade não informada").ToLower()))
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            return pacientsCount;
+        }
     }
 }

@@ -15,5 +15,6 @@ namespace Anamnese.API.Application.Services.Pacient
         void PatchPacient(int pacientId, int newReportId);
         int CountAllPacients();        
         int CountAllProfissionalPacients();
+        Dictionary<string, int> CountPacientBySpecialty();
     }
 }

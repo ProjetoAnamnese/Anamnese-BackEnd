@@ -13,11 +13,14 @@ namespace Anamnese.API.ORM.Context
         public DbSet<ProfissionalModel> Profissional { get; set; }
         public DbSet<PacientModel> Pacient { get; set; }
         public DbSet<ReportModel> Report { get; set; }
-        public DbSet<ReferralModel> Referral { get; set; }
+        public DbSet<ProfissionalAvailableModel> ProfissionalAvailable { get; set; }
+        public DbSet<AppointmentModel> Appointment { get; set; }
+        //public DbSet<SpecialityModel> Speciality{ get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);            
 
             modelBuilder.Entity<PacientModel>()
                 .HasOne(p => p.Report)
@@ -25,6 +28,8 @@ namespace Anamnese.API.ORM.Context
                 .HasForeignKey<ReportModel>(r => r.PacientId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+
+   
 
             //   ----------------- Modelo cascada Referral para paciente, discutir se usar ou nao
             //    modelBuilder.Entity<ReferralModel>()

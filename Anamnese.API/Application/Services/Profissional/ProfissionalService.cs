@@ -30,9 +30,9 @@ namespace Anamnese.API.Application.Services.Profissional
             ProfissionalModel newUser = new ProfissionalModel
             {
                 Username = createUserModel.Username,
-                Email = createUserModel.Email,
-                Specialty = createUserModel.Specialty,
+                Email = createUserModel.Email,                
                 Password = hashedPassword,
+                Speciality = createUserModel.Speciality
             };
 
             var createdUser = _profisionalRepository.Add(newUser);
@@ -49,8 +49,7 @@ namespace Anamnese.API.Application.Services.Profissional
             var existUser = _profisionalRepository.GetById(id);
             if(existUser != null) 
             { 
-                existUser.Email = updatedUser.Email;
-                existUser.Specialty = updatedUser.Speciality;
+                existUser.Email = updatedUser.Email;                
                 _profisionalRepository.Update(existUser);
                 _profisionalRepository.SaveChanges();
                 return existUser;
