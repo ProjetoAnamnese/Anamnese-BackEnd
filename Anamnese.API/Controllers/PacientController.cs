@@ -62,7 +62,14 @@ namespace Anamnese.API.Controllers
                 return BadRequest("Pacientes não encontrados para o profissional especificado");
             }
         }
-      
+        [HttpGet("count-pacient-by-specialty")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult CountReferralsBySpecialty()
+        {
+            var pacientCount = _pacientService.CountPacientBySpecialty();
+            return Ok(pacientCount);
+        }
+
         [HttpPost("create-pacient")]
         //[Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]

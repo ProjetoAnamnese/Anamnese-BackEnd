@@ -21,6 +21,14 @@ namespace Anamnese.API.Application.Services.Appointment
             _profissionalRepository = profissionalRepository;
         }
 
+        public IEnumerable<AppointmentModel> GetAppointmentByProfissional(int profissionalId)
+        {            
+            var appointments = _appointmentRepository.GetAll()
+                                                     .Where(a => a.ProfissionalId == profissionalId)                                                     
+                                                     ;          
+            return appointments;
+        }
+
         public AppointmentModel GetSpecialityByPacient(int pacientId)
         {
             var appointments = _appointmentRepository.GetAll().Where(appointment => appointment.PacientId == pacientId).FirstOrDefault();
@@ -67,8 +75,10 @@ namespace Anamnese.API.Application.Services.Appointment
                 var appointment = new AppointmentModel
                 {
                     PacientId = pacientId,
+                    PacientName = pacient.Username,
                     ProfissionalId = profissionalId,
                     AppointmentDateTime = appointmentDateTime,
+                    ProfissionalName = profissional.Username,
                     Speciality = profissional.Speciality, // Define a especialidade como a especialidade do profissional
                 };
 

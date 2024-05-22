@@ -34,6 +34,24 @@ namespace Anamnese.API.Controllers
             }
         }
 
+        [HttpGet("profissional-appointments/{profissionalId}")]
+        //[Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult GetProfissionalApppointment(int profissionalId)
+        {
+            var appointment = _appointmentService.GetAppointmentByProfissional(profissionalId);
+
+            if (appointment != null)
+            {
+                return Ok(appointment);
+            }
+            else
+            {
+                return BadRequest("appointment não encontrado");
+            }
+        }
+
         [HttpPost("schedule-appointment")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
