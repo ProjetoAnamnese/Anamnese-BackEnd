@@ -1,4 +1,4 @@
-﻿namespace CatalogAPI.Models
+﻿namespace Anamnese.API.ORM.Model.ProfissionalModel
 {
     public class ProfissionalRequestModel
     {

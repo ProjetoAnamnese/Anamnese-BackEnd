@@ -2,7 +2,6 @@
 using Anamnese.API.Application.Services.Token;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Model.ProfissionalModel;
-using CatalogAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
