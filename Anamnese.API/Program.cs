@@ -6,6 +6,7 @@ using Anamnese.API.Application.Services.Profissional;
 using Anamnese.API.Application.Services.Token;
 using Anamnese.API.Application.Services.Pacient;
 using System;
+using Scalar.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -23,8 +24,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddOpenApi();
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
+// builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -106,7 +108,7 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        Console.WriteLine("Erro ao aplicar migrações e/ou seeder:");
+        Console.WriteLine("Erro ao aplicar migraï¿½ï¿½es e/ou seeder:");
         Console.WriteLine(ex.Message);
     }
 }
@@ -129,12 +131,14 @@ using (var scope = app.Services.CreateScope())
 }
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "AnamneseAPI");
-        c.RoutePrefix = "swagger";
-    });
+    // app.UseSwagger();
+    // app.UseSwaggerUI(c =>
+    // {
+    //     c.SwaggerEndpoint("/swagger/v1/swagger.json", "AnamneseAPI");
+    //     c.RoutePrefix = "swagger";
+    // });
+    app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 app.UseCors(options =>
 {
