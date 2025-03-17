@@ -22,7 +22,6 @@ namespace Anamnese.API.Controllers
             _configuration = configuration;
         }
         [HttpPost("login")]
-        //[AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login([FromBody] ProfissionalRequestModel loginModel)
@@ -76,7 +75,7 @@ namespace Anamnese.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult UpdateUser([FromBody] UpdateProfissionalRequest profissionalModel, int userId)
         {
-            if(profissionalModel == null)
+            if (profissionalModel == null)
             {
                 return BadRequest("Dados do usuário inválidos");
             }
@@ -97,19 +96,25 @@ namespace Anamnese.API.Controllers
         {
             if (profissionalModel == null)
             {
-                return BadRequest("Dados do usuário inválidos");
+                return BadRequest(new { message = "Dados do usuário inválidos." });
             }
-       
-            ProfissionalModel createdProfissional = _profissionalService.CreateProfissional(profissionalModel);
 
-            if (createdProfissional != null)
+            try
             {
-                return Ok(new { message = "Usuário criado com sucesso"});
+                ProfissionalModel createdProfissional = _profissionalService.CreateProfissional(profissionalModel);
+                return Ok(new
+                {
+                    message = "Usuário cadastrado com sucesso.",
+                    data = createdProfissional
+                });
             }
-            else
-            {
-                return BadRequest("Falha ao criar usuário");
+            catch (Exception ex)
+            {                
+                Console.WriteLine($"Erro ao criar usuário: {ex.Message}");
+
+                return BadRequest(new { message = ex.Message });
             }
         }
     }
-}
+
+    }

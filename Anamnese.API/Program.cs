@@ -102,9 +102,9 @@ using (var scope = app.Services.CreateScope())
         context.Database.Migrate();
         Console.WriteLine("Migrations aplicadas com sucesso.");
 
-        PacientSeeder.SeedPacients(context);
-        ProfissionalSeeder.SeedProfissionais(context);
-        Console.WriteLine("Seeder aplicado com sucesso.");
+        //PacientSeeder.SeedPacients(context);
+        //ProfissionalSeeder.SeedProfissionais(context);
+        //Console.WriteLine("Seeder aplicado com sucesso.");
     }
     catch (Exception ex)
     {
