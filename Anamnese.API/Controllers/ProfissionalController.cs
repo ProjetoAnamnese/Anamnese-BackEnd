@@ -28,13 +28,18 @@ namespace Anamnese.API.Controllers
         {
             if (loginModel == null)
             {
-                return BadRequest("Credenciais inválidas");
+                return BadRequest(new { message = "Credenciais inválidas." });
             }
 
-            bool isAuthenticated = await _profissionalService.ValidateCredentials(loginModel.Email, loginModel.Password);
-
-            if (isAuthenticated)
+            try
             {
+                bool isAuthenticated = await _profissionalService.ValidateCredentials(loginModel.Email, loginModel.Password);
+
+                if (!isAuthenticated)
+                {
+                    return BadRequest(new { message = "E-mail ou senha incorretos." });
+                }
+
                 ProfissionalModel profissional = await _profissionalService.GetUserByEmailAsync(loginModel.Email);
 
                 var tokenString = _tokenService.GenerateToken(
@@ -44,13 +49,19 @@ namespace Anamnese.API.Controllers
                     profissional
                 );
 
-                return Ok(new { token = tokenString, username = profissional.Username });
+                return Ok(new
+                {
+                    message = "Login realizado com sucesso.",
+                    token = tokenString,
+                    username = profissional.Username
+                });
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("Credenciais inválidas");
+                return BadRequest(new { message = ex.Message });
             }
         }
+
 
         [HttpGet("get-profissional-by-token")]
         [Authorize]
@@ -109,9 +120,7 @@ namespace Anamnese.API.Controllers
                 });
             }
             catch (Exception ex)
-            {                
-                Console.WriteLine($"Erro ao criar usuário: {ex.Message}");
-
+            {                                
                 return BadRequest(new { message = ex.Message });
             }
         }
