@@ -11,38 +11,69 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Anamnese.API.Application.Services.Report;
-using System.ComponentModel.Design;
-using Anamnese.API.Application.Services.Referral;
 using Anamnese.API.Application.Services.ProfissionalAvailable;
 using Anamnese.API.Application.Services.Appointment;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Anamnese.API.Application.Services.Anotation;
 using Anamnese.API.ORM.Seeders.PacientSeeder;
 using Anamnese.API.ORM.Seeders.ProfissionalSeeder;
+using Google.Apis.Auth.AspNetCore3;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
-// builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
 
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-        };
-    });
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+  options.CheckConsentNeeded = context => false;
+  options.MinimumSameSitePolicy = SameSiteMode.None;
+});
+
+builder.Services.AddAuthentication(options =>
+  {
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = GoogleOpenIdConnectDefaults.AuthenticationScheme;
+  })
+  .AddCookie("Cookies")
+  .AddJwtBearer(options =>
+  {
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+      ValidateIssuer = true,
+      ValidateAudience = true,
+      ValidateLifetime = true,
+      ValidateIssuerSigningKey = true,
+
+      ValidIssuer = builder.Configuration["Jwt:Issuer"],
+      ValidAudience = builder.Configuration["Jwt:Audience"],
+      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+  })
+  .AddGoogleOpenIdConnect(googleOptions =>
+  {
+    googleOptions.Scope.Add("profile");
+    googleOptions.SignInScheme = JwtBearerDefaults.AuthenticationScheme;
+    googleOptions.Scope.Add("email");
+    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    googleOptions.CallbackPath = "/auth/callback/google";
+    googleOptions.Events.OnTokenValidated = async context =>
+    {
+      var accessToken = context.TokenEndpointResponse.AccessToken;
+      var idToken = context.TokenEndpointResponse.IdToken;
+      var user = context.Principal;
+    };
+
+    googleOptions.Events.OnRemoteFailure = context =>
+    {
+      Console.WriteLine(context.Failure.Message);
+      context.HandleResponse();
+      return Task.CompletedTask;
+    };
+  });
 builder.Services.AddAuthorization();
 
 
@@ -131,12 +162,6 @@ using (var scope = app.Services.CreateScope())
 }
 if (app.Environment.IsDevelopment())
 {
-    // app.UseSwagger();
-    // app.UseSwaggerUI(c =>
-    // {
-    //     c.SwaggerEndpoint("/swagger/v1/swagger.json", "AnamneseAPI");
-    //     c.RoutePrefix = "swagger";
-    // });
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
@@ -146,8 +171,8 @@ app.UseCors(options =>
     options.AllowAnyMethod();
     options.AllowAnyHeader();
 });
+app.UseRouting();
 app.UseHttpsRedirection();
-app.UseAuthentication();
 app.UseAuthentication();
 app.UseAuthorization();
 
