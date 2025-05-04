@@ -1,11 +1,12 @@
 ﻿using Anamnese.API.ORM.Entity;
+using Anamnese.API.ORM.Filters;
 using Anamnese.API.ORM.Model.PacientModel;
 
 namespace Anamnese.API.Application.Services.Pacient
 {
     public interface IPacientService
     {
-        IEnumerable<PacientModel> GetAllPacients();
+        IEnumerable<PacientModel> GetAllPacients(PacientFilter filters);
         PacientModel GetPacientById(int id);
         IEnumerable<PacientModel> GetPacientsByProfissional();
         PacientModel CreatePacient(CreatePacientRequest pacient);              

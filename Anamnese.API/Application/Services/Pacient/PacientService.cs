@@ -1,6 +1,7 @@
 ﻿using Anamnese.API.Application.Services.Token;
 using Anamnese.API.ORM.Context;
 using Anamnese.API.ORM.Entity;
+using Anamnese.API.ORM.Filters;
 using Anamnese.API.ORM.Model.PacientModel;
 using Anamnese.API.ORM.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -21,16 +22,37 @@ namespace Anamnese.API.Application.Services.Pacient
             _tokenService = tokenService;
         }
 
-        public IEnumerable<PacientModel> GetAllPacients()
+        public IEnumerable<PacientModel> GetAllPacients(PacientFilter filter)
         {
-            return _pacientRepository._context.Pacient
-                .Include(e => e.Report)                
-                .ToList();
+            var profissionalId = _tokenService.GetUserId();
+            var query = _pacientRepository._context.Pacient
+                .Include(e => e.Report)
+                .Where(p => p.ProfissionalId == profissionalId);
+
+            if (!string.IsNullOrEmpty(filter.Username))
+                query = query.Where(p => p.Username.Contains(filter.Username));
+
+            if (!string.IsNullOrEmpty(filter.Email))
+                query = query.Where(p => p.Email.Contains(filter.Email));
+
+            if (!string.IsNullOrEmpty(filter.Phone))
+                query = query.Where(p => p.Phone.Contains(filter.Phone));
+
+            if (!string.IsNullOrEmpty(filter.Address))
+                query = query.Where(p => p.Address.Contains(filter.Address));
+
+            if (!string.IsNullOrEmpty(filter.Uf))
+                query = query.Where(p => p.Uf == filter.Uf);
+
+            if (!string.IsNullOrEmpty(filter.Gender))
+                query = query.Where(p => p.Gender == filter.Gender);
+
+            return query.ToList();
         }
         public PacientModel? GetPacientById(int id)
         {
             var pacient = _pacientRepository._context.Pacient
-                .Include(p => p.Report)                
+                .Include(p => p.Report)             
                 .FirstOrDefault(p => p.PacientId == id);
 
             return pacient;
