@@ -22,33 +22,41 @@ namespace Anamnese.API.Application.Services.Pacient
             _tokenService = tokenService;
         }
 
-        public IEnumerable<PacientModel> GetAllPacients(PacientFilter filter)
+        public PagedResponse<PacientModel> GetAllPacients(PacientFilter filter)
         {
             var profissionalId = _tokenService.GetUserId();
+
             var query = _pacientRepository._context.Pacient
-                .Include(e => e.Report)
+                .Include(p => p.Report)
                 .Where(p => p.ProfissionalId == profissionalId);
 
-            if (!string.IsNullOrEmpty(filter.Username))
-                query = query.Where(p => p.Username.Contains(filter.Username));
+            if (!string.IsNullOrWhiteSpace(filter.Username))
+                query = query.Where(p => p.Username.ToLower().Contains(filter.Username.ToLower()));
 
-            if (!string.IsNullOrEmpty(filter.Email))
-                query = query.Where(p => p.Email.Contains(filter.Email));
+            if (!string.IsNullOrWhiteSpace(filter.Uf))
+                query = query.Where(p => p.Uf.ToLower() == filter.Uf.ToLower());
 
-            if (!string.IsNullOrEmpty(filter.Phone))
-                query = query.Where(p => p.Phone.Contains(filter.Phone));
+            if (!string.IsNullOrWhiteSpace(filter.Gender))
+                query = query.Where(p => p.Gender.ToLower() == filter.Gender.ToLower());
 
-            if (!string.IsNullOrEmpty(filter.Address))
-                query = query.Where(p => p.Address.Contains(filter.Address));
+            if (!string.IsNullOrWhiteSpace(filter.Email))
+                query = query.Where(p => p.Email.ToLower().Contains(filter.Email.ToLower()));
 
-            if (!string.IsNullOrEmpty(filter.Uf))
-                query = query.Where(p => p.Uf == filter.Uf);
+            var totalCount = query.Count();
 
-            if (!string.IsNullOrEmpty(filter.Gender))
-                query = query.Where(p => p.Gender == filter.Gender);
+            var items = query
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToList();
 
-            return query.ToList();
+            return new PagedResponse<PacientModel>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PerPage = filter.PageSize
+            };
         }
+
         public PacientModel? GetPacientById(int id)
         {
             var pacient = _pacientRepository._context.Pacient

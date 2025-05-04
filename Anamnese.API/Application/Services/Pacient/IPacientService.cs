@@ -6,7 +6,8 @@ namespace Anamnese.API.Application.Services.Pacient
 {
     public interface IPacientService
     {
-        IEnumerable<PacientModel> GetAllPacients(PacientFilter filters);
+        PagedResponse<PacientModel> GetAllPacients(PacientFilter filters);
+
         PacientModel GetPacientById(int id);
         IEnumerable<PacientModel> GetPacientsByProfissional();
         PacientModel CreatePacient(CreatePacientRequest pacient);              
