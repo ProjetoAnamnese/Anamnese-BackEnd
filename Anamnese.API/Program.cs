@@ -5,22 +5,23 @@ using Anamnese.API.ORM.Entity;
 using Anamnese.API.Application.Services.Profissional;
 using Anamnese.API.Application.Services.Token;
 using Anamnese.API.Application.Services.Pacient;
-using System;
 using Scalar.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Anamnese.API.Application.Services.Report;
-using System.ComponentModel.Design;
-using Anamnese.API.Application.Services.Referral;
 using Anamnese.API.Application.Services.ProfissionalAvailable;
 using Anamnese.API.Application.Services.Appointment;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Anamnese.API.Application.Services.Anotation;
-using Anamnese.API.ORM.Seeders.PacientSeeder;
-using Anamnese.API.ORM.Seeders.ProfissionalSeeder;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+    serverOptions.ListenAnyIP(int.Parse(port));
+});
+
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
