@@ -1,5 +1,6 @@
 ﻿using Anamnese.API.Application.Services.Pacient;
 using Anamnese.API.Application.Services.Report;
+using Anamnese.API.ORM.Filters;
 using Anamnese.API.ORM.Model.Report;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,9 +25,9 @@ namespace Anamnese.API.Controllers
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetAllReports()
+        public IActionResult GetAllReports([FromQuery] ReportFilter filters)
         {
-            var report = _reportService.GetAllReports();
+            var report = _reportService.GetAllReports(filters);
 
             return Ok(report);
         }

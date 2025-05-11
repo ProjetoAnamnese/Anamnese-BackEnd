@@ -1,11 +1,13 @@
 ﻿using Anamnese.API.ORM.Entity;
+using Anamnese.API.ORM.Filters;
 using Anamnese.API.ORM.Model.Report;
 
 namespace Anamnese.API.Application.Services.Report
 {
     public interface IReportService
-    {
-        IEnumerable<ReportModel> GetAllReports();
+    {        
+        PagedResponse<ReportModel> GetAllReports(ReportFilter filters);
+
         ReportModel GetReportById(int id);
         ReportModel GetReportByPacientId(int pacientId);
 

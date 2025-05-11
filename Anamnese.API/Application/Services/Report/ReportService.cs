@@ -1,5 +1,7 @@
 ﻿using Anamnese.API.Application.Services.Pacient;
+using Anamnese.API.Application.Services.Token;
 using Anamnese.API.ORM.Entity;
+using Anamnese.API.ORM.Filters;
 using Anamnese.API.ORM.Model.Report;
 using Anamnese.API.ORM.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -9,12 +11,56 @@ namespace Anamnese.API.Application.Services.Report
     public class ReportService : IReportService
     {
         private readonly BaseRepository<ReportModel> _reportRepository;
+        private ITokenService _tokenService { get; }
+
         private IPacientService _pacientService;
 
-        public ReportService(BaseRepository<ReportModel> reportRepository, IPacientService pacientService)
-        {         
+        public ReportService(BaseRepository<ReportModel> reportRepository, IPacientService pacientService, ITokenService tokenService)
+
+        {
+            _tokenService = tokenService;
             _reportRepository = reportRepository;   
             _pacientService = pacientService;
+        }
+
+        public PagedResponse<ReportModel> GetAllReports(ReportFilter filters)
+        {
+            var profissionalId = _tokenService.GetUserId();
+            var query = _reportRepository._context.Report
+              .Include(r => r.Pacient)
+              .Where(r => r.Pacient.ProfissionalId == profissionalId);
+
+            if (filters.PacientId.HasValue && filters.PacientId.Value > 0)
+            {
+                query = query.Where(r => r.PacientId == filters.PacientId.Value);
+            }
+
+
+            if (filters.CardiovascularIssues.HasValue)
+                query = query.Where(r => r.CardiovascularIssues == filters.CardiovascularIssues.Value);
+
+            if (filters.Smoker.HasValue)
+                query = query.Where(r => r.Smoker == filters.Smoker.Value);
+
+
+            if (filters.Diabates.HasValue)
+                query = query.Where(r => r.Smoker == filters.Diabates.Value);
+
+
+
+            var totalCount = query.Count();
+            var items = query
+               .Skip((filters.PageNumber - 1) * filters.PageSize)
+               .Take(filters.PageSize)
+               .ToList();
+
+
+            return new PagedResponse<ReportModel>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PerPage = filters.PageSize
+            };
         }
         public IEnumerable<ReportModel> GetAllReports()
         {
@@ -116,5 +162,7 @@ namespace Anamnese.API.Application.Services.Report
         {
             return _reportRepository.Count();
         }
+
+      
     }
 }
