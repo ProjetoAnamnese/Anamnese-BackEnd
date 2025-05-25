@@ -34,13 +34,13 @@ namespace Anamnese.API.Controllers
             }
         }
 
-        [HttpGet("profissional-appointments/{profissionalId}")]
+        [HttpGet("profissional-appointments")]
         //[Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetProfissionalApppointment(int profissionalId)
+        public IActionResult GetProfissionalApppointment()
         {
-            var appointment = _appointmentService.GetAppointmentByProfissional(profissionalId);
+            var appointment = _appointmentService.GetAppointmentByProfissional();
 
             if (appointment != null)
             {

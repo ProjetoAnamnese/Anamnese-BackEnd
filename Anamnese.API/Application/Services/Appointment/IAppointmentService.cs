@@ -6,7 +6,7 @@ namespace Anamnese.API.Application.Services.Appointment
     {
         //bool ScheduleAppointment(int profissionalId, int pacientId, DateTime appointmentDateTime);
         AppointmentModel GetSpecialityByPacient(int pacientId);
-        IEnumerable<AppointmentModel> GetAppointmentByProfissional(int profissionalId);
+        IEnumerable<AppointmentModel> GetAppointmentByProfissional();
         bool ScheduleAppointment(int profissionalId, int pacientId, DateOnly appointmentDate, TimeOnly appointmentTime);
 
     }

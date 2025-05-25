@@ -1,5 +1,6 @@
 ﻿
 using Anamnese.API.Application.Services.ProfissionalAvailable;
+using Anamnese.API.Application.Services.Token;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Repository;
 
@@ -11,18 +12,22 @@ namespace Anamnese.API.Application.Services.Appointment
         private readonly BaseRepository<ProfissionalModel> _profissionalRepository;
         private readonly BaseRepository<PacientModel> _pacientRepository;
         private readonly BaseRepository<AppointmentModel> _appointmentRepository;
+        private ITokenService _tokenService { get; }
 
-        public AppointmentService(IProfissionalAvailableService profissionalAvailableService, BaseRepository<AppointmentModel> appointmentRepository, BaseRepository<ProfissionalModel> profissionalRepository, BaseRepository<PacientModel> pacientRepository)
+
+        public AppointmentService(IProfissionalAvailableService profissionalAvailableService, BaseRepository<AppointmentModel> appointmentRepository, BaseRepository<ProfissionalModel> profissionalRepository, BaseRepository<PacientModel> pacientRepository, ITokenService tokenService)
 
         {
+            _tokenService = tokenService;
             _pacientRepository = pacientRepository;
             _profissionalAvailableService = profissionalAvailableService;
             _appointmentRepository = appointmentRepository;
             _profissionalRepository = profissionalRepository;
         }
 
-        public IEnumerable<AppointmentModel> GetAppointmentByProfissional(int profissionalId)
-        {            
+        public IEnumerable<AppointmentModel> GetAppointmentByProfissional()
+        {
+            int profissionalId = _tokenService.GetUserId();
             var appointments = _appointmentRepository.GetAll()
                                                      .Where(a => a.ProfissionalId == profissionalId)                                                     
                                                      ;          
