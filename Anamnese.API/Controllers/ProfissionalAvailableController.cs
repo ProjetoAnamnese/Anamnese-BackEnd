@@ -67,17 +67,17 @@ namespace Anamnese.API.Controllers
         }
 
 
-        [HttpPost("create-profissional-available/{profissionalId}")]
+        [HttpPost("create-profissional-available")]
         //[AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Available(int profissionalId,[FromBody] ProfissionalAvailableRequest availableRequest)
+        public async Task<IActionResult> Available([FromBody] ProfissionalAvailableRequest availableRequest)
         {
             if(availableRequest == null)
             {
                 return BadRequest();
             }
-            var sucess = _profissionalAvailableService.SetProfissionalAvailability(profissionalId, availableRequest);
+            var sucess = _profissionalAvailableService.SetProfissionalAvailability(availableRequest);
             if (sucess) return Ok();
             return BadRequest();
         }

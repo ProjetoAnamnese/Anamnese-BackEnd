@@ -1,4 +1,5 @@
-﻿using Anamnese.API.Application.Utilities;
+﻿using Anamnese.API.Application.Services.Token;
+using Anamnese.API.Application.Utilities;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Model.ProfissionalModel;
 using Anamnese.API.ORM.Repository;
@@ -9,10 +10,12 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
     {
         private readonly BaseRepository<ProfissionalModel> _profissionalRepository;
         private readonly BaseRepository<ProfissionalAvailableModel> _profissionalAvailableRepository;
-        public ProfissionalAvailableService(BaseRepository<ProfissionalModel> profissionalRepository, BaseRepository<ProfissionalAvailableModel> profissionalAvailableRepository)
+        private ITokenService _tokenService { get; }
+        public ProfissionalAvailableService(BaseRepository<ProfissionalModel> profissionalRepository, BaseRepository<ProfissionalAvailableModel> profissionalAvailableRepository, ITokenService tokenService)
         {
-            _profissionalRepository = profissionalRepository;
+            _profissionalRepository = profissionalRepository;            
             _profissionalAvailableRepository = profissionalAvailableRepository;
+            _tokenService = tokenService;
         }
 
         public List<ProfissionalAvailableModel> GetProfissionalAvailabilities(int profissionalId)
@@ -30,8 +33,10 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
             return profissionalAvailabilities;
         }
 
-        public bool SetProfissionalAvailability(int profissionalId, ProfissionalAvailableRequest availability)
+        public bool SetProfissionalAvailability(ProfissionalAvailableRequest availability)
         {
+            int profissionalId = _tokenService.GetUserId();
+
             // Verifica se o ID do profissional é válido
             if (profissionalId <= 0)
             {
