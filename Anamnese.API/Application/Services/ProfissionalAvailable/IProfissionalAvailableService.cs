@@ -5,7 +5,7 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
 {
     public interface IProfissionalAvailableService
     {
-        List<ProfissionalAvailableModel> GetProfissionalAvailabilities(int profissionalId);
+        List<ProfissionalAvailableModel> GetProfissionalAvailabilities();
         bool EditProfissionalAvailability(int availabilityId, ProfissionalAvailableUpdate updatedAvailability);
 
         bool SetProfissionalAvailability(ProfissionalAvailableRequest availability);

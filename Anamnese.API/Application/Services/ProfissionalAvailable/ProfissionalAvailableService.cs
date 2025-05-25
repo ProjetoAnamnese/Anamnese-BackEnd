@@ -18,8 +18,9 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
             _tokenService = tokenService;
         }
 
-        public List<ProfissionalAvailableModel> GetProfissionalAvailabilities(int profissionalId)
+        public List<ProfissionalAvailableModel> GetProfissionalAvailabilities()
         {
+            int profissionalId = _tokenService.GetUserId();
             var profissionalAvailabilities = _profissionalAvailableRepository.GetAll()
                 .Where(avail => avail.ProfissionalId == profissionalId)
                 .ToList();

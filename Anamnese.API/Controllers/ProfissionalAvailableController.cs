@@ -23,15 +23,13 @@ namespace Anamnese.API.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("profissional-available/{profissionalId}")]
+        [HttpGet("profissional-available")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetProfissionalAvailabilities(int profissionalId)
-        {
-            if (profissionalId <= 0)
-                return BadRequest();
+        public IActionResult GetProfissionalAvailabilities()
+        {            
 
-            var availabilities = _profissionalAvailableService.GetProfissionalAvailabilities(profissionalId);
+            var availabilities = _profissionalAvailableService.GetProfissionalAvailabilities();
 
             //if (availabilities == null || !availabilities.Any())
             //{
