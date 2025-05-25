@@ -38,19 +38,15 @@ namespace Anamnese.API.Controllers
         //[Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetProfissionalApppointment()
+        public IActionResult GetProfissionalAppointment(
+          [FromQuery] int pageNumber = 1,
+          [FromQuery] int pageSize = 10)
         {
-            var appointment = _appointmentService.GetAppointmentByProfissional();
-
-            if (appointment != null)
-            {
-                return Ok(appointment);
-            }
-            else
-            {
-                return BadRequest("appointment não encontrado");
-            }
+            var appointments = _appointmentService.GetAppointmentByProfissional(pageNumber, pageSize);
+            return Ok(appointments);
         }
+
+
 
         [HttpPost("schedule-appointment")]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -2,6 +2,7 @@
 using Anamnese.API.Application.Services.ProfissionalAvailable;
 using Anamnese.API.Application.Services.Token;
 using Anamnese.API.ORM.Entity;
+using Anamnese.API.ORM.Filters;
 using Anamnese.API.ORM.Repository;
 
 namespace Anamnese.API.Application.Services.Appointment
@@ -25,14 +26,29 @@ namespace Anamnese.API.Application.Services.Appointment
             _profissionalRepository = profissionalRepository;
         }
 
-        public IEnumerable<AppointmentModel> GetAppointmentByProfissional()
+        public PagedResponse<AppointmentModel> GetAppointmentByProfissional(int pageNumber = 1, int pageSize = 10)
         {
             int profissionalId = _tokenService.GetUserId();
-            var appointments = _appointmentRepository.GetAll()
-                                                     .Where(a => a.ProfissionalId == profissionalId)                                                     
-                                                     ;          
-            return appointments;
+
+            var query = _appointmentRepository.GetAll()
+                                              .Where(a => a.ProfissionalId == profissionalId);
+
+            var totalCount = query.Count();
+
+            var items = query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return new PagedResponse<AppointmentModel>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PerPage = pageSize
+            };
         }
+
+
 
         public AppointmentModel GetSpecialityByPacient(int pacientId)
         {
