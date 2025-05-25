@@ -50,25 +50,41 @@ namespace Anamnese.API.Controllers
 
         [HttpPost("schedule-appointment")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult ScheduleAppointment([FromBody] AppointmentRequestModel appointmentRequest)
         {
             if (appointmentRequest == null)
             {
-                return BadRequest("Invalid appointment request");
+                return Ok(new
+                {
+                    success = false,
+                    message = "Requisição inválida."
+                });
             }
 
-            bool isScheduled = _appointmentService.ScheduleAppointment(appointmentRequest.ProfissionalId, appointmentRequest.PacientId, appointmentRequest.AppointmentDate, appointmentRequest.AppointmentTime);
+            bool isScheduled = _appointmentService.ScheduleAppointment(
+                appointmentRequest.PacientId,
+                appointmentRequest.AppointmentDate,
+                appointmentRequest.AppointmentTime
+            );
 
             if (isScheduled)
             {
-                return Ok();
+                return Ok(new
+                {
+                    success = true,
+                    message = "Agendamento realizado com sucesso."
+                });
             }
             else
             {
-                return BadRequest("O profissional não esta disponivel");
+                return Ok(new
+                {
+                    success = false,
+                    message = "O profissional não está disponível no horário selecionado."
+                });
             }
         }
+
     }
 
 }

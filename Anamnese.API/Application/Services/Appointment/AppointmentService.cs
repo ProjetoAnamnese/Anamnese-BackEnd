@@ -59,8 +59,10 @@ namespace Anamnese.API.Application.Services.Appointment
 
         }
 
-        public bool ScheduleAppointment(int profissionalId, int pacientId, DateOnly appointmentDate, TimeOnly appointmentTime)
+        public bool ScheduleAppointment(int pacientId, DateOnly appointmentDate, TimeOnly appointmentTime)
         {
+
+            int profissionalId = _tokenService.GetUserId();
             // Verifica se os IDs do profissional e do paciente são válidos
             if (profissionalId <= 0 || pacientId <= 0)
             {

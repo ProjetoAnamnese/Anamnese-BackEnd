@@ -11,7 +11,7 @@ namespace Anamnese.API.Application.Services.Appointment
 
         AppointmentModel GetSpecialityByPacient(int pacientId);
         
-        bool ScheduleAppointment(int profissionalId, int pacientId, DateOnly appointmentDate, TimeOnly appointmentTime);
+        bool ScheduleAppointment(int pacientId, DateOnly appointmentDate, TimeOnly appointmentTime);
 
     }
 }
