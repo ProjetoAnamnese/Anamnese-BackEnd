@@ -4,6 +4,7 @@ using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Filters;
 using Anamnese.API.ORM.Model.PacientModel;
 using Anamnese.API.ORM.Repository;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Globalization;
@@ -15,11 +16,13 @@ namespace Anamnese.API.Application.Services.Pacient
         private readonly BaseRepository<PacientModel> _pacientRepository;
         private ITokenService _tokenService { get; }
         private readonly AnamneseDbContext _context;
+        private readonly IMapper _mapper;
 
-        public PacientService(BaseRepository<PacientModel> pacientRepository, ITokenService tokenService)
+        public PacientService(BaseRepository<PacientModel> pacientRepository, ITokenService tokenService, IMapper mapper)
         {            
             _pacientRepository = pacientRepository;
             _tokenService = tokenService;
+            _mapper = mapper;
         }
 
         public PagedResponse<PacientModel> GetAllPacients(PacientFilter filter)
@@ -70,21 +73,11 @@ namespace Anamnese.API.Application.Services.Pacient
         public PacientModel CreatePacient(CreatePacientRequest pacient)
         {
             int profissionalId = _tokenService.GetUserId();
-            var res = _pacientRepository.Add(new PacientModel
-            {
-                Address = pacient.Address,
-                Birth = pacient.Birth,
-                Email = pacient.Email,
-                Phone = pacient.Phone,
-                Profession = pacient.Profession,
-                Uf = pacient.Uf,
-                Username = pacient.Username,
-                Gender = pacient.Gender,
-                ProfissionalId = profissionalId,
-                MedicalSpeciality = null,
-
-            }) ;
+            var newPacient = _mapper.Map<PacientModel>(pacient);
+            newPacient.ProfissionalId = profissionalId;
+            var res = _pacientRepository.Add(newPacient);            
             _pacientRepository.SaveChanges();
+            var mapperd = _mapper.Map<PacientModel>(res);
             return res;
         }        
         public PacientModel UpdatePacient(int id, PacientModel updatedPacient)

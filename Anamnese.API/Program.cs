@@ -5,20 +5,15 @@ using Anamnese.API.ORM.Entity;
 using Anamnese.API.Application.Services.Profissional;
 using Anamnese.API.Application.Services.Token;
 using Anamnese.API.Application.Services.Pacient;
-using System;
 using Scalar.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Anamnese.API.Application.Services.Report;
-using System.ComponentModel.Design;
-using Anamnese.API.Application.Services.Referral;
 using Anamnese.API.Application.Services.ProfissionalAvailable;
 using Anamnese.API.Application.Services.Appointment;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Anamnese.API.Application.Services.Anotation;
-using Anamnese.API.ORM.Seeders.PacientSeeder;
-using Anamnese.API.ORM.Seeders.ProfissionalSeeder;
+using Anamnese.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +22,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 // builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapperConfiguration();
 builder.Services.AddCors();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
