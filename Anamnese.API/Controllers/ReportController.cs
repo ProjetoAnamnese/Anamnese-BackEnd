@@ -1,5 +1,6 @@
 ﻿using Anamnese.API.Application.Services.Pacient;
 using Anamnese.API.Application.Services.Report;
+using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Filters;
 using Anamnese.API.ORM.Model.Report;
 using Microsoft.AspNetCore.Authorization;
@@ -80,8 +81,13 @@ namespace Anamnese.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult CreateReport([FromBody] CreateReportRequest reportModel, int pacientId)
         {
-            var createdReport = _reportService.CreateReport(pacientId, reportModel);
-            return createdReport != null ? Ok(reportModel) : BadRequest();
+            if (reportModel == null)
+                return BadRequest("Dados da ficha inválida");
+            var result = _reportService.CreateReport(pacientId, reportModel);
+            if (!result.Success)
+                return BadRequest(new { message = result.Message });
+
+            return Ok(result.Data);
         }
 
         /// <summary>

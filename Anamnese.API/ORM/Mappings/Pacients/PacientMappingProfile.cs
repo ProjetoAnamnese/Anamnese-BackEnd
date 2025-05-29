@@ -11,6 +11,6 @@ public class PacientMappingProfile : Profile
         CreateMap<UpdatePacientRequest, PacientModel>()
            .ForMember(dest => dest.PacientId, opt => opt.Ignore())
            .ForMember(dest => dest.Report, opt => opt.Ignore())
-           .ForMember(dest => dest.ProfissionalId, opt => opt.Ignore());        
+           .ForMember(dest => dest.ProfissionalId, opt => opt.Ignore());     
     }
 }

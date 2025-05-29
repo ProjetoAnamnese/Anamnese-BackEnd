@@ -2,8 +2,10 @@
 using Anamnese.API.Application.Services.Token;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Filters;
+using Anamnese.API.ORM.Model.Common;
 using Anamnese.API.ORM.Model.Report;
 using Anamnese.API.ORM.Repository;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Anamnese.API.Application.Services.Report
@@ -14,13 +16,15 @@ namespace Anamnese.API.Application.Services.Report
         private ITokenService _tokenService { get; }
 
         private IPacientService _pacientService;
+        private IMapper _mapper;
 
-        public ReportService(BaseRepository<ReportModel> reportRepository, IPacientService pacientService, ITokenService tokenService)
+        public ReportService(BaseRepository<ReportModel> reportRepository, IPacientService pacientService, ITokenService tokenService, IMapper mapper)
 
         {
             _tokenService = tokenService;
             _reportRepository = reportRepository;   
             _pacientService = pacientService;
+            _mapper = mapper;
         }
 
         public PagedResponse<ReportModel> GetAllReports(ReportFilter filters)
@@ -62,6 +66,25 @@ namespace Anamnese.API.Application.Services.Report
                 PerPage = filters.PageSize
             };
         }
+
+        public Result<ReportResponseModel> CreateReport(int pacientId, CreateReportRequest report)
+        {
+            var existingReport = GetReportByPacientId(pacientId);
+            if (existingReport != null)
+            {
+                return null;
+            }
+            var pacient = _pacientService.GetPacientById(pacientId);
+            var newReport = _mapper.Map<ReportModel>(report);
+            newReport.PacientId = pacientId;
+            newReport.PacientName = pacient.Username;
+            newReport.ReportDateTime = DateTime.Now;
+            var res = _reportRepository.Add(newReport);
+            _reportRepository.SaveChanges();
+            var mapped = _mapper.Map<ReportResponseModel>(res);
+            return Result<ReportResponseModel>.Ok(mapped);
+        }
+
         public IEnumerable<ReportModel> GetAllReports()
         {
             return _reportRepository.GetAll();
@@ -74,44 +97,7 @@ namespace Anamnese.API.Application.Services.Report
         }
 
 
-        public ReportModel CreateReport(int pacientId, CreateReportRequest report)
-        {
-            var existsPacients = _pacientService.PacientExists(pacientId);
-            if (report == null || pacientId == null || !existsPacients)
-            {
-                return null;
-            }
-            var existingReport = GetReportByPacientId(pacientId);
-            if (existingReport != null)
-            {
-                return null;
-            }
-            var pacient = _pacientService.GetPacientById(pacientId);
-            ReportModel reportModel = new ReportModel
-            {
-                PacientId = pacientId,
-                MedicalHistory = report.MedicalHistory,
-                ReportDateTime = DateTime.Now,
-                CurrentMedications = report.CurrentMedications,
-                CardiovascularIssues = report.CardiovascularIssues,
-                Diabetes = report.Diabetes,
-                FamilyHistoryCardiovascularIssues = report.FamilyHistoryCardiovascularIssues,
-                FamilyHistoryDiabetes = report.FamilyHistoryDiabetes,
-                PhysicalActivity = report.PhysicalActivity,
-                Smoker = report.Smoker,
-                AlcoholConsumption = report.AlcoholConsumption,
-                EmergencyContactName = report.EmergencyContactName,
-                EmergencyContactPhone = report.EmergencyContactPhone,
-                Observations = report.Observations,
-                PacientName = pacient.Username,
-                Pacient = pacient
-            };
-            _reportRepository.Add(reportModel);
-            _reportRepository.SaveChanges();
-            return reportModel;
-
-
-        }
+     
         public ReportModel UpdateReport(int id, ReportModel updatedReport)
         {
             var existingReport = _reportRepository.GetById(id);            
