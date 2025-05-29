@@ -100,28 +100,17 @@ namespace Anamnese.API.Controllers
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult UpdateReport(int reportId, [FromBody] CreateReportRequest updatedReportModel)
+        public IActionResult UpdateReport(int reportId, [FromBody] UpdateReportRequest updatedReportModel)
         {
             var existingReport = _reportService.GetReportById(reportId);
             if (existingReport == null)
                 return BadRequest("Ficha não encontrada.");
 
-            existingReport.MedicalHistory = updatedReportModel.MedicalHistory;
-            existingReport.CurrentMedications = updatedReportModel.CurrentMedications;
-            existingReport.CardiovascularIssues = updatedReportModel.CardiovascularIssues;
-            existingReport.Diabetes = updatedReportModel.Diabetes;
-            existingReport.FamilyHistoryCardiovascularIssues = updatedReportModel.FamilyHistoryCardiovascularIssues;
-            existingReport.FamilyHistoryDiabetes = updatedReportModel.FamilyHistoryDiabetes;
-            existingReport.PhysicalActivity = updatedReportModel.PhysicalActivity;
-            existingReport.Smoker = updatedReportModel.Smoker;
-            existingReport.ReportDateTime = DateTime.Now;
-            existingReport.AlcoholConsumption = updatedReportModel.AlcoholConsumption;
-            existingReport.EmergencyContactName = updatedReportModel.EmergencyContactName;
-            existingReport.EmergencyContactPhone = updatedReportModel.EmergencyContactPhone;
-            existingReport.Observations = updatedReportModel.Observations;
+            var result = _reportService.UpdateReport(reportId, updatedReportModel);
+            if (!result.Success)
+                return NotFound(new { message = result.Message });
 
-            var updatedReport = _reportService.UpdateReport(reportId, existingReport);
-            return updatedReport != null ? Ok(updatedReport) : BadRequest("Falha ao atualizar a ficha.");
+            return Ok(result.Data);
         }
 
         /// <summary>

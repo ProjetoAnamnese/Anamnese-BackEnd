@@ -69,11 +69,7 @@ namespace Anamnese.API.Application.Services.Report
 
         public Result<ReportResponseModel> CreateReport(int pacientId, CreateReportRequest report)
         {
-            var existingReport = GetReportByPacientId(pacientId);
-            if (existingReport != null)
-            {
-                return null;
-            }
+            var existingReport = GetReportByPacientId(pacientId);            
             var pacient = _pacientService.GetPacientById(pacientId);
             var newReport = _mapper.Map<ReportModel>(report);
             newReport.PacientId = pacientId;
@@ -84,6 +80,18 @@ namespace Anamnese.API.Application.Services.Report
             var mapped = _mapper.Map<ReportResponseModel>(res);
             return Result<ReportResponseModel>.Ok(mapped);
         }
+        public Result<ReportModel> UpdateReport(int reportId, UpdateReportRequest updatedReport)
+        {
+            var report = _reportRepository.GetById(reportId);
+            if (report == null)
+                return Result<ReportModel>.Fail("Ficha não encontrado.");
+
+            _mapper.Map(updatedReport, report);
+            _reportRepository.Update(report);
+            _reportRepository.SaveChanges();
+            return Result<ReportModel>.Ok(report);
+        }
+
 
         public IEnumerable<ReportModel> GetAllReports()
         {
@@ -98,33 +106,7 @@ namespace Anamnese.API.Application.Services.Report
 
 
      
-        public ReportModel UpdateReport(int id, ReportModel updatedReport)
-        {
-            var existingReport = _reportRepository.GetById(id);            
-            if (existingReport != null)
-            {
-                existingReport.MedicalHistory = updatedReport.MedicalHistory;
-                existingReport.CurrentMedications = updatedReport.CurrentMedications;
-                existingReport.CardiovascularIssues = updatedReport.CardiovascularIssues;
-                existingReport.Diabetes = updatedReport.Diabetes;
-                existingReport.FamilyHistoryCardiovascularIssues = updatedReport.FamilyHistoryCardiovascularIssues;
-                existingReport.FamilyHistoryDiabetes = updatedReport.FamilyHistoryDiabetes;
-                existingReport.PhysicalActivity = updatedReport.PhysicalActivity;
-                existingReport.Smoker = updatedReport.Smoker;
-                existingReport.ReportDateTime = DateTime.Now;
-                existingReport.AlcoholConsumption = updatedReport.AlcoholConsumption;
-                existingReport.EmergencyContactName = updatedReport.EmergencyContactName;
-                existingReport.EmergencyContactPhone = updatedReport.EmergencyContactPhone;
-                existingReport.Observations = updatedReport.Observations;
-                existingReport.MedicalHistory = updatedReport.MedicalHistory;
-                existingReport.CurrentMedications = updatedReport.CurrentMedications;
-
-                _reportRepository.Update(existingReport);
-                _reportRepository.SaveChanges();
-                return existingReport;
-            }
-            return null;
-        }
+     
         public ReportModel GetReportByPacientId(int pacientId)
         {
          

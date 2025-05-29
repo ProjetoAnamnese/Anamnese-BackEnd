@@ -9,12 +9,13 @@ namespace Anamnese.API.Application.Services.Report
     {        
         PagedResponse<ReportModel> GetAllReports(ReportFilter filters);
         Result<ReportResponseModel> CreateReport(int pacientId, CreateReportRequest report);
+        Result<ReportModel> UpdateReport(int id, UpdateReportRequest updatedReport);
 
         ReportModel GetReportById(int id);
         ReportModel GetReportByPacientId(int pacientId);
 
         
-        ReportModel UpdateReport(int id, ReportModel updatedReport);
+        
         
         ReportModel DeleteReport(int id);
         int CountAllReports();
