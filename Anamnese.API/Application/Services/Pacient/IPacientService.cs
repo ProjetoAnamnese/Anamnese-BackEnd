@@ -1,5 +1,6 @@
 ﻿using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Filters;
+using Anamnese.API.ORM.Model.Common;
 using Anamnese.API.ORM.Model.PacientModel;
 
 namespace Anamnese.API.Application.Services.Pacient
@@ -10,7 +11,7 @@ namespace Anamnese.API.Application.Services.Pacient
 
         PacientModel GetPacientById(int id);
         IEnumerable<PacientModel> GetPacientsByProfissional();
-        PacientModel CreatePacient(CreatePacientRequest pacient);              
+        Result<PacientResponseModel> CreatePacient(CreatePacientRequest pacient);              
         PacientModel UpdatePacient(int id, PacientModel updatedPacient);
         PacientModel DeletePacient(int id);
         bool PacientExists(int pacientId);

@@ -1,6 +1,4 @@
-﻿using Anamnese.API.ORM.Mappings.Pacients;
-
-namespace Anamnese.API.Extensions
+﻿namespace Anamnese.API.Extensions
 {
     public static class AutoMapperExtension
     {

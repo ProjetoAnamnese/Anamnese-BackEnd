@@ -2,6 +2,7 @@
 using Anamnese.API.ORM.Context;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Filters;
+using Anamnese.API.ORM.Model.Common;
 using Anamnese.API.ORM.Model.PacientModel;
 using Anamnese.API.ORM.Repository;
 using AutoMapper;
@@ -70,15 +71,15 @@ namespace Anamnese.API.Application.Services.Pacient
         }
 
 
-        public PacientModel CreatePacient(CreatePacientRequest pacient)
+        public Result<PacientResponseModel> CreatePacient(CreatePacientRequest pacient)
         {
             int profissionalId = _tokenService.GetUserId();
             var newPacient = _mapper.Map<PacientModel>(pacient);
             newPacient.ProfissionalId = profissionalId;
             var res = _pacientRepository.Add(newPacient);            
             _pacientRepository.SaveChanges();
-            var mapperd = _mapper.Map<PacientModel>(res);
-            return res;
+            var mapped = _mapper.Map<PacientResponseModel>(res);
+            return Result<PacientResponseModel>.Ok(mapped);            
         }        
         public PacientModel UpdatePacient(int id, PacientModel updatedPacient)
         {

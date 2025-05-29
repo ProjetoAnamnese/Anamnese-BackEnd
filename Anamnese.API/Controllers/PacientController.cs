@@ -2,6 +2,7 @@
 //using Anamnese.API.Migrations;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Filters;
+using Anamnese.API.ORM.Model.Common;
 using Anamnese.API.ORM.Model.PacientModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -85,15 +86,11 @@ namespace Anamnese.API.Controllers
             {
                 return BadRequest("Dados do paciente inválidos");
             }
-            var createdPacient = _pacientService.CreatePacient(pacientModel);
-            if (createdPacient != null)
-            {
-                return Ok(pacientModel);
-            }
-            else
-            {
-                return BadRequest();
-            }
+            var result = _pacientService.CreatePacient(pacientModel);
+            if (!result.Success)
+                return BadRequest(new { message = result.Message });
+
+            return Ok(result.Data);
         }
  
 
