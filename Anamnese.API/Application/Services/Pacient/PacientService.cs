@@ -81,29 +81,16 @@ namespace Anamnese.API.Application.Services.Pacient
             var mapped = _mapper.Map<PacientResponseModel>(res);
             return Result<PacientResponseModel>.Ok(mapped);            
         }        
-        public PacientModel UpdatePacient(int id, PacientModel updatedPacient)
+        public Result<PacientModel> UpdatePacient(int pacientId, UpdatePacientRequest updatedPacient)
         {
-            var existingPacient = _pacientRepository.GetById(id);
+            var pacient = _pacientRepository.GetById(pacientId);
+            if (pacient == null)
+                return Result<PacientModel>.Fail("Paciente não encontrado.");
+            _mapper.Map(updatedPacient, pacient);
+            _pacientRepository.Update(pacient);
+            _pacientRepository.SaveChanges();
+            return Result<PacientModel>.Ok(pacient);
 
-            if (existingPacient != null)
-            {
-
-                existingPacient.Username = updatedPacient.Username;
-                existingPacient.Email = updatedPacient.Email;
-                existingPacient.Address = updatedPacient.Address;
-                existingPacient.Uf = updatedPacient.Uf;
-                existingPacient.Phone = updatedPacient.Phone;
-                existingPacient.Birth = updatedPacient.Birth;
-                existingPacient.Gender = updatedPacient.Gender;
-
-                _pacientRepository.SaveChanges();
-
-                _pacientRepository.Update(existingPacient);
-
-                return existingPacient;
-            }
-
-            return null;
         }
 
         public PacientModel DeletePacient(int id)

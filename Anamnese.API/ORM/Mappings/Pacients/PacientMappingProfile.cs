@@ -6,11 +6,11 @@ public class PacientMappingProfile : Profile
 {
     public PacientMappingProfile()
     {
-        CreateMap<CreatePacientRequest, PacientModel>()
-            .ForMember(dest => dest.PacientId, opt => opt.Ignore())
-            .ForMember(dest => dest.Report, opt => opt.Ignore())
-            .ForMember(dest => dest.ProfissionalId, opt => opt.Ignore());
-
-        CreateMap<PacientModel, PacientResponseModel>(); 
+        CreateMap<CreatePacientRequest, PacientModel>();
+        CreateMap<PacientModel, PacientResponseModel>();
+        CreateMap<UpdatePacientRequest, PacientModel>()
+           .ForMember(dest => dest.PacientId, opt => opt.Ignore())
+           .ForMember(dest => dest.Report, opt => opt.Ignore())
+           .ForMember(dest => dest.ProfissionalId, opt => opt.Ignore());        
     }
 }

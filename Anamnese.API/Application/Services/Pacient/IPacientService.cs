@@ -8,11 +8,12 @@ namespace Anamnese.API.Application.Services.Pacient
     public interface IPacientService
     {
         PagedResponse<PacientModel> GetAllPacients(PacientFilter filters);
+        Result<PacientResponseModel> CreatePacient(CreatePacientRequest pacient);
+        Result<PacientModel> UpdatePacient(int pacientId, UpdatePacientRequest updatedPacient);
 
         PacientModel GetPacientById(int id);
         IEnumerable<PacientModel> GetPacientsByProfissional();
-        Result<PacientResponseModel> CreatePacient(CreatePacientRequest pacient);              
-        PacientModel UpdatePacient(int id, PacientModel updatedPacient);
+
         PacientModel DeletePacient(int id);
         bool PacientExists(int pacientId);
         void PatchPacient(int pacientId, int newReportId);
