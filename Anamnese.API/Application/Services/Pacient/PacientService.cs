@@ -8,7 +8,6 @@ using Anamnese.API.ORM.QueryExtensions;
 using Anamnese.API.ORM.Repository;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Globalization;
 
 namespace Anamnese.API.Application.Services.Pacient
