@@ -4,6 +4,7 @@ using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Filters;
 using Anamnese.API.ORM.Model.Common;
 using Anamnese.API.ORM.Model.Report;
+using Anamnese.API.ORM.QueryExtensions;
 using Anamnese.API.ORM.Repository;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -30,34 +31,18 @@ namespace Anamnese.API.Application.Services.Report
         public PagedResponse<ReportModel> GetAllReports(ReportFilter filters)
         {
             var profissionalId = _tokenService.GetUserId();
+
             var query = _reportRepository._context.Report
-              .Include(r => r.Pacient)
-              .Where(r => r.Pacient.ProfissionalId == profissionalId);
-
-            if (filters.PacientId.HasValue && filters.PacientId.Value > 0)
-            {
-                query = query.Where(r => r.PacientId == filters.PacientId.Value);
-            }
-
-
-            if (filters.CardiovascularIssues.HasValue)
-                query = query.Where(r => r.CardiovascularIssues == filters.CardiovascularIssues.Value);
-
-            if (filters.Smoker.HasValue)
-                query = query.Where(r => r.Smoker == filters.Smoker.Value);
-
-
-            if (filters.Diabates.HasValue)
-                query = query.Where(r => r.Smoker == filters.Diabates.Value);
-
-
+                .Include(r => r.Pacient)
+                .Where(r => r.Pacient.ProfissionalId == profissionalId)
+                .ApplyFilters(filters);
 
             var totalCount = query.Count();
-            var items = query
-               .Skip((filters.PageNumber - 1) * filters.PageSize)
-               .Take(filters.PageSize)
-               .ToList();
 
+            var items = query
+                .Skip((filters.PageNumber - 1) * filters.PageSize)
+                .Take(filters.PageSize)
+                .ToList();
 
             return new PagedResponse<ReportModel>
             {

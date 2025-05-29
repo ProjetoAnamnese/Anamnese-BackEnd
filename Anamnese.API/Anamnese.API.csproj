@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ORM\Migrations\**" />
+    <Content Remove="ORM\Migrations\**" />
+    <EmbeddedResource Remove="ORM\Migrations\**" />
+    <None Remove="ORM\Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
@@ -31,10 +38,6 @@
     <PackageReference Include="Scalar.AspNetCore" Version="1.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.3.1" />
     <PackageReference Include="System.Diagnostics.Tools" Version="4.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ORM\Migrations\" />
   </ItemGroup>
 
 </Project>
