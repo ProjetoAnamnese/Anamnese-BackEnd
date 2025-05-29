@@ -31,6 +31,7 @@ namespace Anamnese.API.Controllers
         }
 
         [HttpGet("get-pacient/{pacientId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetPacientsById(int pacientId)
@@ -48,6 +49,7 @@ namespace Anamnese.API.Controllers
         }
 
         [HttpGet("get-profissional-pacient")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetProfissionalPacients()
@@ -64,6 +66,7 @@ namespace Anamnese.API.Controllers
             }
         }
         [HttpGet("count-pacient-by-specialty")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult CountReferralsBySpecialty()
         {
@@ -72,7 +75,7 @@ namespace Anamnese.API.Controllers
         }
 
         [HttpPost("create-pacient")]
-        //[Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult CreatePacient([FromBody] CreatePacientRequest pacientModel)

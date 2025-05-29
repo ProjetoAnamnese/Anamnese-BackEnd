@@ -17,7 +17,7 @@ namespace Anamnese.API.Controllers
         }
 
         [HttpGet("get-appointment-by-pacient/{pacientId}")]
-        //[Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetProfissionaltsById(int pacientId)
@@ -35,7 +35,7 @@ namespace Anamnese.API.Controllers
         }
 
         [HttpGet("profissional-appointments")]
-        //[Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetProfissionalAppointment(

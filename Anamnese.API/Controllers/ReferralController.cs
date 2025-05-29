@@ -1,6 +1,7 @@
 ﻿using Anamnese.API.Application.Services.Referral;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Model.PacientModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,8 @@ namespace Anamnese.API.Controllers
             _referralService = referralService;
         }
 
-        [HttpPost("send-referral/{pacientId}")]        
+        [HttpPost("send-referral/{pacientId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult SendMedicalSpeciality(int pacientId, [FromBody] ReferralRequestModel referralRequest)
@@ -25,6 +27,7 @@ namespace Anamnese.API.Controllers
             return Ok(sendReferral);                 
         }        
         [HttpGet("get-referral-by-pacient/{pacientId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetReferralByPacient(int pacientId)
         {
@@ -33,6 +36,7 @@ namespace Anamnese.API.Controllers
         }
 
         [HttpGet("count-referrals-by-specialty")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult CountReferralsBySpecialty()
         {

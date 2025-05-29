@@ -29,7 +29,7 @@ namespace Anamnese.API.Controllers
 
 
         [HttpGet("get-annotation/{pacientId}")]
-        //[Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetPacientAnotation(int pacientId)

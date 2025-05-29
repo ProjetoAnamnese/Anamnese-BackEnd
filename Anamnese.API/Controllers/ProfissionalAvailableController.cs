@@ -2,6 +2,7 @@
 using Anamnese.API.Application.Services.ProfissionalAvailable;
 using Anamnese.API.Application.Services.Token;
 using Anamnese.API.ORM.Model.ProfissionalModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Anamnese.API.Controllers
@@ -29,13 +30,7 @@ namespace Anamnese.API.Controllers
         public IActionResult GetProfissionalAvailabilities()
         {            
 
-            var availabilities = _profissionalAvailableService.GetProfissionalAvailabilities();
-
-            //if (availabilities == null || !availabilities.Any())
-            //{
-
-            //    return NotFound();
-            //}
+            var availabilities = _profissionalAvailableService.GetProfissionalAvailabilities();       
 
             return Ok(availabilities);
         }
@@ -54,6 +49,9 @@ namespace Anamnese.API.Controllers
         }
 
         [HttpGet("profissional-by-speciality")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetProfissionaisByEspecialidade(string speciality)
         {
             var profissionais = _profissionalAvailableService.GetProfissionalBySpeciality(speciality);
@@ -66,7 +64,7 @@ namespace Anamnese.API.Controllers
 
 
         [HttpPost("create-profissional-available")]
-        //[AllowAnonymous]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Available([FromBody] ProfissionalAvailableRequest availableRequest)
