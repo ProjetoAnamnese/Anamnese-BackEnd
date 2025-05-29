@@ -4,6 +4,7 @@ using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Filters;
 using Anamnese.API.ORM.Model.Common;
 using Anamnese.API.ORM.Model.PacientModel;
+using Anamnese.API.ORM.QueryExtensions;
 using Anamnese.API.ORM.Repository;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -32,19 +33,8 @@ namespace Anamnese.API.Application.Services.Pacient
 
             var query = _pacientRepository._context.Pacient
                 .Include(p => p.Report)
-                .Where(p => p.ProfissionalId == profissionalId);
-
-            if (!string.IsNullOrWhiteSpace(filter.Username))
-                query = query.Where(p => p.Username.ToLower().Contains(filter.Username.ToLower()));
-
-            if (!string.IsNullOrWhiteSpace(filter.Uf))
-                query = query.Where(p => p.Uf.ToLower() == filter.Uf.ToLower());
-
-            if (!string.IsNullOrWhiteSpace(filter.Gender))
-                query = query.Where(p => p.Gender.ToLower() == filter.Gender.ToLower());
-
-            if (!string.IsNullOrWhiteSpace(filter.Email))
-                query = query.Where(p => p.Email.ToLower().Contains(filter.Email.ToLower()));
+                .Where(p => p.ProfissionalId == profissionalId)
+                .ApplyFilters(filter);
 
             var totalCount = query.Count();
 
