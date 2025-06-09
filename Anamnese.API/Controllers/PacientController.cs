@@ -1,7 +1,5 @@
 ﻿using Anamnese.API.Application.Services.Pacient;
-using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Filters;
-using Anamnese.API.ORM.Model.Common;
 using Anamnese.API.ORM.Model.PacientModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -7,6 +7,7 @@
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddAutoMapper(typeof(PacientMappingProfile));
+            services.AddAutoMapper(typeof(ReportMappingProfile));
             services.AddAutoMapper(typeof(Program));
 
             return services;
