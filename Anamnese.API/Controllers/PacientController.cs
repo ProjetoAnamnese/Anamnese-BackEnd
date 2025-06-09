@@ -164,5 +164,13 @@ namespace Anamnese.API.Controllers
             int totalProfissionalPacients = _pacientService.CountAllProfissionalPacients();
             return Ok(totalProfissionalPacients);
         }
+
+        [HttpGet("count-by-gender")]
+        public IActionResult CountByGender()
+        {
+            var result = _pacientService.CountPacientsByGender();
+            return Ok(result);
+        }
+
     }
 }

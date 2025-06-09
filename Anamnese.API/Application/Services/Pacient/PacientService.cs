@@ -131,6 +131,19 @@ namespace Anamnese.API.Application.Services.Pacient
                 };
         }
 
+        public Dictionary<string, int> CountPacientsByGender()
+        {
+            int profissionalId = _tokenService.GetUserId();
+
+            var result = _pacientRepository._context.Pacient
+                .Where(p => p.ProfissionalId == profissionalId)
+                .GroupBy(p => string.IsNullOrEmpty(p.Gender) ? "Não Informado" : p.Gender)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            return result;
+        }
+
+
 
 
 

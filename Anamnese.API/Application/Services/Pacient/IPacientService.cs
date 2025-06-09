@@ -11,6 +11,7 @@ namespace Anamnese.API.Application.Services.Pacient
         Result<PacientResponseModel> CreatePacient(CreatePacientRequest pacient);
         Result<PacientModel> UpdatePacient(int pacientId, UpdatePacientRequest updatedPacient);
         Dictionary<string, int> CountPacientsWithAndWithoutReports();
+        Dictionary<string, int> CountPacientsByGender();
 
         PacientModel GetPacientById(int id);
         IEnumerable<PacientModel> GetPacientsByProfissional();
