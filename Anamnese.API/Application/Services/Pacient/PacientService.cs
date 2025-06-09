@@ -113,7 +113,26 @@ namespace Anamnese.API.Application.Services.Pacient
                 Include(e => e.Report).Where(p => p.ProfissionalId == profissionalId);            
         }
 
-        
+        public Dictionary<string, int> CountPacientsWithAndWithoutReports()
+        {
+            int profissionalId = _tokenService.GetUserId();
+
+            var query = _pacientRepository._context.Pacient
+                .Include(p => p.Report)
+                .Where(p => p.ProfissionalId == profissionalId);
+
+            int withReport = query.Count(p => p.Report != null);
+            int withoutReport = query.Count(p => p.Report == null);
+
+            return new Dictionary<string, int>
+                {
+                    { "comReport", withReport },
+                    { "semReport", withoutReport }
+                };
+        }
+
+
+
 
         public int CountAllPacients()
         {

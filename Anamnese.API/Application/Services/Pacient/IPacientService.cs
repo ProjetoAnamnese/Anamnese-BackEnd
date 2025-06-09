@@ -10,6 +10,7 @@ namespace Anamnese.API.Application.Services.Pacient
         PagedResponse<PacientModel> GetAllPacients(PacientFilter filters);
         Result<PacientResponseModel> CreatePacient(CreatePacientRequest pacient);
         Result<PacientModel> UpdatePacient(int pacientId, UpdatePacientRequest updatedPacient);
+        Dictionary<string, int> CountPacientsWithAndWithoutReports();
 
         PacientModel GetPacientById(int id);
         IEnumerable<PacientModel> GetPacientsByProfissional();

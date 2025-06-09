@@ -62,6 +62,14 @@ namespace Anamnese.API.Controllers
         }
 
 
+        [HttpGet("count-by-report")]
+        public IActionResult CountByReport()
+        {
+            var result = _pacientService.CountPacientsWithAndWithoutReports();
+            return Ok(result);
+        }
+
+
         /// <summary>
         /// Retorna a contagem de pacientes por especialidade.
         /// </summary>
