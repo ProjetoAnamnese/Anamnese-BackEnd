@@ -4,6 +4,7 @@ using Anamnese.API.Application.Services.Token;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Filters;
 using Anamnese.API.ORM.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Anamnese.API.Application.Services.Appointment
 {
@@ -48,6 +49,19 @@ namespace Anamnese.API.Application.Services.Appointment
             };
         }
 
+
+        public List<AppointmentModel> GetNextAppointmentsOfDay()
+        {
+            int profissionalId = _tokenService.GetUserId();            
+
+            return _appointmentRepository._context.Appointment
+                .Include(a => a.Pacient)
+                .Where(a => a.ProfissionalId == profissionalId &&
+                            a.AppointmentDateTime > DateTime.Now)
+                .OrderBy(a => a.AppointmentDateTime)
+                .Take(5)
+                .ToList();
+        }
 
 
         public AppointmentModel GetSpecialityByPacient(int pacientId)

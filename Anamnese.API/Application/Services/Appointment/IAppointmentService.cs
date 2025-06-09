@@ -10,7 +10,8 @@ namespace Anamnese.API.Application.Services.Appointment
 
 
         AppointmentModel GetSpecialityByPacient(int pacientId);
-        
+        List<AppointmentModel> GetNextAppointmentsOfDay();
+
         bool ScheduleAppointment(int pacientId, DateOnly appointmentDate, TimeOnly appointmentTime);
 
     }

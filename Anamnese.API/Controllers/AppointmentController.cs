@@ -85,6 +85,14 @@ namespace Anamnese.API.Controllers
             }
         }
 
+        [HttpGet("next-of-day")]
+        public IActionResult GetNextAppointmentsOfDay()
+        {
+            var result = _appointmentService.GetNextAppointmentsOfDay();
+            return Ok(result);
+        }
+
+
     }
 
 }
