@@ -13,10 +13,12 @@ namespace Anamnese.API.Application.Services.Report
 
         ReportModel GetReportById(int id);
         ReportModel GetReportByPacientId(int pacientId);
+        Dictionary<string, int> CountReportsByMonth();
 
-        
-        
-        
+
+
+
+
         ReportModel DeleteReport(int id);
         int CountAllReports();
     }

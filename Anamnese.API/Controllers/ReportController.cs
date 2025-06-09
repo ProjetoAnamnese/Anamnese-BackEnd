@@ -90,6 +90,14 @@ namespace Anamnese.API.Controllers
             return Ok(result.Data);
         }
 
+        [HttpGet("count-by-month")]
+        public IActionResult CountReportsByMonth()
+        {
+            var result = _reportService.CountReportsByMonth();
+            return Ok(result);
+        }
+
+
         /// <summary>
         /// Atualiza uma ficha de anamnese existente.
         /// </summary>

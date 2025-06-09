@@ -51,6 +51,23 @@ namespace Anamnese.API.Application.Services.Report
                 PerPage = filters.PageSize
             };
         }
+        public Dictionary<string, int> CountReportsByMonth()
+        {
+            int profissionalId = _tokenService.GetUserId();
+
+            var reports = _reportRepository._context.Report
+                .Include(r => r.Pacient)
+                .Where(r => r.Pacient.ProfissionalId == profissionalId)
+                .ToList(); // Executa no banco antes do GroupBy
+
+            var grouped = reports
+                .GroupBy(r => r.ReportDateTime.ToString("MM/yyyy"))
+                .OrderBy(g => g.Key)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            return grouped;
+        }
+
 
         public Result<ReportResponseModel> CreateReport(int pacientId, CreateReportRequest report)
         {
