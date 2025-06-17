@@ -4,6 +4,7 @@ using Anamnese.API.ORM.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Anamnese.API.Migrations
 {
     [DbContext(typeof(AnamneseDbContext))]
-    partial class AnamneseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250617194145_Pacient-CreatedAt")]
+    partial class PacientCreatedAt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

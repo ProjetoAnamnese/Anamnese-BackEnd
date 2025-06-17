@@ -33,7 +33,8 @@ namespace Anamnese.API.Application.Services.Pacient
             var query = _pacientRepository._context.Pacient
                 .Include(p => p.Report)
                 .Where(p => p.ProfissionalId == profissionalId)
-                .ApplyFilters(filter);
+                .ApplyFilters(filter)
+                .OrderByDescending(p => p.CreatedAt);
 
             var totalCount = query.Count();
 

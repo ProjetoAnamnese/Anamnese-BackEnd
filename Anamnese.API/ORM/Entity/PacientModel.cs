@@ -18,6 +18,7 @@ namespace Anamnese.API.ORM.Entity
         public string Gender { get; set; }
         public int ProfissionalId { get; set; }
         public string? MedicalSpeciality { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         //[JsonIgnore]
         public ReportModel Report { get; set; }

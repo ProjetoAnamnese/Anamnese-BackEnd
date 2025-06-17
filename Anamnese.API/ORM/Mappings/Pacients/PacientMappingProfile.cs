@@ -6,11 +6,13 @@ public class PacientMappingProfile : Profile
 {
     public PacientMappingProfile()
     {
-        CreateMap<CreatePacientRequest, PacientModel>();
+        CreateMap<CreatePacientRequest, PacientModel>()
+           .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.Now));
         CreateMap<PacientModel, PacientResponseModel>();
         CreateMap<UpdatePacientRequest, PacientModel>()
            .ForMember(dest => dest.PacientId, opt => opt.Ignore())
            .ForMember(dest => dest.Report, opt => opt.Ignore())
-           .ForMember(dest => dest.ProfissionalId, opt => opt.Ignore());     
+           .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+           .ForMember(dest => dest.ProfissionalId, opt => opt.Ignore());
     }
 }
