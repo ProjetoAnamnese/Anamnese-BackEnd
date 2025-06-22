@@ -14,6 +14,7 @@ namespace Anamnese.API.ORM.Entity
 
         public int ProfissionalId { get; set; }
         public string ProfissionalName { get; set; }
+        public bool IsCanceled { get; set; }
         public ProfissionalModel Profissional { get; set; }
 
         public string? Speciality { get; set; }

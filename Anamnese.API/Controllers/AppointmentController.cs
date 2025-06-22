@@ -1,4 +1,5 @@
 ﻿using Anamnese.API.Application.Services.Appointment;
+using Anamnese.API.ORM.Filters;
 using Anamnese.API.ORM.Model.Appointment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,14 +40,38 @@ namespace Anamnese.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetProfissionalAppointment(
+          [FromQuery] AppointmentFilter filters,
           [FromQuery] int pageNumber = 1,
-          [FromQuery] int pageSize = 10)
+          [FromQuery] int pageSize = 10
+          )
         {
-            var appointments = _appointmentService.GetAppointmentByProfissional(pageNumber, pageSize);
+            var appointments = _appointmentService.GetAppointmentByProfissional(filters, pageNumber, pageSize );
             return Ok(appointments);
         }
 
 
+
+        [HttpPatch("update-appointment/{appointmentId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult UpdateAppointment(int appointmentId, UpdateAppointmentModel updateAppointmentModel)
+        {
+            try
+            {
+                var updatedAppointment = _appointmentService.UpdateAppointment(appointmentId, updateAppointmentModel);
+                return Ok(updatedAppointment);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = ex.Message
+                });
+            }
+
+        }
 
         [HttpPost("schedule-appointment")]
         [ProducesResponseType(StatusCodes.Status200OK)]

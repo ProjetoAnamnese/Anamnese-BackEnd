@@ -3,7 +3,11 @@ using Anamnese.API.Application.Services.ProfissionalAvailable;
 using Anamnese.API.Application.Services.Token;
 using Anamnese.API.ORM.Entity;
 using Anamnese.API.ORM.Filters;
+using Anamnese.API.ORM.Model.Appointment;
+using Anamnese.API.ORM.Model.Common;
 using Anamnese.API.ORM.Repository;
+using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace Anamnese.API.Application.Services.Appointment
@@ -14,10 +18,12 @@ namespace Anamnese.API.Application.Services.Appointment
         private readonly BaseRepository<ProfissionalModel> _profissionalRepository;
         private readonly BaseRepository<PacientModel> _pacientRepository;
         private readonly BaseRepository<AppointmentModel> _appointmentRepository;
+        private readonly IMapper _mapper;
+
         private ITokenService _tokenService { get; }
 
 
-        public AppointmentService(IProfissionalAvailableService profissionalAvailableService, BaseRepository<AppointmentModel> appointmentRepository, BaseRepository<ProfissionalModel> profissionalRepository, BaseRepository<PacientModel> pacientRepository, ITokenService tokenService)
+        public AppointmentService(IProfissionalAvailableService profissionalAvailableService, BaseRepository<AppointmentModel> appointmentRepository, BaseRepository<ProfissionalModel> profissionalRepository, BaseRepository<PacientModel> pacientRepository, ITokenService tokenService, IMapper mapper)
 
         {
             _tokenService = tokenService;
@@ -25,14 +31,23 @@ namespace Anamnese.API.Application.Services.Appointment
             _profissionalAvailableService = profissionalAvailableService;
             _appointmentRepository = appointmentRepository;
             _profissionalRepository = profissionalRepository;
+            _mapper = mapper;
+
         }
 
-        public PagedResponse<AppointmentModel> GetAppointmentByProfissional(int pageNumber = 1, int pageSize = 10)
+        public PagedResponse<AppointmentModel> GetAppointmentByProfissional(AppointmentFilter filters, int pageNumber = 1, int pageSize = 10)
         {
             int profissionalId = _tokenService.GetUserId();
 
-            var query = _appointmentRepository.GetAll()
-                                              .Where(a => a.ProfissionalId == profissionalId);
+            var query = _appointmentRepository._context.Appointment
+            .Where(a =>
+                a.ProfissionalId == profissionalId &&
+                a.IsCanceled == filters.IsCanceled &&
+                (!filters.AppointmentDateTime.HasValue || a.AppointmentDateTime.Date == filters.AppointmentDateTime.Value.Date)
+            );
+
+
+
 
             var totalCount = query.Count();
 
@@ -52,7 +67,7 @@ namespace Anamnese.API.Application.Services.Appointment
 
         public List<AppointmentModel> GetNextAppointmentsOfDay()
         {
-            int profissionalId = _tokenService.GetUserId();            
+            int profissionalId = _tokenService.GetUserId();
 
             return _appointmentRepository._context.Appointment
                 .Include(a => a.Pacient)
@@ -68,10 +83,27 @@ namespace Anamnese.API.Application.Services.Appointment
         {
             var appointments = _appointmentRepository.GetAll().Where(appointment => appointment.PacientId == pacientId).FirstOrDefault();
             return appointments;
-            
+
 
 
         }
+
+        public Result<AppointmentModel> UpdateAppointment(int appointmentId, UpdateAppointmentModel updateModel)
+        {
+            var existAppointment = _appointmentRepository.GetById(appointmentId);
+
+            if (existAppointment == null)
+            {
+                throw new Exception("Appointment não encontrado.");
+            }
+
+            _mapper.Map(updateModel, existAppointment);
+            _appointmentRepository.Update(existAppointment);
+            _appointmentRepository.SaveChanges();
+
+            return Result<AppointmentModel>.Ok(_mapper.Map<AppointmentModel>(existAppointment));
+        }
+
 
         public bool ScheduleAppointment(int pacientId, DateOnly appointmentDate, TimeOnly appointmentTime)
         {
@@ -117,6 +149,7 @@ namespace Anamnese.API.Application.Services.Appointment
                     AppointmentDateTime = appointmentDateTime,
                     ProfissionalName = profissional.Username,
                     Speciality = profissional.Speciality, // Define a especialidade como a especialidade do profissional
+                    IsCanceled = false
                 };
 
                 _appointmentRepository.Add(appointment);
@@ -134,5 +167,7 @@ namespace Anamnese.API.Application.Services.Appointment
                 return false; // Profissional não está disponível no horário desejado
             }
         }
+
+
     }
 }
