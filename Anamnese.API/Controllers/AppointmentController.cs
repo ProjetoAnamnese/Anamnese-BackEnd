@@ -86,29 +86,24 @@ namespace Anamnese.API.Controllers
                 });
             }
 
+            string message;
+
             bool isScheduled = _appointmentService.ScheduleAppointment(
                 appointmentRequest.PacientId,
                 appointmentRequest.AppointmentDate,
-                appointmentRequest.AppointmentTime
+                appointmentRequest.AppointmentTime,
+                out message
             );
 
-            if (isScheduled)
+            return Ok(new
             {
-                return Ok(new
-                {
-                    success = true,
-                    message = "Agendamento realizado com sucesso."
-                });
-            }
-            else
-            {
-                return Ok(new
-                {
-                    success = false,
-                    message = "O profissional não está disponível no horário selecionado."
-                });
-            }
+                success = isScheduled,
+                message = message
+            });
         }
+
+
+
 
         [HttpGet("next-of-day")]
         public IActionResult GetNextAppointmentsOfDay()
