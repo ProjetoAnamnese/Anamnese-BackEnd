@@ -78,6 +78,21 @@ namespace Anamnese.API.Controllers
             return BadRequest();
         }
 
+        /// <summary>
+        /// Remove um disponibilidade do profissional pelo ID.
+        /// </summary>
+        /// <param name="profissionalAvailableId">ID da disponibilidade a ser removido</param>
+        /// <returns>Confirmação da remoção</returns>
+        [HttpDelete("remove-profissional-available/{profissionalAvailableId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult RemovePacient(int profissionalAvailableId)
+        {
+            var removedAvailable = _profissionalAvailableService.DeleteProfissionalAvailable(profissionalAvailableId);
+            return Ok(removedAvailable);
+        }
+
 
     }
 }

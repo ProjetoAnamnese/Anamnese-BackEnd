@@ -12,6 +12,8 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
         bool IsProfissionalAvailable(int profissionalId, TimeOnly appointmentDateTime, DateOnly appointmentDate);
         List<ProfissionalModel> GetProfissionalBySpeciality(string especialidade);
 
+        ProfissionalAvailableModel DeleteProfissionalAvailable(int profissionalAvailableId);
+
 
 
     }

@@ -130,6 +130,19 @@ namespace Anamnese.API.Application.Services.ProfissionalAvailable
                 }
             }
             return false;
-        } 
+        }
+
+        public ProfissionalAvailableModel DeleteProfissionalAvailable(int profissionalAvailableId)
+        {
+            var availableToDelete = _profissionalAvailableRepository.GetById(profissionalAvailableId);
+            if (availableToDelete != null)
+            {
+                _profissionalAvailableRepository.Delete(availableToDelete);
+                _profissionalAvailableRepository.SaveChanges();
+                return availableToDelete;
+            }
+            return null;
+        }
+
     }
 }
